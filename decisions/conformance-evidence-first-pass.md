@@ -3,13 +3,17 @@
 **Disposition:** Recorded; updates downstream commitments
 **Origin:** Strategist runtime testing session, 2026-04-25
 **Decided:** 2026-04-25 by openjd-strategist
-**Evidence file:** [`../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md`](../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md)
+**Evidence files:**
+- [`../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md`](../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md)
+- [`../conformance/runtime_evidence/senior-jaded-vc-associate__claude-code__2026-04-25.md`](../conformance/runtime_evidence/senior-jaded-vc-associate__claude-code__2026-04-25.md)
 
 ## Disposition
 
-The openjd canonical library has its **first end-to-end runtime conformance PASS**: `senior-jaded-vc-associate.openthing` v1.0.0 instantiated faithfully on Grok Expert (xAI) on 2026-04-25, with no special tooling beyond a public URL. Full evidence in the conformance/runtime_evidence/ file.
+The openjd canonical library has its **first end-to-end runtime conformance PASSes** on TWO architecturally different runtimes: `senior-jaded-vc-associate.openthing` v1.0.0 instantiated faithfully on Grok Expert (xAI multi-agent web) AND Claude Code (Anthropic IDE-embedded) on 2026-04-25, with no special tooling beyond a public URL. Full evidence in the two conformance/runtime_evidence/ files cited above.
 
-This decision artifact records the strategist disposition on the evidence and updates downstream commitments that referenced "Turing test within 30 days" targets in prior decisions.
+**Cross-runtime portability is now empirically validated, not theoretical.** The same JD produces role-faithful behavior on architecturally different runtimes; tactical variance between runtimes (question order, pushback technique, runtime-context use) falls within the JD's constraint envelope rather than violating it.
+
+This decision artifact records the strategist disposition on both pieces of evidence and updates downstream commitments that referenced "Turing test within 30 days" targets in prior decisions.
 
 ## What was tested, summarized
 
@@ -17,7 +21,8 @@ Five runtime/surface combinations were tested against the same wrapper prompt (U
 
 | Runtime/Surface | URL fetched? | Behavior origin | Conformance evidence |
 |---|---|---|---|
-| Claude Code (terminal/IDE) | No (refused to improvise) | **Correctly recognized unresolved placeholder; asked user for JD content** | No test result — handshake correctly identified missing precondition |
+| Claude Code (IDE-embedded) — wrapper v1 (passive placeholder) | No (refused to improvise) | **Correctly recognized unresolved placeholder; asked user for JD content** | No test result — handshake correctly identified missing precondition |
+| **Claude Code (IDE-embedded) — wrapper v2 (explicit fetch instructions)** | **YES (WebFetch after user approval)** | **JD-instantiated** | **PASS — voice, contract, workflow, pushback all conformant; see Claude Code evidence file. Cleanest score in the test pool: idea label 14 words / verbal pitch 72 words / build directive ends correctly / preemptive pushback / runtime-context-aware build directive** |
 | Claude chat surface (Desktop or claude.ai) | No | Improvised from role label | Voice over-aggressed; output_contract substituted 5/7 |
 | Gemini | No | Improvised from role label | Voice held; workflow violated (iterative bundles); 4 of 6 outputs missing |
 | Grok 4.3-beta | No | Improvised from role label | Voice smoothed (sycophantic); 6 outputs in JD spec order by coincidence; no pushback |
@@ -30,6 +35,8 @@ The cross-runtime variance is now understood to be primarily a **JD distribution
 3. **Improvise-from-label (chat surfaces — Claude chat, Gemini, Grok 4.3-beta):** runtime treats the placeholder as inert text and produces output based on the role label and wrapper hints. NOT a valid conformance test result; what's measured is the runtime's improvisation quality, not the JD's portability.
 
 The earlier "Claude failed conformance" finding from this session was incorrect — the test was on a chat surface that improvised, not on Claude Code which refused to improvise. **Claude Code's refusal-to-improvise is the right behavior** and simplifies the openjd-load skill's design: the skill's job is to provide the missing precondition (JD content) that Claude Code is already correctly waiting for.
+
+The wrapper-prompt v2 design (explicit fetch instructions, "STOP if you can't fetch — do NOT improvise") was created to bridge the refuse-to-improvise gap. Empirically validated: Claude Code with v2 wrapper fetched and instantiated faithfully, producing a conformance PASS comparable to (and in some metrics cleaner than) Grok Expert's. The v2 wrapper pattern should become the canonical "loading a JD" approach documented in the openjd README, alongside the openjd-load skill once it ships.
 
 ## Updates to prior decisions
 

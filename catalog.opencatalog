@@ -16,13 +16,24 @@
   },
 
   "data": {
-    "items": []
+    "items": [
+      {
+        "id": "openjd-contributor",
+        "name": "openjd Contributor",
+        "version": "1.0.0",
+        "description": "An AI role that helps a contributor author a new openjd Job Description, extracting role behavior from source material and producing a schema-conformant .openthing file ready for submission.",
+        "file": "jds/openjd-contributor.openthing",
+        "added": "2026-04-25",
+        "decision": "decisions/jd-openjd-contributor.md"
+      }
+    ]
   },
 
   "metadata": {
     "created": "2026-04-25",
     "schema_version": "0.1.0",
-    "items_count": 0,
+    "items_count": 1,
+    "last_updated": "2026-04-25",
     "_comment": "This catalog is the index of all JDs in the canonical library at jds/. As JDs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
   }
 }

@@ -1,0 +1,28 @@
+{
+  "catdef": "1.4",
+  "openjd": "0.1.0",
+  "type": "openjd:JDLibraryCatalog",
+  "id": "openjd-canonical-library",
+  "name": "openjd Canonical Library",
+  "description": "The canonical library of AI Job Descriptions, curated by the openjd community. Each entry is a portable, validated, Turing-tested role specification.",
+  "version": "0.1.0",
+
+  "product": {
+    "name": "openjd",
+    "homepage": "https://openjd.dev",
+    "repository": "https://github.com/openjd-spec/openjd-spec",
+    "license": "MIT",
+    "maintainer": "openjd community"
+  },
+
+  "data": {
+    "items": []
+  },
+
+  "metadata": {
+    "created": "2026-04-25",
+    "schema_version": "0.1.0",
+    "items_count": 0,
+    "_comment": "This catalog is the index of all JDs in the canonical library at jds/. As JDs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
+  }
+}

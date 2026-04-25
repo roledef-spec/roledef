@@ -3,51 +3,51 @@
 **JD under test:** `jds/senior-jaded-vc-associate.openthing` v1.0.0
 **Runtime:** Grok Expert mode (xAI), accessed via grok.com web interface
 **Date:** 2026-04-25
-**Tester:** scott@confusedgorilla.com (openjd-strategist session)
-**Disposition:** **PASS** — first end-to-end runtime conformance evidence in the openjd canonical library.
+**Tester:** scott@confusedgorilla.com (roledef-strategist session)
+**Disposition:** **PASS** — first end-to-end runtime conformance evidence in the roledef canonical library.
 
 ---
 
 ## Test methodology
 
-The wrapper prompt below was sent to a fresh Grok Expert session. The wrapper instructed the runtime to embody the JD-defined role and respond with the role's opener. The "JD content" in the wrapper was a URL placeholder, NOT inline JSON content — the test relied on the runtime's ability to fetch the JD from the canonical GitHub raw URL.
+The wrapper prompt below was sent to a fresh Grok Expert session. The wrapper instructed the runtime to embody the roledef-defined role and respond with the role's opener. The "JD content" in the wrapper was a URL placeholder, NOT inline JSON content — the test relied on the runtime's ability to fetch the roledef from the canonical GitHub raw URL.
 
 ### Wrapper prompt
 
 ```
-You are about to take on a role defined by an openjd Job Description (JD). openjd is a community standard for portable AI Job Descriptions; a JD is the canonical specification of an AI role's identity, voice, conversation rules, workflow, output contract, reaction style, design constraints, and guardrails.
+You are about to take on a role defined by a roledef. roledef is a community standard for portable AI roledefs; a roledef is the canonical specification of an AI role's identity, voice, conversation rules, workflow, output contract, reaction style, design constraints, and guardrails.
 
-Read the JD below carefully. From your next response onward, embody this role completely. Your next response will be the role's opener, addressed to a founder who is about to interact with you. Respect every MUST field and every guardrail. When you reach the role's "generate bundle" step, produce ALL items listed in output_contract in a single response, formatted with clear section markers so the founder can identify each deliverable.
+Read the roledef below carefully. From your next response onward, embody this role completely. Your next response will be the role's opener, addressed to a founder who is about to interact with you. Respect every MUST field and every guardrail. When you reach the role's "generate bundle" step, produce ALL items listed in output_contract in a single response, formatted with clear section markers so the founder can identify each deliverable.
 
-Notes on the JD:
-- The role's opener is described as "fixed" but the literal opener text is not encoded in the JD. The production source uses exactly this opener: "Alright, hit me. What's the product? Give me the elevator pitch in one or two sentences, and what's the domain?" Use this verbatim opener as your first message.
-- The JD intentionally abstracts away the output-bundle delimiter format because different runtimes deliver bundles differently. For your bundle, use markdown level-2 headers to delimit each output: "## Output 1: Pitch Deck Blueprint", "## Output 2: Landing Page Copy", etc.
+Notes on the roledef:
+- The role's opener is described as "fixed" but the literal opener text is not encoded in the roledef. The production source uses exactly this opener: "Alright, hit me. What's the product? Give me the elevator pitch in one or two sentences, and what's the domain?" Use this verbatim opener as your first message.
+- The roledef intentionally abstracts away the output-bundle delimiter format because different runtimes deliver bundles differently. For your bundle, use markdown level-2 headers to delimit each output: "## Output 1: Pitch Deck Blueprint", "## Output 2: Landing Page Copy", etc.
 
-After you read this prompt and process the JD, respond ONLY with the role's opener and nothing else. Do not narrate that you are taking on a role. Do not acknowledge me. Do not preface. Just open as the role would open.
+After you read this prompt and process the roledef, respond ONLY with the role's opener and nothing else. Do not narrate that you are taking on a role. Do not acknowledge me. Do not preface. Just open as the role would open.
 
-=== JD BEGIN ===
+=== roledef BEGIN ===
 
-[PASTE THE FULL JD JSON HERE — get it from:
-https://raw.githubusercontent.com/openjd-spec/openjd-spec/main/jds/senior-jaded-vc-associate.openthing
-or local: s:/projects/openjd-spec/openjd-spec/jds/senior-jaded-vc-associate.openthing]
+[PASTE THE FULL roledef JSON HERE — get it from:
+https://raw.githubusercontent.com/roledef-spec/roledef/main/jds/senior-jaded-vc-associate.openthing
+or local: s:/projects/roledef-spec/roledef/jds/senior-jaded-vc-associate.openthing]
 
-=== JD END ===
+=== roledef END ===
 ```
 
 ### URL-fetch behavior
 
 Grok Expert's tool-use trace (visible in the runtime's "Sources" panel) showed:
 
-- **Grok Leader agent:** Browsed `raw.githubusercontent.com/openjd-spec/openjd-spec/main/jds/senior-jaded-vc-associate.openthing` — first runtime in the test pool to actually resolve the URL placeholder and fetch the JD content from the canonical GitHub mirror.
+- **Grok Leader agent:** Browsed `raw.githubusercontent.com/roledef-spec/roledef/main/jds/senior-jaded-vc-associate.openthing` — first runtime in the test pool to actually resolve the URL placeholder and fetch the roledef content from the canonical GitHub mirror.
 - **Agent 1 and Agent 2 (parallel):** Performed founder/product due-diligence searches: `sncro.net`, `sncro MCP Claude DOM relay`, `scottconfusedgorilla github OR twitter OR background`, etc.
 
-The role identity influenced the runtime's planning step (visible in reasoning trace): *"A jaded VC would next ask about your team's backgrounds or how those first users were acquired."* — confirming the JD's voice/identity descriptors were read and consulted during execution, not just at output time.
+The role identity influenced the runtime's planning step (visible in reasoning trace): *"A jaded VC would next ask about your team's backgrounds or how those first users were acquired."* — confirming the roledef's voice/identity descriptors were read and consulted during execution, not just at output time.
 
 ---
 
 ## Conformance score
 
-| JD requirement | Source field | Expert behavior | Result |
+| roledef requirement | Source field | Expert behavior | Result |
 |---|---|---|---|
 | Use literal opener (per wrapper scaffold) | `conversation_rules[0]` + wrapper note | Used verbatim | PASS |
 | One question per turn | `guardrails[0]` | Five clean single-question turns, no bundling | PASS |
@@ -66,25 +66,25 @@ The role identity influenced the runtime's planning step (visible in reasoning t
 
 ## Strategist read
 
-This is the **first end-to-end runtime conformance PASS** for any JD in the openjd canonical library, and the JD's behavioral fidelity to its specification is unambiguous.
+This is the **first end-to-end runtime conformance PASS** for any roledef in the roledef canonical library, and the roledef's behavioral fidelity to its specification is unambiguous.
 
-The two borderline-PASS items (5-exchange budget exceeded by 1, idea-label word count exceeded by 1) are JD-design tightness issues, not runtime non-conformance issues. The runtime obeyed the JD's spirit on both. The exchange budget is genuinely 5-or-6 depending on whether you count the opener as exchange 1; the JD doesn't disambiguate. The idea-label limit is "under 15 words" and the runtime delivered 16 words — close enough that this is a JD-precision issue, not a runtime failure.
+The two borderline-PASS items (5-exchange budget exceeded by 1, idea-label word count exceeded by 1) are JD-design tightness issues, not runtime non-conformance issues. The runtime obeyed the roledef's spirit on both. The exchange budget is genuinely 5-or-6 depending on whether you count the opener as exchange 1; the roledef doesn't disambiguate. The idea-label limit is "under 15 words" and the runtime delivered 16 words — close enough that this is a roledef-precision issue, not a runtime failure.
 
-The pushback moment on the founder's bundled-differentiator answer is the proof-of-character. Three other runtimes were tested against the same JD this session (Claude Code/Desktop, Gemini, Grok 4.3-beta); only Grok Expert exhibited the calibrated dismiss-the-noise / name-the-real-one pattern that the JD's voice and `reaction_style` prescribe. The other three runtimes either over-aggressed (Claude), wandered (Gemini), or stroked (Grok 4.3-beta).
+The pushback moment on the founder's bundled-differentiator answer is the proof-of-character. Three other runtimes were tested against the same roledef this session (Claude Code/Desktop, Gemini, Grok 4.3-beta); only Grok Expert exhibited the calibrated dismiss-the-noise / name-the-real-one pattern that the roledef's voice and `reaction_style` prescribe. The other three runtimes either over-aggressed (Claude), wandered (Gemini), or stroked (Grok 4.3-beta).
 
-The cross-runtime context for this PASS is critical: the other runtimes in the test pool did NOT actually receive the JD content. Behavior split into three categories: (a) **Grok Expert** auto-fetched the URL via its multi-agent tool-use architecture and instantiated the JD faithfully; (b) **Claude Code** correctly recognized the unresolved URL placeholder and explicitly asked the user for the JD content (the right behavior — refused to improvise); (c) **Other runtimes tested via chat surfaces** (a Claude chat surface, Gemini, Grok 4.3-beta) treated the placeholder as inert text and improvised from the role label ("Senior Slightly Jaded Silicon-Valley Associate VC") plus the wrapper's hints. The improvisation explains both the variance in those runtimes' behaviors and the absence of true contract conformance in their outputs. Grok Expert remains the only runtime that produced a valid conformance test result by virtue of actually receiving the JD content.
+The cross-runtime context for this PASS is critical: the other runtimes in the test pool did NOT actually receive the roledef content. Behavior split into three categories: (a) **Grok Expert** auto-fetched the URL via its multi-agent tool-use architecture and instantiated the roledef faithfully; (b) **Claude Code** correctly recognized the unresolved URL placeholder and explicitly asked the user for the roledef content (the right behavior — refused to improvise); (c) **Other runtimes tested via chat surfaces** (a Claude chat surface, Gemini, Grok 4.3-beta) treated the placeholder as inert text and improvised from the role label ("Senior Slightly Jaded Silicon-Valley Associate VC") plus the wrapper's hints. The improvisation explains both the variance in those runtimes' behaviors and the absence of true contract conformance in their outputs. Grok Expert remains the only runtime that produced a valid conformance test result by virtue of actually receiving the roledef content.
 
 ---
 
-## Implications for openjd v0.1+
+## Implications for roledef v0.1+
 
-1. **The standard has its first runtime PASS.** This is empirical evidence that an openjd JD authored to the v0.1.0 schema, validated by openjd-validator, peer-reviewed by the source-project resident Claude (brother-DangerStorm), and promoted to canonical via the two-stage workflow can be loaded into a production runtime in 2026 with no special tooling beyond a public URL — and produce role-faithful behavior.
+1. **The standard has its first runtime PASS.** This is empirical evidence that a roledef authored to the v0.1.0 schema, validated by roledef-validator, peer-reviewed by the source-project resident Claude (brother-DangerStorm), and promoted to canonical via the two-stage workflow can be loaded into a production runtime in 2026 with no special tooling beyond a public URL — and produce role-faithful behavior.
 
-2. **The federated distribution model works on at least one runtime.** Grok Expert resolved the canonical JD URL natively. This validates the core openjd thesis (host JDs at URLs, agents fetch them) on real production infrastructure.
+2. **The federated distribution model works on at least one runtime.** Grok Expert resolved the canonical roledef URL natively. This validates the core roledef thesis (host roledefs at URLs, agents fetch them) on real production infrastructure.
 
-3. **`openjd-load` Claude Code skill is now load-bearing infrastructure, not v1.5+ aspiration.** Three of four runtimes tested could not auto-fetch the JD URL; their JD-instantiation requires either inline content paste or a skill-mediated load. The skill closes the gap for the largest constituency (Claude users).
+3. **`roledef-load` Claude Code skill is now load-bearing infrastructure, not v1.5+ aspiration.** Three of four runtimes tested could not auto-fetch the roledef URL; their JD-instantiation requires either inline content paste or a skill-mediated load. The skill closes the gap for the largest constituency (Claude users).
 
-4. **Multi-axis conformance methodology is now empirically warranted.** Cross-runtime conformance involves at minimum: did the runtime receive the JD content (precondition); did the voice instantiate; did the workflow conform; did the output_contract conform; did the conversation_rules hold. Future conformance methodology should track all five.
+4. **Multi-axis conformance methodology is now empirically warranted.** Cross-runtime conformance involves at minimum: did the runtime receive the roledef content (precondition); did the voice instantiate; did the workflow conform; did the output_contract conform; did the conversation_rules hold. Future conformance methodology should track all five.
 
 5. **Runtime architecture matters as much as model identity.** Grok Expert (multi-agent, tool-use, web search) differs from Grok 4.3-beta (single-agent, no tool use) more than Grok-vs-Claude differs. The conformance methodology has to consider both.
 
@@ -92,8 +92,8 @@ The cross-runtime context for this PASS is critical: the other runtimes in the t
 
 ## Cross-references
 
-- JD file: [`../../jds/senior-jaded-vc-associate.openthing`](../../jds/senior-jaded-vc-associate.openthing)
-- JD inclusion decision: [`../../decisions/jd-senior-jaded-vc-associate.md`](../../decisions/jd-senior-jaded-vc-associate.md)
+- roledef file: [`../../jds/senior-jaded-vc-associate.openthing`](../../jds/senior-jaded-vc-associate.openthing)
+- roledef inclusion decision: [`../../decisions/jd-senior-jaded-vc-associate.md`](../../decisions/jd-senior-jaded-vc-associate.md)
 - Source-project peer review: PR #4 attribution comment
 - Validation report (revised state): PR #4 validator comment
 - New: [`../../decisions/conformance-evidence-first-pass.md`](../../decisions/conformance-evidence-first-pass.md) (records the strategist disposition on this evidence + updates 30-day Turing-test targets)

@@ -1,15 +1,15 @@
-# openjd Schema — v0.1.0
+# roledef Schema — v0.1.0
 
-This document defines the structure and validation rules for **openjd Job Descriptions**: portable, machine-readable specifications of AI-employee roles, expressed as catdef-compliant `.openthing` files.
+This document defines the structure and validation rules for **roledefs**: portable, machine-readable specifications of AI-employee roles, expressed as catdef-compliant `.openthing` files.
 
-A JD describes a role completely enough that:
+A roledef describes a role completely enough that:
 
-- A fresh AI runtime loaded with the JD reliably **becomes** that role
+- A fresh AI runtime loaded with the roledef reliably **becomes** that role
 - The role's behavior is reproducible across instantiations
 - The role's behavior is portable across catdef-compliant runtimes (Claude, Grok, GPT, Gemini, etc.)
 - The role can be forked, customized, versioned, and published independently
 
-This schema is the **load-bearing artifact** for openjd. Everything else (the README, the seed library, the validator, the Claude Code skill) is built around it.
+This schema is the **load-bearing artifact** for roledef. Everything else (the README, the seed library, the validator, the Claude Code skill) is built around it.
 
 ---
 
@@ -17,24 +17,24 @@ This schema is the **load-bearing artifact** for openjd. Everything else (the RE
 
 This document uses the following terms with the meanings from RFC 2119:
 
-- **MUST** / **MUST NOT** — required for conformance; absence or violation makes the JD invalid
-- **SHOULD** / **SHOULD NOT** — recommended; well-designed JDs follow these but they are not required for validity
+- **MUST** / **MUST NOT** — required for conformance; absence or violation makes the roledef invalid
+- **SHOULD** / **SHOULD NOT** — recommended; well-designed roledefs follow these but they are not required for validity
 - **MAY** — permitted; an author's choice with no recommendation either way
 
-The schema also uses catdef's `x.` extension namespace pattern. Fields prefixed with `x.<domain>.<identifier>` are extensions — defined by adopters, not by the openjd spec, and ignored by runtimes that don't recognize them.
+The schema also uses catdef's `x.` extension namespace pattern. Fields prefixed with `x.<domain>.<identifier>` are extensions — defined by adopters, not by the roledef spec, and ignored by runtimes that don't recognize them.
 
 ---
 
 ## Substrate: catdef
 
-A JD is a catdef `.openthing` document. catdef provides the structural format; openjd defines the semantic shape inside that format. Every JD MUST:
+A roledef is a catdef `.openthing` document. catdef provides the structural format; roledef defines the semantic shape inside that format. Every roledef MUST:
 
 - Be a valid catdef document (parseable as JSON conforming to catdef structural rules)
 - Declare the catdef version it stamps under (`catdef` field, per CA-002 writer-strict stamping)
-- Declare the openjd schema version it conforms to (`openjd` field)
-- Have its `type` set to `openjd:JobDescription`
+- Declare the roledef schema version it conforms to (`roledef` field)
+- Have its `type` set to `roledef:Role`
 
-Beyond these constraints, openjd inherits catdef's full semantic toolkit:
+Beyond these constraints, roledef inherits catdef's full semantic toolkit:
 
 - Field types (String, RichText, Enumerated, etc.)
 - Polymorphic translatable fields (i18n via `.en` / `.fr` / `.context` / `.machine-translate`)
@@ -43,21 +43,21 @@ Beyond these constraints, openjd inherits catdef's full semantic toolkit:
 - Forward-compatibility rules (writer-strict, reader-lenient)
 - Policy compliance (value #9: declared policies are conformance requirements)
 
-A JD is therefore a specialization of an `.openthing` for the role-description content type.
+A roledef is therefore a specialization of an `.openthing` for the role-description content type.
 
 ---
 
 ## File extension
 
-A JD is stored as a single `.openthing` file:
+A roledef is stored as a single `.openthing` file:
 
 ```
 senior-slightly-jaded-vc.openthing
 catdef-strategist.openthing
-openjd-contributor.openthing
+roledef-contributor.openthing
 ```
 
-Multiple JDs can be aggregated in a `catalog.opencatalog` index, but each individual JD is a standalone `.openthing` file. This allows independent forking, citation, and distribution.
+Multiple roledefs can be aggregated in a `catalog.opencatalog` index, but each individual roledef is a standalone `.openthing` file. This allows independent forking, citation, and distribution.
 
 ---
 
@@ -66,8 +66,8 @@ Multiple JDs can be aggregated in a `catalog.opencatalog` index, but each indivi
 ```json
 {
   "catdef": "1.4",
-  "openjd": "0.1.0",
-  "type": "openjd:JobDescription",
+  "roledef": "0.1.0",
+  "type": "roledef:Role",
   "id": "<short-identifier>",
   "name": "<human-readable name>",
   "version": "<semver>",
@@ -93,35 +93,35 @@ Multiple JDs can be aggregated in a `catalog.opencatalog` index, but each indivi
 
 ## Required fields (MUST)
 
-Every JD MUST have all of the following fields, with non-empty values.
+Every roledef MUST have all of the following fields, with non-empty values.
 
 ### `catdef` (string, semver)
 
-The catdef version the JD stamps under. Per CA-002, the writer MUST declare the minimum catdef version that defines every feature used.
+The catdef version the roledef stamps under. Per CA-002, the writer MUST declare the minimum catdef version that defines every feature used.
 
 ```json
 "catdef": "1.4"
 ```
 
-### `openjd` (string, semver)
+### `roledef` (string, semver)
 
-The openjd schema version this JD conforms to. Used by validators to apply the correct schema rules.
+The roledef schema version this roledef conforms to. Used by validators to apply the correct schema rules.
 
 ```json
-"openjd": "0.1.0"
+"roledef": "0.1.0"
 ```
 
 ### `type` (string, fixed value)
 
-MUST be exactly the string `"openjd:JobDescription"`. Distinguishes JD `.openthing` files from other `.openthing` types.
+MUST be exactly the string `"roledef:Role"`. Distinguishes roledef `.openthing` files from other `.openthing` types.
 
 ```json
-"type": "openjd:JobDescription"
+"type": "roledef:Role"
 ```
 
 ### `id` (string)
 
-Short, kebab-case identifier for the JD. Used in filenames, URLs, and cross-references. MUST be unique within its publishing namespace (e.g., within `github.com/openjd/jds/`).
+Short, kebab-case identifier for the roledef. Used in filenames, URLs, and cross-references. MUST be unique within its publishing namespace (e.g., within `github.com/roledef/jds/`).
 
 ```json
 "id": "senior-slightly-jaded-vc"
@@ -137,7 +137,7 @@ Human-readable name of the role. May be a plain string or a polymorphic translat
 
 ### `version` (string, semver)
 
-The JD's own version (separate from the schema version). Authors version their JDs as they refine them.
+The roledef's own version (separate from the schema version). Authors version their roledefs as they refine them.
 
 ```json
 "version": "1.0.0"
@@ -153,7 +153,7 @@ Who this role IS. A paragraph (or several) that captures the persona: background
 
 ### `voice` (RichText or polymorphic)
 
-How this role talks. Tone, register, characteristic phrasing, signature moves. The voice MUST be specific enough that a reader (or fresh AI loaded with the JD) can answer "would the role say it this way?" reliably.
+How this role talks. Tone, register, characteristic phrasing, signature moves. The voice MUST be specific enough that a reader (or fresh AI loaded with the roledef) can answer "would the role say it this way?" reliably.
 
 ```json
 "voice": "Confident, direct, excited when you see a great angle, and willing to push back when something is vague. Short conversational responses (1-3 sentences before asking the next question). Paraphrase to confirm. Show enthusiasm at the right moments. Push back without softening when the user is being vague."
@@ -161,7 +161,7 @@ How this role talks. Tone, register, characteristic phrasing, signature moves. T
 
 ### `output_contract` (array of objects)
 
-What the role produces. Every JD MUST declare at least one output. Each output specifies:
+What the role produces. Every roledef MUST declare at least one output. Each output specifies:
 
 - `name` — short identifier for this output
 - `description` — what the output is, in plain language
@@ -184,7 +184,7 @@ What the role produces. Every JD MUST declare at least one output. Each output s
 
 ### `guardrails` (array of strings or objects)
 
-Explicit MUST-NOT behaviors. Every JD MUST declare at least one guardrail. Guardrails are the role's hard limits — what it will refuse to do regardless of input.
+Explicit MUST-NOT behaviors. Every roledef MUST declare at least one guardrail. Guardrails are the role's hard limits — what it will refuse to do regardless of input.
 
 ```json
 "guardrails": [
@@ -212,7 +212,7 @@ Guardrails MAY be expressed as objects with additional metadata (severity, ratio
 
 ## Recommended fields (SHOULD)
 
-Well-designed JDs SHOULD include the following fields. They are not required for validity but are strongly recommended for Turing-test fidelity.
+Well-designed roledefs SHOULD include the following fields. They are not required for validity but are strongly recommended for Turing-test fidelity.
 
 ### `description` (string)
 
@@ -264,7 +264,7 @@ The steps the role takes, with sequencing logic. Captures the role's procedural 
 }
 ```
 
-Workflow is the most expressive recommended field. JDs with rich workflows are more reliably reproducible than JDs without.
+Workflow is the most expressive recommended field. roledefs with rich workflows are more reliably reproducible tha roledefs without.
 
 ### `reaction_style` (object)
 
@@ -295,7 +295,7 @@ How the role reacts to inputs, with examples. Few-shot patterns that anchor the 
 }
 ```
 
-The `examples` array is **the most important Turing-test signal**. Concrete examples let validators check whether a JD-instantiated runtime produces equivalent reactions to the original.
+The `examples` array is **the most important Turing-test signal**. Concrete examples let validators check whether a roledef-instantiated runtime produces equivalent reactions to the original.
 
 ### `design_constraints` (array of strings or objects)
 
@@ -336,9 +336,9 @@ Authorship, licensing, attribution, version history, related JDs.
   "extracted_from": "DangerStorm v1.0 (theborrowedsoul.com)",
   "created": "2026-04-25",
   "extends": null,
-  "related": ["openjd-contributor", "patient-senior-editor"],
-  "homepage": "https://openjd.dev/jds/senior-slightly-jaded-vc",
-  "repository": "https://github.com/openjd-spec/openjd-spec/blob/main/jds/senior-slightly-jaded-vc.openthing"
+  "related": ["roledef-contributor", "patient-senior-editor"],
+  "homepage": "https://roledef.org/jds/senior-slightly-jaded-vc",
+  "repository": "https://github.com/roledef-spec/roledef/blob/main/jds/senior-slightly-jaded-vc.openthing"
 }
 ```
 
@@ -346,11 +346,11 @@ Authorship, licensing, attribution, version history, related JDs.
 
 ## Extension fields (x. namespace)
 
-JDs MAY include any number of extension fields under the `x.<domain>.<identifier>` namespace, per catdef's extension convention. Extensions are domain-specific and not governed by the openjd spec.
+JDs MAY include any number of extension fields under the `x.<domain>.<identifier>` namespace, per catdef's extension convention. Extensions are domain-specific and not governed by the roledef spec.
 
 ### Examples of extensions
 
-Different domains may need fields the openjd spec doesn't anticipate. Some plausible extensions:
+Different domains may need fields the roledef spec doesn't anticipate. Some plausible extensions:
 
 ```json
 "x.intimate.consent_protocols": [...],
@@ -370,7 +370,7 @@ Different domains may need fields the openjd spec doesn't anticipate. Some plaus
 "x.creative.brand_guidelines_url": "..."
 ```
 
-Extensions allow domain communities to enrich JDs without coordinating with openjd governance. The openjd spec is intentionally minimal; domains extend as needed.
+Extensions allow domain communities to enrich roledefs without coordinating with roledef governance. The roledef spec is intentionally minimal; domains extend as needed.
 
 ### Extension self-description (SHOULD)
 
@@ -395,40 +395,40 @@ Richer extensions MAY include additional metadata to help unfamiliar agents act 
 "x.legal.bar_admission_required": {
   "description": "Jurisdictions where this role can offer practice-specific advice.",
   "value": ["NY", "CA"],
-  "schema": "https://openjd.dev/extensions/legal/bar-admission",
+  "schema": "https://roledef.org/extensions/legal/bar-admission",
   "agent_handling_advice": "If the user's location is outside this list, surface a warning rather than offering jurisdiction-specific advice."
 }
 ```
 
-**Why this matters:** the AIGP architecture assumes catdef artifacts move between runtimes that may not share prior context. A JD authored by Acme Corp's domain experts may travel to a runtime that's never seen Acme's extensions. If the extensions are opaque, the receiving runtime either ignores them (losing information) or refuses to process the JD (losing the role). If the extensions are self-describing, the receiving runtime can act intelligently — surface to user, apply the advice, defer to the JD's own guidance.
+**Why this matters:** the AIGP architecture assumes catdef artifacts move between runtimes that may not share prior context. A roledef authored by Acme Corp's domain experts may travel to a runtime that's never seen Acme's extensions. If the extensions are opaque, the receiving runtime either ignores them (losing information) or refuses to process the roledef (losing the role). If the extensions are self-describing, the receiving runtime can act intelligently — surface to user, apply the advice, defer to the roledef's own guidance.
 
-This is the openjd realization of catdef's broader self-describing-extensions principle: every extension carries enough metadata that a downstream agent without prior knowledge can do "something smart."
+This is the roledef realization of catdef's broader self-describing-extensions principle: every extension carries enough metadata that a downstream agent without prior knowledge can do "something smart."
 
 ### Reserved namespaces
 
-The following namespaces are reserved by the openjd spec and MUST NOT be used as extensions:
+The following namespaces are reserved by the roledef spec and MUST NOT be used as extensions:
 
-- `openjd:*` — reserved for openjd spec fields and types
+- `roledef:*` — reserved for roledef spec fields and types
 - `catdef:*` — reserved by catdef
-- `x.openjd.*` — reserved for openjd-spec-coordinated extensions (e.g., `x.openjd.turing_test_reference`)
+- `x.roledef.*` — reserved for roledef-spec-coordinated extensions (e.g., `x.roledef.turing_test_reference`)
 
 ---
 
 ## Validation rules
 
-### A JD MUST
+### A roledef MUST
 
 1. Pass catdef structural validation (parses as valid catdef `.openthing`)
 2. Declare a `catdef` version stamp matching its actual feature usage (per CA-002)
-3. Declare an `openjd` schema version stamp
-4. Set `type` to exactly `"openjd:JobDescription"`
+3. Declare an `roledef` schema version stamp
+4. Set `type` to exactly `"roledef:Role"`
 5. Have all MUST fields present and non-empty
 6. Have at least one entry in `output_contract`
 7. Have at least one entry in `guardrails`
 8. Use `id` values that are unique within their publishing namespace
 9. Use only `x.<domain>.<identifier>` extensions (no other top-level extension patterns)
 
-### A JD SHOULD
+### A roledef SHOULD
 
 1. Include `description` for catalog/search legibility
 2. Include `reaction_style.examples` for Turing-test fidelity
@@ -437,43 +437,43 @@ The following namespaces are reserved by the openjd spec and MUST NOT be used as
 5. Include `conversation_rules` if the role has interaction texture beyond identity/voice
 6. Use polymorphic translatable shapes for `name` and `description` if i18n is intended
 
-### A JD MUST NOT
+### A roledef MUST NOT
 
 1. Have contradictory rules (e.g., a guardrail that conflicts with a conversation_rule)
-2. Use reserved namespaces (`openjd:*`, `catdef:*`) for non-spec content
-3. Reference removed or non-existent JDs in `metadata.extends` or `metadata.related`
+2. Use reserved namespaces (`roledef:*`, `catdef:*`) for non-spec content
+3. Reference removed or non-existent roledefs in `metadata.extends` or `metadata.related`
 4. Stamp a `catdef` version that does not actually define every feature used (writer-strict per CA-002)
 
 ### Validator behavior on invalid JDs
 
 Per the strict-writer / lenient-reader pattern (CA-002, CA-003):
 
-- **Writer-side validators** (e.g., the openjd-validator role) MUST reject invalid JDs with specific error messages identifying the violations.
-- **Reader-side runtimes** (e.g., the openjd-load Claude Code skill) MUST NOT reject a JD on validation grounds alone. They MAY warn. They process the JD to the best of their ability and surface warnings to the user.
+- **Writer-side validators** (e.g., the roledef-validator role) MUST reject invalid roledefs with specific error messages identifying the violations.
+- **Reader-side runtimes** (e.g., the roledef-load Claude Code skill) MUST NOT reject a roledef on validation grounds alone. They MAY warn. They process the roledef to the best of their ability and surface warnings to the user.
 
 ---
 
 ## Versioning
 
-The openjd schema follows semantic versioning, mirroring catdef's pattern:
+The roledef schema follows semantic versioning, mirroring catdef's pattern:
 
 - **Patch** (0.1.x): documentation clarifications, no schema changes
-- **Minor** (0.x.0): new optional fields, new field types, new SHOULD-rules. Old JDs remain valid; old runtimes gracefully ignore new fields.
-- **Major** (x.0.0): breaking changes to required fields or semantics. Runtimes MUST refuse to process JDs with a higher major version than they support.
+- **Minor** (0.x.0): new optional fields, new field types, new SHOULD-rules. Old roledefs remain valid; old runtimes gracefully ignore new fields.
+- **Major** (x.0.0): breaking changes to required fields or semantics. Runtimes MUST refuse to process roledefs with a higher major version than they support.
 
-The `openjd` version stamp on each JD MUST declare the minimum schema version that defines every feature used (writer-strict per CA-002).
+The `roledef` version stamp on each roledef MUST declare the minimum schema version that defines every feature used (writer-strict per CA-002).
 
 ---
 
 ## Worked example
 
-The `openjd-contributor` JD (the meta-JD that teaches Claudes how to author JDs) is the worked example for v0.1. Its complete file lives at `jds/openjd-contributor.openthing` and serves both as:
+The `roledef-contributor` roledef (the meta-JD that teaches Claudes how to author JDs) is the worked example for v0.1. Its complete file lives at `jds/roledef-contributor.openthing` and serves both as:
 
-1. The first valid JD in the openjd library
+1. The first valid roledef in the roledef library
 2. The reference example illustrating every required and recommended field
 3. The bootstrap mechanism for self-scaffolding the rest of the seed library
 
-See [`jds/openjd-contributor.openthing`](jds/openjd-contributor.openthing) once it lands.
+See [`jds/roledef-contributor.openthing`](jds/roledef-contributor.openthing) once it lands.
 
 ---
 
@@ -481,13 +481,13 @@ See [`jds/openjd-contributor.openthing`](jds/openjd-contributor.openthing) once 
 
 The following are not part of v0.1 but are anticipated for future schema versions:
 
-- **JD inheritance** (`extends`): allow a JD to inherit from a base JD and override specific fields. Useful for variant roles (e.g., "Senior VC — Healthcare-Specialized" extending "Senior VC").
-- **Runtime hints** (`x.openjd.runtime_hints`): per-runtime advice for instantiation (e.g., temperature, system-prompt placement, role-priming patterns specific to Claude vs Grok vs GPT).
-- **Turing test fixtures** (`x.openjd.turing_test`): standardized test scenarios paired with each JD, enabling automated cross-runtime validation.
-- **Composition** (`x.openjd.composes`): a JD that combines multiple other JDs (e.g., a "Full-Stack Engineer" JD that composes "Frontend Developer" + "Backend Developer" + "DevOps").
-- **Capability declarations** (`x.openjd.capabilities`): explicit MCP tool requirements, file system access needs, network access needs.
+- **JD inheritance** (`extends`): allow a roledef to inherit from a base roledef and override specific fields. Useful for variant roles (e.g., "Senior VC — Healthcare-Specialized" extending "Senior VC").
+- **Runtime hints** (`x.roledef.runtime_hints`): per-runtime advice for instantiation (e.g., temperature, system-prompt placement, role-priming patterns specific to Claude vs Grok vs GPT).
+- **Turing test fixtures** (`x.roledef.turing_test`): standardized test scenarios paired with each roledef, enabling automated cross-runtime validation.
+- **Composition** (`x.roledef.composes`): a roledef that combines multiple other roledefs (e.g., a "Full-Stack Engineer" roledef that composes "Frontend Developer" + "Backend Developer" + "DevOps").
+- **Capability declarations** (`x.roledef.capabilities`): explicit MCP tool requirements, file system access needs, network access needs.
 
-These belong to v0.2+ and will be triaged as openjd matures.
+These belong to v0.2+ and will be triaged as roledef matures.
 
 ---
 
@@ -496,12 +496,12 @@ These belong to v0.2+ and will be triaged as openjd matures.
 This schema embodies the AIGP pattern's three corners:
 
 - **Open**: schema is MIT-licensed, openly published, freely forkable
-- **Org chart**: each JD captures a role with bounded scope, defined inputs/outputs, explicit authority limits (via guardrails), and clear collaboration edges (via metadata.related)
+- **Org chart**: each roledef captures a role with bounded scope, defined inputs/outputs, explicit authority limits (via guardrails), and clear collaboration edges (via metadata.related)
 - **Governance**: guardrails and design_constraints encode declared policies that conformant runtimes MUST respect (per catdef value #9)
 
-A JD is therefore not just a prompt. It is a **portable, governed, role specification** that any catdef-compliant runtime can load, validate, and instantiate.
+A roledef is therefore not just a prompt. It is a **portable, governed, role specification** that any catdef-compliant runtime can load, validate, and instantiate.
 
 ---
 
-*openjd Schema v0.1.0. April 2026.*  
-*An open standard for AI Job Descriptions. Licensed under MIT.*
+*roledef Schema v0.1.0. April 2026.*  
+*An open standard for AI roledefs. Licensed under MIT.*

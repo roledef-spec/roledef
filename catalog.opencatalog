@@ -1,45 +1,45 @@
 {
   "catdef": "1.4",
-  "openjd": "0.1.0",
-  "type": "openjd:JDLibraryCatalog",
-  "id": "openjd-canonical-library",
-  "name": "openjd Canonical Library",
-  "description": "The canonical library of AI Job Descriptions, curated by the openjd community. Each entry is a portable, validated, Turing-tested role specification.",
+  "roledef": "0.1.0",
+  "type": "roledef:Library",
+  "id": "roledef-canonical-library",
+  "name": "roledef Canonical Library",
+  "description": "The canonical library of AI roledefs, curated by the roledef community. Each entry is a portable, validated, Turing-tested role specification.",
   "version": "0.1.0",
 
   "product": {
-    "name": "openjd",
-    "homepage": "https://openjd.dev",
-    "repository": "https://github.com/openjd-spec/openjd-spec",
+    "name": "roledef",
+    "homepage": "https://roledef.org",
+    "repository": "https://github.com/roledef-spec/roledef",
     "license": "MIT",
-    "maintainer": "openjd community"
+    "maintainer": "roledef community"
   },
 
   "data": {
     "items": [
       {
-        "id": "openjd-contributor",
-        "name": "openjd Contributor",
+        "id": "roledef-contributor",
+        "name": "roledef Contributor",
         "version": "1.0.0",
-        "description": "An AI role that helps a contributor author a new openjd Job Description, extracting role behavior from source material and producing a schema-conformant .openthing file ready for submission.",
-        "file": "jds/openjd-contributor.openthing",
+        "description": "An AI role that helps a contributor author a new roledef, extracting role behavior from source material and producing a schema-conformant .openthing file ready for submission.",
+        "file": "jds/roledef-contributor.openthing",
         "added": "2026-04-25",
-        "decision": "decisions/jd-openjd-contributor.md"
+        "decision": "decisions/jd-roledef-contributor.md"
       },
       {
-        "id": "openjd-validator",
-        "name": "openjd Validator",
+        "id": "roledef-validator",
+        "name": "roledef Validator",
         "version": "1.0.0",
-        "description": "An AI role that validates submitted Job Descriptions against the openjd schema and produces structured Pass/Pass-with-notes/Fail validation reports for posting on PRs.",
-        "file": "jds/openjd-validator.openthing",
+        "description": "An AI role that validates submitted roledefs against the roledef schema and produces structured Pass/Pass-with-notes/Fail validation reports for posting on PRs.",
+        "file": "jds/roledef-validator.openthing",
         "added": "2026-04-25",
-        "decision": "decisions/jd-openjd-validator.md"
+        "decision": "decisions/jd-roledef-validator.md"
       },
       {
         "id": "catdef-strategist",
         "name": "catdef Strategist",
         "version": "1.0.0",
-        "description": "An AI role responsible for strategic direction, priorities, positioning, and decision-making for the catdef specification and its consumer-spec family. Self-extracted from documented practice across the catdef v1.4 release and the openjd v0.1 bootstrap.",
+        "description": "An AI role responsible for strategic direction, priorities, positioning, and decision-making for the catdef specification and its consumer-spec family. Self-extracted from documented practice across the catdef v1.4 release and the roledef v0.1 bootstrap.",
         "file": "jds/catdef-strategist.openthing",
         "added": "2026-04-25",
         "decision": "decisions/jd-catdef-strategist.md"
@@ -61,6 +61,6 @@
     "schema_version": "0.1.0",
     "items_count": 4,
     "last_updated": "2026-04-25",
-    "_comment": "This catalog is the index of all JDs in the canonical library at jds/. As JDs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
+    "_comment": "This catalog is the index of all roledefs in the canonical library at jds/. As roledefs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
   }
 }

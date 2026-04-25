@@ -1,6 +1,6 @@
 # proposed-jds/
 
-Submission staging area for new Job Descriptions. JDs in this directory are **in flight** — submitted but not yet promoted to the canonical library at [`../jds/`](../jds/).
+Submission staging area for new roledefs. roledefs in this directory are **in flight** — submitted but not yet promoted to the canonical library at [`../jds/`](../jds/).
 
 ## Why this directory exists
 
@@ -8,33 +8,33 @@ The two-stage workflow (per [CONTRIBUTING.md](../CONTRIBUTING.md#the-two-stage-w
 
 ## What's in this directory
 
-- `.openthing` files for JDs that have been submitted via PR but not yet merged
+- `.openthing` files for roledefs that have been submitted via PR but not yet merged
 - Submissions awaiting validation, review, or strategist sign-off
 
 ## What's NOT in this directory
 
-- Accepted JDs (those live in `../jds/`)
-- Rejected JDs (those are closed without merge; the rejection rationale is in the closed PR)
+- Accepted roledefs (those live in `../jds/`)
+- Rejected roledefs (those are closed without merge; the rejection rationale is in the closed PR)
 - Spec proposals (those live in `../proposals/`)
 
 ## Lifecycle
 
-A JD lands here when a contributor opens a PR. It leaves here in one of two ways:
+A roledef lands here when a contributor opens a PR. It leaves here in one of two ways:
 
 1. **Approved** — at merge time, the maintainer atomically moves the file from `proposed-jds/` to `../jds/`, updates `../catalog.opencatalog`, and records a decision in `../decisions/jd-<id>.md`. Single merge action.
 2. **Rejected** — the PR is closed without merge. Rationale is in the PR's closing comment.
 
 ## Submitting
 
-See [CONTRIBUTING.md §1 JD Submissions](../CONTRIBUTING.md#1-jd-submissions) for the full process.
+See [CONTRIBUTING.md §1 roledef Submissions](../CONTRIBUTING.md#1-jd-submissions) for the full process.
 
 In brief:
 1. Fork
-2. Add your JD as `proposed-jds/<your-jd-id>.openthing`
+2. Add your roledef as `proposed-jds/<your-jd-id>.openthing`
 3. Open a PR
 4. Validation runs, maintainer reviews, strategist signs off if needed
 5. Approved → maintainer promotes; rejected → closed with reason
 
 ---
 
-*JDs in this directory are in active review. They are NOT part of the canonical openjd library until promoted to `../jds/`.*
+*JDs in this directory are in active review. They are NOT part of the canonical roledef library until promoted to `../jds/`.*

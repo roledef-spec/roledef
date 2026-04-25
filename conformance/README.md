@@ -1,14 +1,14 @@
 # conformance/
 
-The openjd conformance test suite. The suite is the practical expression of the standard — a JD that passes the suite is openjd-conformant; one that doesn't, isn't.
+The roledef conformance test suite. The suite is the practical expression of the standard — a roledef that passes the suite is roledef-conformant; one that doesn't, isn't.
 
 ## Structure
 
 ```
 conformance/
 ├── README.md                ← you are here
-├── valid_jds/               ← JDs that should pass validation
-├── invalid_jds/             ← JDs with specific known violations
+├── valid_jds/               ← roledefs that should pass validation
+├── invalid_jds/             ← roledefs with specific known violations
 └── tests/                   ← test code (validators, Turing-test runners)
 ```
 
@@ -18,7 +18,7 @@ Three dimensions of conformance:
 
 ### 1. Schema conformance
 
-For each JD:
+For each roledef:
 - Does it parse as valid catdef?
 - Does it have all MUST fields per [SCHEMA.md](../SCHEMA.md)?
 - Does `output_contract` have at least one entry?
@@ -28,15 +28,15 @@ For each JD:
 
 ### 2. Turing-test fidelity
 
-For each canonical JD in `../jds/`:
-- Does a fresh runtime loaded with the JD produce behavior equivalent to the original-incumbent's documented behavior?
+For each canonical roledef in `../jds/`:
+- Does a fresh runtime loaded with the roledef produce behavior equivalent to the original-incumbent's documented behavior?
 - Does cross-runtime testing pass (Claude AND Grok, where applicable)?
 
 ### 3. Validator self-validation
 
 The `valid_jds/` and `invalid_jds/` corpora validate the validator itself:
-- The validator MUST pass every JD in `valid_jds/`
-- The validator MUST fail every JD in `invalid_jds/` with the documented reason
+- The validator MUST pass every roledef in `valid_jds/`
+- The validator MUST fail every roledef in `invalid_jds/` with the documented reason
 - This is the "structural enforcement beats editorial discipline" pattern from catdef CA-006 (`ft-shape-07`)
 
 ## Test fixture conventions
@@ -46,13 +46,13 @@ The `valid_jds/` and `invalid_jds/` corpora validate the validator itself:
 JDs that should pass all schema checks. Use cases:
 - Edge cases that the spec covers correctly (long fields, polymorphic translatable name, rich extension structure)
 - Each MUST/SHOULD field exercised at minimum once across the corpus
-- At least one JD that uses every reserved namespace correctly
+- At least one roledef that uses every reserved namespace correctly
 
 ### `invalid_jds/`
 
-JDs with specific known violations. Each invalid JD MUST:
+JDs with specific known violations. Each invalid roledef MUST:
 - Be paired with a documentation file (`<id>.md`) explaining the violation
-- Test exactly one violation type per JD (so failure is diagnostic)
+- Test exactly one violation type per roledef (so failure is diagnostic)
 - Cover the major violation classes:
   - Missing MUST field
   - Empty MUST field
@@ -71,7 +71,7 @@ Test code. Initial v0.1 contents:
 
 ## Adding to the conformance suite
 
-When you submit a new JD, you MAY include additions to the conformance suite if your JD exercises new schema territory. Especially welcome:
+When you submit a new roledef, you MAY include additions to the conformance suite if your roledef exercises new schema territory. Especially welcome:
 
 - New invalid-JD examples covering violations not yet in the corpus
 - Edge-case valid-JD examples that catch subtle cases
@@ -81,4 +81,4 @@ The conformance suite grows organically as the schema matures.
 
 ---
 
-*The test suite IS the standard. A JD that passes is openjd-conformant.*
+*The test suite IS the standard. A roledef that passes is roledef-conformant.*

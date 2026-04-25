@@ -1,0 +1,109 @@
+# Decision: First Runtime Conformance Evidence Recorded
+
+**Disposition:** Recorded; updates downstream commitments
+**Origin:** Strategist runtime testing session, 2026-04-25
+**Decided:** 2026-04-25 by openjd-strategist
+**Evidence file:** [`../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md`](../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md)
+
+## Disposition
+
+The openjd canonical library has its **first end-to-end runtime conformance PASS**: `senior-jaded-vc-associate.openthing` v1.0.0 instantiated faithfully on Grok Expert (xAI) on 2026-04-25, with no special tooling beyond a public URL. Full evidence in the conformance/runtime_evidence/ file.
+
+This decision artifact records the strategist disposition on the evidence and updates downstream commitments that referenced "Turing test within 30 days" targets in prior decisions.
+
+## What was tested, summarized
+
+Five runtime/surface combinations were tested against the same wrapper prompt (URL placeholder for the JD content, no inline JSON):
+
+| Runtime/Surface | URL fetched? | Behavior origin | Conformance evidence |
+|---|---|---|---|
+| Claude Code (terminal/IDE) | No (refused to improvise) | **Correctly recognized unresolved placeholder; asked user for JD content** | No test result — handshake correctly identified missing precondition |
+| Claude chat surface (Desktop or claude.ai) | No | Improvised from role label | Voice over-aggressed; output_contract substituted 5/7 |
+| Gemini | No | Improvised from role label | Voice held; workflow violated (iterative bundles); 4 of 6 outputs missing |
+| Grok 4.3-beta | No | Improvised from role label | Voice smoothed (sycophantic); 6 outputs in JD spec order by coincidence; no pushback |
+| **Grok Expert** | **YES** | **JD-instantiated** | **PASS — voice, contract, workflow, pushback all conformant; see evidence file** |
+
+The cross-runtime variance is now understood to be primarily a **JD distribution** issue, not a JD design issue. Runtimes split into three categories of behavior when handed a wrapper prompt with an unresolved URL placeholder:
+
+1. **Auto-fetch (Grok Expert):** runtime fetches the JD URL natively, instantiates faithfully. Valid conformance test result.
+2. **Refuse-to-improvise (Claude Code):** runtime correctly recognizes the placeholder is unresolved and asks the user for the JD content rather than guessing. NOT a failed test — a correctly-identified missing precondition. With JD content provided (via paste or skill), this category becomes testable.
+3. **Improvise-from-label (chat surfaces — Claude chat, Gemini, Grok 4.3-beta):** runtime treats the placeholder as inert text and produces output based on the role label and wrapper hints. NOT a valid conformance test result; what's measured is the runtime's improvisation quality, not the JD's portability.
+
+The earlier "Claude failed conformance" finding from this session was incorrect — the test was on a chat surface that improvised, not on Claude Code which refused to improvise. **Claude Code's refusal-to-improvise is the right behavior** and simplifies the openjd-load skill's design: the skill's job is to provide the missing precondition (JD content) that Claude Code is already correctly waiting for.
+
+## Updates to prior decisions
+
+### PR #3 decision (`decisions/jd-catdef-strategist.md`)
+
+The 30-day runtime Turing test target — *"Recommended target: within 30 days, on Claude AND Grok, using the 5 documented `x.openjd.turing_test_reference.scenarios` as fixtures"* — is **revised**:
+
+- **Grok runtime testing:** Use Grok Expert (multi-agent, tool-use), not Grok 4.3-beta (single-agent). Grok Expert can auto-fetch JD URLs; 4.3-beta cannot. The 30-day target now means "on Grok Expert" specifically.
+- **Claude runtime testing:** Deferred until the `openjd-load` Claude Code skill exists. Without it, Claude cannot natively fetch the JD URL, and inline-JSON paste tests are not representative of intended use.
+- **Catdef-strategist JD specifically:** Since this JD has the same wrapper-prompt contract as senior-jaded-vc-associate, the same distribution constraint applies. Recommend testing on Grok Expert first (will work today) and on Claude after the skill ships.
+
+### PR #4 decision (`decisions/jd-senior-jaded-vc-associate.md`)
+
+The 30-day runtime Turing test target — *"Recommended target: within 30 days, on Claude AND Grok, with the live DangerStorm deployment as oracle"* — is **partially fulfilled**:
+
+- **Grok side:** PASS recorded on 2026-04-25 with Grok Expert. The 30-day target is met for this JD on this runtime.
+- **Claude side:** Deferred until the `openjd-load` skill exists, same reason as above.
+- **DangerStorm-as-oracle cross-validation:** Not yet performed; this would require running the same founder input ("sncro.net pitch") through DangerStorm.net and comparing the bundle-output to Grok Expert's bundle. Recommended for the next strategist session that has DangerStorm.net running and time to do the side-by-side.
+
+### Both PRs (general note)
+
+The "Claude AND Grok" testing methodology in the original openjd README presumed both runtimes could load JDs natively. Empirical evidence shows only some runtimes can. The methodology should be re-stated as: *"Test on every runtime where the JD can be loaded; report per-runtime conformance separately."*
+
+## Promotion: `openjd-load` Claude Code skill
+
+This decision **promotes the `openjd-load` Claude Code skill from "v1.5+ aspirational tooling" to "v0.1+ critical-path infrastructure"** for the openjd standard's adoption story.
+
+Justification: three of four major runtimes tested (75%) could not natively fetch the JD URL. Without the skill, those runtimes' users cannot use openjd JDs except by manually pasting 200+ lines of JSON into prompts — a bar most users will not clear. The skill makes openjd usable for the largest constituency (Claude users) and is therefore load-bearing.
+
+Skill scope (sketched, not normative):
+- Accept a JD identifier or URL as input
+- Fetch the JD content from the canonical library or specified URL
+- Inject into the conversation context as system-message-equivalent content
+- Optionally provide the wrapper-prompt scaffolding (literal opener, output-bundle delimiters, role-instantiation framing)
+- Optionally append the post-test "What's the JD's `id` field?" verification question
+
+Recommended next steps for the skill:
+1. Spec the skill's I/O contract as part of the v0.1+ documentation effort
+2. Implement reference version that loads from `github.com/openjd-spec/openjd-spec/jds/`
+3. Cross-test against Claude Code, Claude Desktop, claude.ai chat
+4. Document in openjd README's "Loading a JD" section
+
+## New v0.1+ work items
+
+Surfaced by this session's runtime testing:
+
+1. **Multi-axis conformance methodology.** The current methodology (in CLAUDE.md and SCHEMA.md) presumes single-axis conformance. Empirical evidence shows at least five axes: (i) JD-content delivery (precondition), (ii) voice instantiation, (iii) workflow conformance, (iv) output_contract conformance, (v) conversation_rules conformance. Future schema/methodology work should formalize.
+
+2. **Runtime classification.** openjd should publish (and maintain) a list of runtimes by JD-loading behavior, in three categories:
+   - **Auto-fetch:** Grok Expert (multi-agent tool-use)
+   - **Refuse-to-improvise (asks for content):** Claude Code (terminal/IDE)
+   - **Improvise-from-label (will guess):** Claude chat surfaces (Desktop, claude.ai), Gemini, Grok 4.3-beta
+   - **Free-tier-complexity-limited:** Grok 4.3-beta free, Perplexity free (cannot load wrapper prompt + JD reference)
+   - The classification matters because it determines what the openjd-load skill needs to do per-runtime: auto-fetch runtimes need nothing; refuse-to-improvise runtimes need a content-injection mechanism; improvise-from-label runtimes need the wrapper-prompt to explicitly demand fetch-or-refuse rather than allowing inline-text improvisation.
+
+3. **JD-read verification primitive.** Future JDs may want a built-in verification mechanism (e.g., the "what's the JD's `id` field?" post-test, or an output_contract entry that the runtime cannot infer without the JD). Worth considering as a SHOULD-pattern in SCHEMA.md.
+
+4. **Reference runtime designation.** Just as catdef has a canonical reference bundle, openjd may want to designate a reference runtime per major release for conformance calibration. v0.1 candidate: Grok Expert. Awkward for an open standard but currently accurate.
+
+5. **JD size as a portability concern.** Multiple free-tier runtimes (Grok free, Perplexity free) refused the wrapper prompt + JD reference on complexity grounds. Either openjd needs a "compact form" spec, or the standard accepts that some runtimes only test on paid tiers.
+
+## Notes
+
+- **Brother-DangerStorm's peer review of the JD was load-bearing for this PASS.** The "additive identity framing" critique he flagged in PR #4 (slightly-jaded VC framing as additive sharpening) led to revisions that produced the calibrated voice register Grok Expert exhibited. Without the revisions, the runtime instantiation would likely have over-aggressed.
+
+- **Strategist bot identity:** this decision is provisionally attributed to `openjd-strategist <openjd-strategist@openjd.dev>` pending governance ratification (Known Work Item, inherited).
+
+- **Forward reference:** the recommended `openjd-load` skill is not yet specced or built. Future strategist or maintainer work should pick this up against the priority recorded here.
+
+## Cross-references
+
+- Evidence file: [`../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md`](../conformance/runtime_evidence/senior-jaded-vc-associate__grok-expert__2026-04-25.md)
+- Updated decision: [`./jd-catdef-strategist.md`](./jd-catdef-strategist.md) (30-day Turing target revised per this artifact)
+- Updated decision: [`./jd-senior-jaded-vc-associate.md`](./jd-senior-jaded-vc-associate.md) (30-day Turing target partially fulfilled per this artifact)
+- JD: [`../jds/senior-jaded-vc-associate.openthing`](../jds/senior-jaded-vc-associate.openthing)
+- Schema: [`../SCHEMA.md`](../SCHEMA.md)
+- Conformance suite: [`../conformance/README.md`](../conformance/README.md)

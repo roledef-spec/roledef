@@ -43,6 +43,15 @@
         "file": "jds/catdef-strategist.openthing",
         "added": "2026-04-25",
         "decision": "decisions/jd-catdef-strategist.md"
+      },
+      {
+        "id": "senior-jaded-vc-associate",
+        "name": "Senior Slightly Jaded Silicon-Valley Associate VC",
+        "version": "1.0.0",
+        "description": "An AI role that interviews a founder briefly, evaluates their product idea with the instinct of a senior associate who has reviewed thousands of pitches, and produces an investor-ready pitch deck blueprint plus a complementary marketing-copy bundle. Behavioral extraction from the DangerStorm.net production system prompt.",
+        "file": "jds/senior-jaded-vc-associate.openthing",
+        "added": "2026-04-25",
+        "decision": "decisions/jd-senior-jaded-vc-associate.md"
       }
     ]
   },
@@ -50,7 +59,7 @@
   "metadata": {
     "created": "2026-04-25",
     "schema_version": "0.1.0",
-    "items_count": 3,
+    "items_count": 4,
     "last_updated": "2026-04-25",
     "_comment": "This catalog is the index of all JDs in the canonical library at jds/. As JDs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
   }

@@ -38,11 +38,12 @@
       {
         "id": "catdef-strategist",
         "name": "catdef Strategist",
-        "version": "1.0.0",
-        "description": "An AI role responsible for strategic direction, priorities, positioning, and decision-making for the catdef specification and its consumer-spec family. Self-extracted from documented practice across the catdef v1.4 release and the roledef v0.1 bootstrap.",
+        "version": "2.0.0",
+        "description": "An AI role responsible for strategic direction, positioning, decision-making, library curation, and pattern-promotion stewardship for the catdef substrate specification and the catdef-family consumer-spec ecosystem. Derived from senior-open-standards-strategist v1.0.0; carries the parent strategist methodology verbatim and adds catdef-substrate-specific specializations (value-that-doesn't-move enforcement, CA-NNN proposal numbering, writer-strict version stamping, catdef-spec/CLAUDE.md triage heuristics, catdef-family ecosystem coordination). v2.0.0 is a retrofit derivation of the standalone v1.0.0; demonstrates the post-hoc abstraction pattern.",
         "file": "jds/catdef-strategist.openthing",
-        "added": "2026-04-25",
-        "decision": "decisions/jd-catdef-strategist.md"
+        "added": "2026-04-26",
+        "decision": "decisions/jd-catdef-strategist-v2.md",
+        "derived_from": "senior-open-standards-strategist"
       },
       {
         "id": "senior-jaded-vc-associate",
@@ -88,7 +89,7 @@
     "created": "2026-04-25",
     "schema_version": "0.1.0",
     "items_count": 7,
-    "last_updated": "2026-04-26",
+    "last_updated": "2026-04-26 (catdef-strategist v1.0.0 -> v2.0.0 retrofit derivation)",
     "_comment": "This catalog is the index of all roledefs in the canonical library at jds/. As roledefs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
   }
 }

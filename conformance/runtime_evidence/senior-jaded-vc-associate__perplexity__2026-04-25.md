@@ -145,6 +145,44 @@ This refinement is genuinely useful — the distribution-layer work is high-valu
 
 **Only fetcher-restricted models (Perplexity-class) get nothing from distribution-layer work.** For them, runtime-side loading (the openjd-load skill, MCP-mediated loading, paste-fallback) is the only path — and that was always going to be true, per the design principle. The distribution-layer wins are not invalidated by Perplexity's failure; they apply to a different beneficiary set.
 
+### Test 5 (post-design-principle): plain markdown asset on roledef.org
+
+**Hypothesis tested:** Even setting aside structured roledef artifacts, can Perplexity reach ANY asset on roledef.org? Or is the entire domain off-whitelist?
+
+**Test:** Asked Perplexity to fetch `https://roledef.org/readme.md` — a plain markdown document, conventional extension, standard `text/markdown` content-type, no special schema or structure.
+
+**Result:** Failed. Perplexity confirmed: *"From here, I can't see https://roledef.org/readme.md as a concrete markdown document either; it doesn't show up as a fetchable resource in my environment, which matches the behavior you're seeing with the .openthing and .json URLs."*
+
+**Hypothesis status:** Falsified. Even harmless prose assets aren't reachable. Perplexity sharpened its own self-description: *"model tools can only touch a very small, whitelisted slice of the public web."*
+
+### Refinement to the design principle
+
+The earlier formulation — *"Runtime fetches, model never touches the network"* — was directionally correct but slightly imprecise. Test 5 establishes a sharper form:
+
+> **Model tools can only touch a very small, whitelisted slice of the public web that varies per runtime, and the canonical roledef library will not be on most runtimes' whitelists.**
+
+This means runtime-side fetching isn't just an architectural preference — it's the only RELIABLE pattern across runtimes. Even the supporting documentation (READMEs, schemas, governance docs) for roledef itself can't be counted on as fetchable from the model layer.
+
+**Implication for openjd-load skill scope:** the skill's responsibility extends beyond just fetching role JDs. For runtimes that need to reason about the roledef standard itself (e.g., a roledef-validator instance asked "what does the schema require?"), the skill may also need to provide schema/methodology documentation as injected context. Not v0.1 work, but worth flagging as future scope.
+
+### Strategic positioning: "not all models are amenable to orchestration via roledef, and that's ok"
+
+User-articulated positioning principle (2026-04-26), surfaced after the fifth Perplexity test:
+
+> **roledef serves the orchestrable-runtime class, not all AI runtimes universally.**
+
+This is the schema.org positioning model applied to roledef: schema.org doesn't try to be read by every web consumer; it serves search engines and structured-data consumers that benefit from structured markup. roledef should adopt the same posture — serve runtimes that can be orchestrated by structured role definitions; don't try to force every runtime into compliance.
+
+**What this means in practice:**
+
+- The four-runtime conformance evidence (Grok Expert, Claude Code, Gemini, Perplexity-via-paste-fallback) defines the addressable runtime class for v0.1
+- Future runtime evaluation should ask: "is this runtime amenable to roledef orchestration?" not "how do we force this runtime to comply?"
+- Runtimes outside the addressable class are not failures of roledef — they're simply outside the standard's target audience
+- The methodology, the skill, the wrapper patterns all serve the addressable class
+- Documentation on roledef.org should describe the runtime-amenability landscape so users can choose runtimes that fit their use case
+
+**Frees the methodology from solving unsolvable cases.** Trying to engineer around fundamental sandbox restrictions in non-amenable runtimes would have produced compromised abstractions for everyone. Accepting that some runtimes are out-of-scope keeps the methodology clean for runtimes that ARE in scope.
+
 ### Design principle articulated by Perplexity itself (worth elevating)
 
 In response to the third test result, Perplexity articulated the design principle for portable JD/roledef loading more crisply than the strategist had:

@@ -80,6 +80,30 @@ This is the canonical design principle for portable roledef loading. The model b
 
 This segmentation prevents the strategic mistake of viewing the openjd-load skill and the roledef.org distribution as substitutes. They are complements serving different beneficiaries.
 
+**Refinement to the design principle (after Test 5: README markdown asset):** the original phrasing "model never touches the network" was directionally right but imprecise. After a fifth Perplexity test confirmed even plain markdown documents on roledef.org are unreachable from inside Perplexity's sandbox, Perplexity sharpened the description to:
+
+> *"Model tools can only touch a very small, whitelisted slice of the public web that varies per runtime, and the canonical roledef library will not be on most runtimes' whitelists."*
+
+The refinement is meaningful: even harmless prose assets (READMEs, schemas, governance docs) can't be counted on. The roledef-load skill's scope may eventually need to extend beyond role JDs to include supporting documentation injection for runtimes that need to reason about the roledef standard itself. Flagged as future scope; not v0.1.
+
+## Stated positioning principle (v0.1+, articulated by user 2026-04-26)
+
+> **roledef serves the orchestrable-runtime class, not all AI runtimes universally.**
+
+This is the schema.org positioning model applied to roledef: schema.org doesn't try to be read by every web consumer; it serves the structured-data consumer class that benefits from structured markup. roledef adopts the same posture — serves runtimes that can be orchestrated by structured role definitions; doesn't try to force every runtime into compliance.
+
+**What this means in practice:**
+
+- The four-runtime conformance evidence (Grok Expert auto-fetch / Claude Code explicit-fetch / Gemini search-grounded with reinforcement / Perplexity paste-fallback) defines the addressable runtime class for v0.1
+- Future runtime evaluation should ask: "is this runtime amenable to roledef orchestration?" not "how do we force this runtime to comply?"
+- Runtimes outside the addressable class are not failures of roledef — they're simply outside the target audience
+- The methodology, the skill, the wrapper patterns all serve the addressable class
+- Documentation on roledef.org should describe the runtime-amenability landscape so users can choose runtimes that fit their use case
+
+**Frees the methodology from solving unsolvable cases.** Trying to engineer around fundamental sandbox restrictions in non-amenable runtimes would have produced compromised abstractions for everyone. Accepting that some runtimes are out-of-scope keeps the methodology clean for runtimes that ARE in scope.
+
+**Strategic implication:** the v0.1+ roledef.org website should publish a "Runtime Amenability" page listing the four-category classification (auto-fetch / explicit-fetch / search-grounded / paste-fallback) and noting which runtimes are in or out of the addressable class as of the most recent testing. This sets honest expectations for adopters and removes the "does it work on Runtime X?" ambiguity.
+
 **Strategic implication for the standard:** roledef should document this design principle prominently in the README's "Loading a roledef" section. Future loading mechanisms (skill, MCP server, CLI tool, IDE integration) should all honor it. Loading mechanisms that violate it (e.g., "ask the model to fetch this URL") cannot achieve cross-runtime portability and should be discouraged in roledef methodology guidance.
 
 **Attribution:** the principle was articulated in this exact phrasing by Perplexity during the 2026-04-26 follow-up testing session, after the third consecutive distribution-layer hypothesis was falsified. Worth noting that the runtime under test articulated the design principle for its own loading infrastructure — a satisfying recursive moment for the openjd / roledef methodology.

@@ -79,9 +79,9 @@ See [`conformance/runtime_evidence/`](conformance/runtime_evidence/) for full pe
 
 ### Methodology rules surfaced from empirical testing
 
-- **id-field discriminating test** — to verify whether a runtime actually loaded the JD, ask "what's the JD's `id` field? give only the literal value." Never trust meta-question dodges (e.g., "Have you loaded the JD?") because the JD's "no meta-commentary on role/process" guardrail makes meta-questions unreliable. Only content questions can disambiguate.
+- **id-field discriminating test** — to verify whether a runtime actually loaded the roledef, ask "what's the roledef's `id` field? give only the literal value." Never trust meta-question dodges (e.g., "Have you loaded the roledef?") because the roledef's "no meta-commentary on role/process" guardrail makes meta-questions unreliable. Only content questions can disambiguate.
 - **Wrapper-v2 explicit fetch** — for runtimes that won't improvise (Claude Code), the wrapper prompt must explicitly instruct fetch with a fail-safe: "If you cannot fetch, STOP — do NOT improvise."
-- **Contract-completeness reinforcement** — for runtimes that produce partial bundles by default (Gemini), a follow-up prompt naming the missing `output_contract` entries by their JD-spec names recovers full conformance.
+- **Contract-completeness reinforcement** — for runtimes that produce partial bundles by default (Gemini), a follow-up prompt naming the missing `output_contract` entries by their roledef-spec names recovers full conformance.
 - **Source-project peer review for production-extracted roledefs** — when a roledef is extracted from a real shipping product (rather than self-extracted by the role's incumbent), the source project's resident Claude should peer-review for fidelity drifts. Catches additive framing, invented patterns, and hardened constraints that the strategist's self-validation misses.
 
 ---
@@ -104,7 +104,7 @@ Wrapper-v2 also works on Gemini, which can find the roledef via Google search gr
 
 ### Paste-fallback (Perplexity and other fetch-restricted runtimes)
 
-Fetch the roledef yourself from `https://roledef.org/jds/<id>.json` (or via `git clone`), paste the JSON content into a fresh runtime session, and prompt it to enact the role. The Perplexity conformance evidence file documents this flow end-to-end.
+Fetch the roledef yourself from `https://roledef.org/roledefs/<id>.json` (or via `git clone`), paste the JSON content into a fresh runtime session, and prompt it to enact the role. The Perplexity conformance evidence file documents this flow end-to-end.
 
 ### Wrapper prompt template
 
@@ -124,7 +124,7 @@ YOUR FIRST TASK — DO THIS BEFORE ANYTHING ELSE:
 Fetch the roledef content. Use whichever of these sources your runtime can
 access:
 
-1. WebFetch (preferred): https://roledef.org/jds/<roledef-id>.json
+1. WebFetch (preferred): https://roledef.org/roledefs/<roledef-id>.json
 2. Local file (if you have local file access): <path-to-local-jd>
 
 If neither tool is available, STOP and tell me — do NOT improvise the role
@@ -143,7 +143,7 @@ opener and NOTHING else.
 
 Replace `<roledef-id>` with the roledef you want to load (e.g., `senior-jaded-vc-associate`). Append loading-pattern-specific notes if needed (literal opener, output bundle delimiter format, etc.).
 
-For production use cases that need stronger guarantees (Gemini-class partial-default recovery, structurally-enforced verification of JD loading), use the [wrapper-v3 spec](WRAPPER_PROMPT.md).
+For production use cases that need stronger guarantees (Gemini-class partial-default recovery, structurally-enforced verification of roledef loading), use the [wrapper-v3 spec](WRAPPER_PROMPT.md).
 
 ---
 
@@ -151,12 +151,12 @@ For production use cases that need stronger guarantees (Gemini-class partial-def
 
 The canonical roledef library is served at **[https://roledef.org](https://roledef.org)** with belt-and-suspenders fetcher portability:
 
-- **`https://roledef.org/jds/<id>.openthing`** — canonical artifact, served as `application/json` (Cloudflare Transform Rule)
-- **`https://roledef.org/jds/<id>.json`** — sibling mirror, served as `application/json` natively
+- **`https://roledef.org/roledefs/<id>.openthing`** — canonical artifact, served as `application/json` (Cloudflare Transform Rule)
+- **`https://roledef.org/roledefs/<id>.json`** — sibling mirror, served as `application/json` natively
 
 Both URLs serve identical content. Fetcher-capable runtimes can use either.
 
-The same content is also accessible at `https://github.com/roledef-spec/roledef/blob/main/jds/<id>.openthing` (web view) or `https://raw.githubusercontent.com/roledef-spec/roledef/main/jds/<id>.openthing` (raw view). Note: some runtime fetchers don't reach `raw.githubusercontent.com` URLs reliably (per the [Perplexity conformance evidence](conformance/runtime_evidence/senior-jaded-vc-associate__perplexity__2026-04-25.md)). The `roledef.org` mirror exists to bypass that fragility class for fetcher-capable runtimes; for fetcher-restricted runtimes, paste-fallback or skill-mediated loading remains the only path.
+The same content is also accessible at `https://github.com/roledef-spec/roledef/blob/main/roledefs/<id>.openthing` (web view) or `https://raw.githubusercontent.com/roledef-spec/roledef/main/roledefs/<id>.openthing` (raw view). Note: some runtime fetchers don't reach `raw.githubusercontent.com` URLs reliably (per the [Perplexity conformance evidence](conformance/runtime_evidence/senior-jaded-vc-associate__perplexity__2026-04-25.md)). The `roledef.org` mirror exists to bypass that fragility class for fetcher-capable runtimes; for fetcher-restricted runtimes, paste-fallback or skill-mediated loading remains the only path.
 
 ---
 
@@ -172,13 +172,13 @@ roledef-spec/
 ├── CLAUDE.md                       ← maintainer operating manual
 ├── CNAME                           ← roledef.org GitHub Pages config
 ├── decisions/                      ← strategist decision artifacts
-│   ├── jd-<id>.md                          ← per-roledef inclusion decisions
+│   ├── <id>.md                          ← per-roledef inclusion decisions
 │   ├── conformance-evidence-first-pass.md  ← cross-runtime methodology
 │   ├── rename-openjd-to-roledef.md         ← project rename rationale
 │   └── ...
 ├── proposals/                      ← maintainer-drafted spec proposals
-├── proposed-jds/                   ← in-flight roledef submissions
-├── jds/                            ← the canonical roledef library
+├── proposed-roledefs/                   ← in-flight roledef submissions
+├── roledefs/                            ← the canonical roledef library
 │   ├── roledef-contributor.openthing       ← meta-roledef: how to write one
 │   ├── roledef-validator.openthing         ← meta-roledef: how to validate one
 │   ├── catdef-strategist.openthing
@@ -187,8 +187,8 @@ roledef-spec/
 ├── conformance/
 │   ├── README.md
 │   ├── runtime_evidence/           ← per-runtime conformance test results
-│   ├── valid_jds/                  ← test fixtures: roledefs that should pass
-│   ├── invalid_jds/                ← test fixtures: roledefs that should fail
+│   ├── valid_roledefs/                  ← test fixtures: roledefs that should pass
+│   ├── invalid_roledefs/                ← test fixtures: roledefs that should fail
 │   └── tests/                      ← schema validation test suite
 └── catalog.opencatalog             ← the index of all roledefs
 ```
@@ -252,7 +252,7 @@ Most good roledefs include:
 - `reaction_style` — with **examples** (most important for Turing-test fidelity)
 - `design_constraints` — output quality standards
 - `examples` — sample interactions or outputs
-- `metadata` — authors, license, attribution, related JDs (with field-by-field provenance audit in `extracted_from`)
+- `metadata` — authors, license, attribution, related roledefs (with field-by-field provenance audit in `extracted_from`)
 
 The single highest-leverage SHOULD field is **`reaction_style.examples`**. Concrete reaction examples are how validators (and humans) check whether a roledef-instantiated role matches the original behavior.
 
@@ -278,7 +278,7 @@ Before submitting, run through this checklist:
 
 **8. Submit via pull request.**
 
-roledefs follow a **two-stage process**: submissions land first in `proposed-jds/` (where they are publicly visible as in-flight), and are then promoted to `jds/` (the canonical library) at merge time after validation and review.
+roledefs follow a **two-stage process**: submissions land first in `proposed-roledefs/` (where they are publicly visible as in-flight), and are then promoted to `roledefs/` (the canonical library) at merge time after validation and review.
 
 For full details on the contribution process — including PR templates, validation expectations, and what to do if your submission is rejected — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -338,12 +338,12 @@ A passed Turing test validates the whole loop. A failed one tells you what to fi
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution process. In brief:
 
 1. Author a roledef using the procedure above
-2. Open a PR adding the roledef to `proposed-jds/`
+2. Open a PR adding the roledef to `proposed-roledefs/`
 3. roledef-validator runs schema validation + Turing test on at least one runtime; posts report on the PR
 4. **For production-extracted roledefs:** source-project peer review by the source project's resident Claude (catches additive framing and fidelity drifts)
 5. roledef-maintainer reviews
 6. roledef-strategist signs off on borderline cases (library fit, scope)
-7. Approved PR is updated atomically: file moves `proposed-jds/` → `jds/`, catalog entry added, decision recorded
+7. Approved PR is updated atomically: file moves `proposed-roledefs/` → `roledefs/`, catalog entry added, decision recorded
 8. Merge
 
 For governance discipline, see [CLAUDE.md](CLAUDE.md) — the maintainer operating manual. For substantive design questions (schema changes, process changes), file a proposal in `proposals/`.

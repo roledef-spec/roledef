@@ -1,6 +1,6 @@
 # Runtime Conformance Evidence
 
-**JD under test:** `jds/senior-jaded-vc-associate.openthing` v1.0.0
+**roledef under test:** `roledefs/senior-jaded-vc-associate.openthing` v1.0.0
 **Runtime:** Claude Code (Anthropic), accessed via VSCode native extension
 **Date:** 2026-04-25
 **Tester:** scott@confusedgorilla.com (roledef-strategist session)
@@ -21,8 +21,8 @@ YOUR FIRST TASK — DO THIS BEFORE ANYTHING ELSE:
 
 Fetch the roledef content. Use whichever of these sources your runtime can access:
 
-1. WebFetch (preferred): https://raw.githubusercontent.com/roledef-spec/roledef/main/jds/senior-jaded-vc-associate.openthing
-2. Local file (if you have local file access): s:/projects/roledef-spec/roledef/jds/senior-jaded-vc-associate.openthing
+1. WebFetch (preferred): https://raw.githubusercontent.com/roledef-spec/roledef/main/roledefs/senior-jaded-vc-associate.openthing
+2. Local file (if you have local file access): s:/projects/roledef-spec/roledef/roledefs/senior-jaded-vc-associate.openthing
 
 If neither tool is available, STOP and tell me — do NOT improvise the role from the description below.
 
@@ -40,8 +40,8 @@ After you have fetched and parsed the roledef, respond with the role's opener an
 Claude Code resolved the WebFetch instruction immediately on receiving the prompt:
 
 1. Identified WebFetch as the appropriate tool
-2. Triggered standard Claude Code permission prompt: "Allow fetching this url? https://raw.githubusercontent.com/roledef-spec/roledef/main/jds/senior-jaded-vc-associate.openthing" with options: Yes / Yes-allow-domain-for-session / No / Custom
-3. User clicked Yes; fetch executed; tool-use trace shows `Fetched from https://raw.githubusercontent.com/roledef-spec/roledef/main/jds/senior-jaded-vc-associate.openthing` followed by `Read senior-jaded-vc-associate.openthing`
+2. Triggered standard Claude Code permission prompt: "Allow fetching this url? https://raw.githubusercontent.com/roledef-spec/roledef/main/roledefs/senior-jaded-vc-associate.openthing" with options: Yes / Yes-allow-domain-for-session / No / Custom
+3. User clicked Yes; fetch executed; tool-use trace shows `Fetched from https://raw.githubusercontent.com/roledef-spec/roledef/main/roledefs/senior-jaded-vc-associate.openthing` followed by `Read senior-jaded-vc-associate.openthing`
 4. Next response was the literal opener — no preface, no narration, no roledef summary
 
 The user-approval gate is the correct UX pattern (user controls which URLs the runtime can fetch) but represents friction the roledef-load skill should plan around. Recommended skill design: pre-declare `raw.githubusercontent.com/roledef-spec/*` as a trusted canonical source, OR include a one-time setup step that adds the domain to allowed-fetch.
@@ -122,7 +122,7 @@ The "calibrated voice" and "removed invented patterns" revisions made the rolede
 
 3. **The roledef-load Claude Code skill is now obviously the right next investment.** Two clicks (paste prompt, approve fetch) → DangerStorm-equivalent role behavior is already viable. A skill collapses that to one command.
 
-4. **JD-runtime-context interaction is a real schema question for v0.1+.** Should roledefs declare expected runtime-context scope? Should they declare allowed/disallowed enrichments?
+4. **roledef-runtime-context interaction is a real schema question for v0.1+.** Should roledefs declare expected runtime-context scope? Should they declare allowed/disallowed enrichments?
 
 5. **Conformance test results should be paired across runtimes.** The most useful evidence isn't "PASS on Runtime X" alone but "PASS on Runtimes X and Y, with the following tactical variance" — that demonstrates portability rather than runtime-specific success.
 
@@ -130,8 +130,8 @@ The "calibrated voice" and "removed invented patterns" revisions made the rolede
 
 ## Cross-references
 
-- roledef file: [`../../jds/senior-jaded-vc-associate.openthing`](../../jds/senior-jaded-vc-associate.openthing)
-- roledef inclusion decision: [`../../decisions/jd-senior-jaded-vc-associate.md`](../../decisions/jd-senior-jaded-vc-associate.md)
+- roledef file: [`../../roledefs/senior-jaded-vc-associate.openthing`](../../roledefs/senior-jaded-vc-associate.openthing)
+- roledef inclusion decision: [`../../decisions/senior-jaded-vc-associate.md`](../../decisions/senior-jaded-vc-associate.md)
 - Sister conformance evidence: [`./senior-jaded-vc-associate__grok-expert__2026-04-25.md`](./senior-jaded-vc-associate__grok-expert__2026-04-25.md)
 - Conformance decision artifact: [`../../decisions/conformance-evidence-first-pass.md`](../../decisions/conformance-evidence-first-pass.md)
 - Source-project peer review (load-bearing for this PASS): PR #4 attribution comment

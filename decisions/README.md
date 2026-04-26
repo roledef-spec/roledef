@@ -8,9 +8,9 @@ This directory is the institutional memory of roledef's evolution. Future strate
 
 Two main file types:
 
-### `jd-<id>.md` — roledef inclusion decisions
+### `<id>.md` — roledef inclusion decisions
 
-Filed at promotion time when a roledef moves from `proposed-jds/` to `jds/`. Records:
+Filed at promotion time when a roledef moves from `proposed-roledefs/` to `roledefs/`. Records:
 
 - Which roledef was promoted
 - Validation summary (schema pass, Turing test results)
@@ -37,7 +37,7 @@ Mirrors the decision-artifact pattern from catdef-spec.
 Each decision is a markdown file with structured frontmatter:
 
 ```markdown
-# roledef Inclusion Decision: <jd-id> (or Proposal Decision: <name>)
+# roledef Inclusion Decision: <roledef-id> (or Proposal Decision: <name>)
 
 **Disposition:** Accepted (or other)
 **Origin:** PR #N (or proposal-<name>.md)

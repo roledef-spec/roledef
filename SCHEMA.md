@@ -121,7 +121,7 @@ MUST be exactly the string `"roledef:Role"`. Distinguishes roledef `.openthing` 
 
 ### `id` (string)
 
-Short, kebab-case identifier for the roledef. Used in filenames, URLs, and cross-references. MUST be unique within its publishing namespace (e.g., within `github.com/roledef/jds/`).
+Short, kebab-case identifier for the roledef. Used in filenames, URLs, and cross-references. MUST be unique within its publishing namespace (e.g., within `github.com/roledef/roledefs/`).
 
 ```json
 "id": "senior-slightly-jaded-vc"
@@ -327,7 +327,7 @@ Sample interactions or sample outputs. Useful for Turing-test fixtures and for h
 
 ### `metadata` (object)
 
-Authorship, licensing, attribution, version history, related JDs, and lineage.
+Authorship, licensing, attribution, version history, related roledefs, and lineage.
 
 ```json
 "metadata": {
@@ -339,11 +339,11 @@ Authorship, licensing, attribution, version history, related JDs, and lineage.
   "derived_from": {
     "id": "blackhat-tester",
     "version": "1.0.0",
-    "url": "https://roledef.org/jds/blackhat-tester.openthing"
+    "url": "https://roledef.org/roledefs/blackhat-tester.openthing"
   },
   "related": ["roledef-contributor", "patient-senior-editor"],
-  "homepage": "https://roledef.org/jds/senior-slightly-jaded-vc",
-  "repository": "https://github.com/roledef-spec/roledef/blob/main/jds/senior-slightly-jaded-vc.openthing"
+  "homepage": "https://roledef.org/roledefs/senior-slightly-jaded-vc",
+  "repository": "https://github.com/roledef-spec/roledef/blob/main/roledefs/senior-slightly-jaded-vc.openthing"
 }
 ```
 
@@ -361,7 +361,7 @@ The recommended form is an object with `id`, `version`, and `url`:
 "derived_from": {
   "id": "blackhat-tester",
   "version": "1.0.0",
-  "url": "https://roledef.org/jds/blackhat-tester.openthing"
+  "url": "https://roledef.org/roledefs/blackhat-tester.openthing"
 }
 ```
 
@@ -383,7 +383,7 @@ These conventions are SHOULDs, not MUSTs — domain-specific specializations may
 
 ## Extension fields (x. namespace)
 
-JDs MAY include any number of extension fields under the `x.<domain>.<identifier>` namespace, per catdef's extension convention. Extensions are domain-specific and not governed by the roledef spec.
+roledefs MAY include any number of extension fields under the `x.<domain>.<identifier>` namespace, per catdef's extension convention. Extensions are domain-specific and not governed by the roledef spec.
 
 ### Examples of extensions
 
@@ -481,7 +481,7 @@ The following namespaces are reserved by the roledef spec and MUST NOT be used a
 3. Reference removed or non-existent roledefs in `metadata.extends` or `metadata.related`
 4. Stamp a `catdef` version that does not actually define every feature used (writer-strict per CA-002)
 
-### Validator behavior on invalid JDs
+### Validator behavior on invalid roledefs
 
 Per the strict-writer / lenient-reader pattern (CA-002, CA-003):
 
@@ -504,13 +504,13 @@ The `roledef` version stamp on each roledef MUST declare the minimum schema vers
 
 ## Worked example
 
-The `roledef-contributor` roledef (the meta-JD that teaches Claudes how to author JDs) is the worked example for v0.1. Its complete file lives at `jds/roledef-contributor.openthing` and serves both as:
+The `roledef-contributor` roledef (the meta-roledef that teaches Claudes how to author roledefs) is the worked example for v0.1. Its complete file lives at `roledefs/roledef-contributor.openthing` and serves both as:
 
 1. The first valid roledef in the roledef library
 2. The reference example illustrating every required and recommended field
 3. The bootstrap mechanism for self-scaffolding the rest of the seed library
 
-See [`jds/roledef-contributor.openthing`](jds/roledef-contributor.openthing) once it lands.
+See [`roledefs/roledef-contributor.openthing`](roledefs/roledef-contributor.openthing) once it lands.
 
 ---
 
@@ -518,7 +518,7 @@ See [`jds/roledef-contributor.openthing`](jds/roledef-contributor.openthing) onc
 
 The following are not part of v0.1 but are anticipated for future schema versions:
 
-- **Heavyweight JD inheritance** (`extends` with runtime-merged semantics): allow a roledef to declare a parent and have the runtime fetch + merge fields per defined override rules. The lightweight git-fork-plus-`derived_from` pattern (above, in `metadata`) covers v0.1 derivation needs without requiring runtime merge complexity. `extends` is reserved as a future-considerations field if real use cases emerge that the lightweight pattern can't handle (e.g., a need for thin specializations that update automatically when the parent evolves).
+- **Heavyweight roledef inheritance** (`extends` with runtime-merged semantics): allow a roledef to declare a parent and have the runtime fetch + merge fields per defined override rules. The lightweight git-fork-plus-`derived_from` pattern (above, in `metadata`) covers v0.1 derivation needs without requiring runtime merge complexity. `extends` is reserved as a future-considerations field if real use cases emerge that the lightweight pattern can't handle (e.g., a need for thin specializations that update automatically when the parent evolves).
 - **Runtime hints** (`x.roledef.runtime_hints`): per-runtime advice for instantiation (e.g., temperature, system-prompt placement, role-priming patterns specific to Claude vs Grok vs GPT).
 - **Turing test fixtures** (`x.roledef.turing_test`): standardized test scenarios paired with each roledef, enabling automated cross-runtime validation.
 - **Composition** (`x.roledef.composes`): a roledef that combines multiple other roledefs (e.g., a "Full-Stack Engineer" roledef that composes "Frontend Developer" + "Backend Developer" + "DevOps").

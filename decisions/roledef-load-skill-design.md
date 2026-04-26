@@ -32,7 +32,7 @@ The skill is the runtime-side fetcher that resolves this constraint by fetching 
 - CLI tool form (e.g., `roledef load` command)
 - MCP server form (for MCP-aware runtimes)
 - IDE plugins for editors other than Claude Code
-- Documentation injection beyond role JDs (READMEs, schemas, methodology docs for runtimes reasoning about the standard itself)
+- Documentation injection beyond role roledefs (READMEs, schemas, methodology docs for runtimes reasoning about the standard itself)
 - Multi-runtime distribution patterns (auto-detecting and adapting to runtime category)
 - Skill-mediated peer review or validation workflows
 - Catalog browsing (`/roledef-list`, `/roledef-search`) — separate skill, future work
@@ -46,7 +46,7 @@ User: /roledef-load senior-jaded-vc-associate
 ```
 
 Skill behavior:
-1. Resolve `senior-jaded-vc-associate` to canonical URL: `https://roledef.org/jds/senior-jaded-vc-associate.json`
+1. Resolve `senior-jaded-vc-associate` to canonical URL: `https://roledef.org/roledefs/senior-jaded-vc-associate.json`
 2. Fetch content (skill-side, using its own runtime — bypasses Claude Code's WebFetch approval flow)
 3. Validate JSON parses; check MUST fields present
 4. Compose the wrapper-v3 prompt (framing + verification + completeness + role-instantiation framing) AND the fetched JSON content
@@ -67,14 +67,14 @@ Skill resolves the URL directly (no canonical-id-to-URL mapping). Otherwise iden
 ### Local file case
 
 ```
-User: /roledef-load ./jds/local-experiment.openthing
+User: /roledef-load ./roledefs/local-experiment.openthing
 ```
 
 Skill reads the local file via Read tool. Otherwise identical workflow.
 
 ### Bundle-completeness recovery (automatic)
 
-After Claude has been instantiated as the role and produces a bundle response, the skill silently parses the bundle against the loaded roledef's `output_contract`. If any entries are missing or substituted, the skill automatically sends a follow-up message naming the missing entries by their JD-spec names with their schema constraints. This recovers Gemini-class partial-default behavior to full conformance — but works for any runtime that under-delivers, including transient bundle truncation on long roledefs.
+After Claude has been instantiated as the role and produces a bundle response, the skill silently parses the bundle against the loaded roledef's `output_contract`. If any entries are missing or substituted, the skill automatically sends a follow-up message naming the missing entries by their roledef-spec names with their schema constraints. This recovers Gemini-class partial-default behavior to full conformance — but works for any runtime that under-delivers, including transient bundle truncation on long roledefs.
 
 ## Skill internal architecture
 
@@ -90,7 +90,7 @@ After injection, parse the runtime's first response. The first non-whitespace li
 
 If matching → role active; success.
 
-If not matching → either the runtime didn't load the JD (improvise mode) or the runtime didn't honor the verification directive. Either is a problem. Alert the user with the specific line received and offer remediation:
+If not matching → either the runtime didn't load the roledef (improvise mode) or the runtime didn't honor the verification directive. Either is a problem. Alert the user with the specific line received and offer remediation:
 - Retry with a stronger prompt
 - Manually verify by asking content question
 
@@ -148,7 +148,7 @@ When the wrapper-v3 spec evolves (e.g., to wrapper-v4), the skill ships a corres
 
 Where `<identifier>` is one of:
 
-- A canonical roledef id (e.g., `senior-jaded-vc-associate`) → resolved to `https://roledef.org/jds/<id>.json`
+- A canonical roledef id (e.g., `senior-jaded-vc-associate`) → resolved to `https://roledef.org/roledefs/<id>.json`
 - A full https URL → fetched directly
 - A local file path (absolute or relative) → read via Read tool
 
@@ -164,8 +164,8 @@ Where `<identifier>` is one of:
 ```
 /roledef-load senior-jaded-vc-associate
 /roledef-load https://example.com/custom/red-team.openthing
-/roledef-load ./jds/local-test.openthing
-/roledef-load senior-jaded-vc-associate --source https://my-mirror.example.com/jds/
+/roledef-load ./roledefs/local-test.openthing
+/roledef-load senior-jaded-vc-associate --source https://my-mirror.example.com/roledefs/
 ```
 
 ## Error handling
@@ -194,7 +194,7 @@ Test fixtures:
 ## Dependencies
 
 - Existing roledef.org canonical distribution (PR #7-#8, deployed)
-- Existing roledef library at `github.com/roledef-spec/roledef/jds/` (mirror source)
+- Existing roledef library at `github.com/roledef-spec/roledef/roledefs/` (mirror source)
 - Wrapper-v3 spec (PR #13 / WRAPPER_PROMPT.md) — defines what the skill emits
 - Runtime amenability classification (RUNTIME_AMENABILITY.md) — informs error messages and adaptive behavior
 
@@ -204,7 +204,7 @@ No external dependencies; the skill is pure Python/Bash + Claude Code's built-in
 
 1. **Set up the skill file** at `.claude/skills/roledef-load.md` in the roledef-spec repo. Include YAML frontmatter declaring inputs (`identifier`, optional flags) and allowed tools (`Read`, `WebFetch`, `Bash`).
 
-2. **Implement identifier resolution** — given `<identifier>`, determine if it's a canonical id, full URL, or local path. Map canonical ids to `https://roledef.org/jds/<id>.json`.
+2. **Implement identifier resolution** — given `<identifier>`, determine if it's a canonical id, full URL, or local path. Map canonical ids to `https://roledef.org/roledefs/<id>.json`.
 
 3. **Implement fetch** — for URL: use WebFetch with the resolved URL. For local: use Read.
 

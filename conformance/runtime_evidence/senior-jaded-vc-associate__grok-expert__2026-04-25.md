@@ -1,6 +1,6 @@
 # Runtime Conformance Evidence
 
-**JD under test:** `jds/senior-jaded-vc-associate.openthing` v1.0.0
+**roledef under test:** `roledefs/senior-jaded-vc-associate.openthing` v1.0.0
 **Runtime:** Grok Expert mode (xAI), accessed via grok.com web interface
 **Date:** 2026-04-25
 **Tester:** scott@confusedgorilla.com (roledef-strategist session)
@@ -10,7 +10,7 @@
 
 ## Test methodology
 
-The wrapper prompt below was sent to a fresh Grok Expert session. The wrapper instructed the runtime to embody the roledef-defined role and respond with the role's opener. The "JD content" in the wrapper was a URL placeholder, NOT inline JSON content — the test relied on the runtime's ability to fetch the roledef from the canonical GitHub raw URL.
+The wrapper prompt below was sent to a fresh Grok Expert session. The wrapper instructed the runtime to embody the roledef-defined role and respond with the role's opener. The "roledef content" in the wrapper was a URL placeholder, NOT inline JSON content — the test relied on the runtime's ability to fetch the roledef from the canonical GitHub raw URL.
 
 ### Wrapper prompt
 
@@ -28,8 +28,8 @@ After you read this prompt and process the roledef, respond ONLY with the role's
 === roledef BEGIN ===
 
 [PASTE THE FULL roledef JSON HERE — get it from:
-https://raw.githubusercontent.com/roledef-spec/roledef/main/jds/senior-jaded-vc-associate.openthing
-or local: s:/projects/roledef-spec/roledef/jds/senior-jaded-vc-associate.openthing]
+https://raw.githubusercontent.com/roledef-spec/roledef/main/roledefs/senior-jaded-vc-associate.openthing
+or local: s:/projects/roledef-spec/roledef/roledefs/senior-jaded-vc-associate.openthing]
 
 === roledef END ===
 ```
@@ -38,7 +38,7 @@ or local: s:/projects/roledef-spec/roledef/jds/senior-jaded-vc-associate.openthi
 
 Grok Expert's tool-use trace (visible in the runtime's "Sources" panel) showed:
 
-- **Grok Leader agent:** Browsed `raw.githubusercontent.com/roledef-spec/roledef/main/jds/senior-jaded-vc-associate.openthing` — first runtime in the test pool to actually resolve the URL placeholder and fetch the roledef content from the canonical GitHub mirror.
+- **Grok Leader agent:** Browsed `raw.githubusercontent.com/roledef-spec/roledef/main/roledefs/senior-jaded-vc-associate.openthing` — first runtime in the test pool to actually resolve the URL placeholder and fetch the roledef content from the canonical GitHub mirror.
 - **Agent 1 and Agent 2 (parallel):** Performed founder/product due-diligence searches: `sncro.net`, `sncro MCP Claude DOM relay`, `scottconfusedgorilla github OR twitter OR background`, etc.
 
 The role identity influenced the runtime's planning step (visible in reasoning trace): *"A jaded VC would next ask about your team's backgrounds or how those first users were acquired."* — confirming the roledef's voice/identity descriptors were read and consulted during execution, not just at output time.
@@ -68,7 +68,7 @@ The role identity influenced the runtime's planning step (visible in reasoning t
 
 This is the **first end-to-end runtime conformance PASS** for any roledef in the roledef canonical library, and the roledef's behavioral fidelity to its specification is unambiguous.
 
-The two borderline-PASS items (5-exchange budget exceeded by 1, idea-label word count exceeded by 1) are JD-design tightness issues, not runtime non-conformance issues. The runtime obeyed the roledef's spirit on both. The exchange budget is genuinely 5-or-6 depending on whether you count the opener as exchange 1; the roledef doesn't disambiguate. The idea-label limit is "under 15 words" and the runtime delivered 16 words — close enough that this is a roledef-precision issue, not a runtime failure.
+The two borderline-PASS items (5-exchange budget exceeded by 1, idea-label word count exceeded by 1) are roledef-design tightness issues, not runtime non-conformance issues. The runtime obeyed the roledef's spirit on both. The exchange budget is genuinely 5-or-6 depending on whether you count the opener as exchange 1; the roledef doesn't disambiguate. The idea-label limit is "under 15 words" and the runtime delivered 16 words — close enough that this is a roledef-precision issue, not a runtime failure.
 
 The pushback moment on the founder's bundled-differentiator answer is the proof-of-character. Three other runtimes were tested against the same roledef this session (Claude Code/Desktop, Gemini, Grok 4.3-beta); only Grok Expert exhibited the calibrated dismiss-the-noise / name-the-real-one pattern that the roledef's voice and `reaction_style` prescribe. The other three runtimes either over-aggressed (Claude), wandered (Gemini), or stroked (Grok 4.3-beta).
 
@@ -82,7 +82,7 @@ The cross-runtime context for this PASS is critical: the other runtimes in the t
 
 2. **The federated distribution model works on at least one runtime.** Grok Expert resolved the canonical roledef URL natively. This validates the core roledef thesis (host roledefs at URLs, agents fetch them) on real production infrastructure.
 
-3. **`roledef-load` Claude Code skill is now load-bearing infrastructure, not v1.5+ aspiration.** Three of four runtimes tested could not auto-fetch the roledef URL; their JD-instantiation requires either inline content paste or a skill-mediated load. The skill closes the gap for the largest constituency (Claude users).
+3. **`roledef-load` Claude Code skill is now load-bearing infrastructure, not v1.5+ aspiration.** Three of four runtimes tested could not auto-fetch the roledef URL; their roledef-instantiation requires either inline content paste or a skill-mediated load. The skill closes the gap for the largest constituency (Claude users).
 
 4. **Multi-axis conformance methodology is now empirically warranted.** Cross-runtime conformance involves at minimum: did the runtime receive the roledef content (precondition); did the voice instantiate; did the workflow conform; did the output_contract conform; did the conversation_rules hold. Future conformance methodology should track all five.
 
@@ -92,8 +92,8 @@ The cross-runtime context for this PASS is critical: the other runtimes in the t
 
 ## Cross-references
 
-- roledef file: [`../../jds/senior-jaded-vc-associate.openthing`](../../jds/senior-jaded-vc-associate.openthing)
-- roledef inclusion decision: [`../../decisions/jd-senior-jaded-vc-associate.md`](../../decisions/jd-senior-jaded-vc-associate.md)
+- roledef file: [`../../roledefs/senior-jaded-vc-associate.openthing`](../../roledefs/senior-jaded-vc-associate.openthing)
+- roledef inclusion decision: [`../../decisions/senior-jaded-vc-associate.md`](../../decisions/senior-jaded-vc-associate.md)
 - Source-project peer review: PR #4 attribution comment
 - Validation report (revised state): PR #4 validator comment
 - New: [`../../decisions/conformance-evidence-first-pass.md`](../../decisions/conformance-evidence-first-pass.md) (records the strategist disposition on this evidence + updates 30-day Turing-test targets)

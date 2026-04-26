@@ -110,15 +110,40 @@ After the rename to `roledef` and the canonical-distribution move to `roledef.or
 
 **Hypothesis status:** Falsified. The constraint is not content-type-based.
 
-### Three-test convergence: the constraint is model-sandbox-network, not anything fixable at the distribution layer
+### Test 4 (final): `https://roledef.org/jds/senior-jaded-vc-associate.json` after Cloudflare Transform Rule deployment
 
-Perplexity failed three consecutive fetches with progressively cleaner test conditions:
+**Hypothesis tested:** Some residual distribution-layer variable is responsible (Cloudflare's edge configuration, header negotiation, etc.).
+
+**Conditions:** All preceding distribution-layer fixes in place — `.json` mirror live (PR #8 merged), Cloudflare Transform Rule active (the `.openthing` URLs ALSO now serve `application/json; charset=utf-8`), GitHub Pages + Cloudflare CDN serving cleanly, all four roledefs verified via curl returning HTTP 200 with correct Content-Type.
+
+**Result:** Fetch failed. Perplexity confirmed: *"I still can't see that JSON file from inside this environment; the URL doesn't resolve to a fetchable document for my tools, even with the .json extension and proper Content-Type on roledef.org."*
+
+**Hypothesis status:** Falsified. Distribution-layer is fully exhausted as a class of solutions for fetcher-restricted runtimes.
+
+### Four-test convergence: the constraint is model-sandbox-network, not anything fixable at the distribution layer
+
+Perplexity failed four consecutive fetches with progressively cleaner test conditions:
 
 1. `raw.githubusercontent.com/.../senior-jaded-vc-associate.openthing` (GitHub raw, octet-stream) → fail
 2. `roledef.org/.../senior-jaded-vc-associate.openthing` (different host, octet-stream) → fail
-3. `roledef.org/.../senior-jaded-vc-associate.json` (different host, application/json) → fail
+3. `roledef.org/.../senior-jaded-vc-associate.json` (different host, application/json native) → fail
+4. `roledef.org/.../senior-jaded-vc-associate.json` (same as #3, with full Cloudflare Transform Rule on .openthing URLs ALSO active) → fail
 
-Each test held more variables constant. Same outcome. The constraint is unambiguously: **the model itself cannot make outbound HTTP requests, regardless of host, extension, or content-type.** No distribution-layer change can solve this for Perplexity-class runtimes.
+Each test held more variables constant. Same outcome. The constraint is unambiguously: **the model itself cannot make outbound HTTP requests, regardless of host, extension, content-type, or edge configuration.** No distribution-layer change can solve this for Perplexity-class runtimes.
+
+### Beneficiary segmentation (refinement articulated by Perplexity 2026-04-26)
+
+Perplexity refined the strategic implication of the four-test convergence:
+
+> "Your distribution tweaks are mostly wins for **runtimes and humans**, not for **direct model access**."
+
+This refinement is genuinely useful — the distribution-layer work is high-value for three constituencies, just not for the one this evidence file's runtime falls into:
+
+- **Fetcher-capable runtimes** (Claude Code's WebFetch tool, Grok Expert's multi-agent fetch, future fetcher-capable runtime architectures): benefit from cleaner URLs, better Content-Type negotiation, brand-controlled distribution that survives repo restructuring
+- **Humans**: benefit from short, memorable, browser-readable roledef.org URLs; sharing roledefs or pointing others to them has a cleaner artifact than a raw GitHub URL
+- **Implementers building roledef-aware tools** (validators, viewers, registries, CLIs, IDE plugins): benefit from predictable, well-served, brand-controlled distribution to integrate against
+
+**Only fetcher-restricted models (Perplexity-class) get nothing from distribution-layer work.** For them, runtime-side loading (the openjd-load skill, MCP-mediated loading, paste-fallback) is the only path — and that was always going to be true, per the design principle. The distribution-layer wins are not invalidated by Perplexity's failure; they apply to a different beneficiary set.
 
 ### Design principle articulated by Perplexity itself (worth elevating)
 

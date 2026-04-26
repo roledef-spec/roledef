@@ -72,6 +72,14 @@ This is the canonical design principle for portable roledef loading. The model b
 
 **Architectural implication:** distribution-layer fixes (canonical mirror at roledef.org, .json mirrors, content-type rewrites) help fetcher-CAPABLE runtimes by removing fragility classes — but they cannot help fetcher-RESTRICTED runtimes. The only mechanism that bridges the gap is moving the fetch responsibility from the model to the runtime layer. The roledef-load skill is the canonical implementation of this principle.
 
+**Beneficiary segmentation (refinement, articulated by Perplexity 2026-04-26):** the distribution-layer work is high-value for three constituencies, just not for fetcher-restricted models:
+- **Fetcher-capable runtimes** (Claude Code WebFetch, Grok Expert multi-agent fetch, future architectures): cleaner URLs, better Content-Type negotiation, brand-controlled distribution surviving repo restructuring
+- **Humans:** short, memorable, browser-readable roledef.org URLs for sharing and pointing others
+- **Implementers building roledef-aware tools** (validators, viewers, registries, CLIs, IDE plugins): predictable, well-served distribution to integrate against
+- **NOT fetcher-restricted models:** distribution-layer work delivers them nothing; runtime-side loading is their only path
+
+This segmentation prevents the strategic mistake of viewing the openjd-load skill and the roledef.org distribution as substitutes. They are complements serving different beneficiaries.
+
 **Strategic implication for the standard:** roledef should document this design principle prominently in the README's "Loading a roledef" section. Future loading mechanisms (skill, MCP server, CLI tool, IDE integration) should all honor it. Loading mechanisms that violate it (e.g., "ask the model to fetch this URL") cannot achieve cross-runtime portability and should be discouraged in roledef methodology guidance.
 
 **Attribution:** the principle was articulated in this exact phrasing by Perplexity during the 2026-04-26 follow-up testing session, after the third consecutive distribution-layer hypothesis was falsified. Worth noting that the runtime under test articulated the design principle for its own loading infrastructure — a satisfying recursive moment for the openjd / roledef methodology.

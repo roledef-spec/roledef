@@ -397,7 +397,7 @@ roledef occupies the **role definition** layer of a multi-layer AI specification
 
 In progress for v0.1+:
 
-- ⏳ `roledef-load` Claude Code skill (critical-path infrastructure for fetch-restricted runtimes)
+- 📋 `roledef-load` Claude Code skill — **design scoped**, see [`decisions/roledef-load-skill-design.md`](decisions/roledef-load-skill-design.md); implementation pending (~3-4 hours estimated)
 - ✅ [Wrapper-v3 spec](WRAPPER_PROMPT.md) (formalizes fetch-or-stop + id-field verification + contract-completeness check; reference template + per-runtime adaptations + implementation notes for skill authors)
 - ✅ [Runtime Amenability page](RUNTIME_AMENABILITY.md) (per-runtime current status, four-category classification, how to test new runtimes)
 - ⏳ Seed library expansion (catdef-maintainer, brother-blackhat-tester, more production extractions)

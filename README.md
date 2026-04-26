@@ -96,7 +96,7 @@ Just give the runtime the wrapper prompt with the canonical URL placeholder. The
 
 ### Explicit-fetch via WebFetch (Claude Code)
 
-Use the [wrapper-v2 prompt template](#wrapper-v2-template) with explicit fetch instructions. Claude Code calls WebFetch (with user approval), parses the JSON, instantiates the role.
+Use the [wrapper prompt template](#wrapper-prompt-template) with explicit fetch instructions, OR the more robust [wrapper-v3 spec](WRAPPER_PROMPT.md) for production use. Claude Code calls WebFetch (with user approval), parses the JSON, instantiates the role.
 
 ### Search-grounded (Gemini)
 
@@ -106,14 +106,18 @@ Wrapper-v2 also works on Gemini, which can find the roledef via Google search gr
 
 Fetch the roledef yourself from `https://roledef.org/jds/<id>.json` (or via `git clone`), paste the JSON content into a fresh runtime session, and prompt it to enact the role. The Perplexity conformance evidence file documents this flow end-to-end.
 
-### Wrapper-v2 template
+### Wrapper prompt template
+
+The current canonical wrapper is **wrapper-v3**, which adds verification and bundle-completeness directives over the earlier v2. See [`WRAPPER_PROMPT.md`](WRAPPER_PROMPT.md) for the full spec including reference template, per-runtime adaptations, verification protocols, common pitfalls, and implementation notes for skill / CLI tool authors.
+
+The abbreviated wrapper-v2 template (sufficient for casual use; less robust against partial-default and silent improvisation):
 
 ```
-You are about to take on a role defined by an openjd Job Description (JD)
-served as a roledef. roledef is a community standard for portable AI Role
-Definitions; a roledef is the canonical specification of an AI role's
-identity, voice, conversation rules, workflow, output contract, reaction
-style, design constraints, and guardrails.
+You are about to take on a role defined by a roledef — a structured
+specification of an AI role's identity, voice, conversation rules,
+workflow, output contract, reaction style, design constraints, and
+guardrails. roledef is a community standard for portable AI role
+definitions.
 
 YOUR FIRST TASK — DO THIS BEFORE ANYTHING ELSE:
 
@@ -133,11 +137,13 @@ the role's "generate bundle" step, produce ALL items listed in
 output_contract in a single response, formatted with clear section markers
 so the founder can identify each deliverable.
 
-After you have fetched and parsed the JD, respond with the role's opener
-and NOTHING else.
+After you have fetched and parsed the roledef, respond with the role's
+opener and NOTHING else.
 ```
 
 Replace `<roledef-id>` with the roledef you want to load (e.g., `senior-jaded-vc-associate`). Append loading-pattern-specific notes if needed (literal opener, output bundle delimiter format, etc.).
+
+For production use cases that need stronger guarantees (Gemini-class partial-default recovery, structurally-enforced verification of JD loading), use the [wrapper-v3 spec](WRAPPER_PROMPT.md).
 
 ---
 
@@ -160,6 +166,7 @@ The same content is also accessible at `https://github.com/roledef-spec/roledef/
 roledef-spec/
 ├── README.md                       ← you are here
 ├── SCHEMA.md                       ← the roledef schema (MUST/SHOULD/x.)
+├── WRAPPER_PROMPT.md               ← canonical wrapper-v3 spec for loading roledefs
 ├── RUNTIME_AMENABILITY.md          ← per-runtime status + classification (living doc)
 ├── CONTRIBUTING.md                 ← how to contribute a roledef
 ├── CLAUDE.md                       ← maintainer operating manual
@@ -391,7 +398,7 @@ roledef occupies the **role definition** layer of a multi-layer AI specification
 In progress for v0.1+:
 
 - ⏳ `roledef-load` Claude Code skill (critical-path infrastructure for fetch-restricted runtimes)
-- ⏳ Wrapper-v3 spec (formalizes fetch-or-stop + id-field verification + contract-completeness check)
+- ✅ [Wrapper-v3 spec](WRAPPER_PROMPT.md) (formalizes fetch-or-stop + id-field verification + contract-completeness check; reference template + per-runtime adaptations + implementation notes for skill authors)
 - ✅ [Runtime Amenability page](RUNTIME_AMENABILITY.md) (per-runtime current status, four-category classification, how to test new runtimes)
 - ⏳ Seed library expansion (catdef-maintainer, brother-blackhat-tester, more production extractions)
 

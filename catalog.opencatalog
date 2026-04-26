@@ -81,6 +81,16 @@
         "file": "jds/senior-open-standards-strategist.openthing",
         "added": "2026-04-26",
         "decision": "decisions/jd-senior-open-standards-strategist.md"
+      },
+      {
+        "id": "roledef-strategist",
+        "name": "roledef Strategist",
+        "version": "1.0.0",
+        "description": "An AI role responsible for strategic direction, positioning, decision-making, library curation, derivation-pattern stewardship, and runtime-conformance methodology for the roledef consumer specification (the open standard for portable AI Job Descriptions). Derived from senior-open-standards-strategist v1.0.0; carries the parent strategist methodology verbatim and adds roledef-consumer-specific specializations (library curation, derivation-pattern stewardship, 4-runtime conformance methodology, distribution-layer stewardship, wrapper-v3 + roledef-load skill ecosystem coordination, dual-review pattern enforcement, field-by-field provenance audit pattern enforcement). PR C in the strategist-formalization sequence; after this lands, roledef-strategist becomes portable across runtimes.",
+        "file": "jds/roledef-strategist.openthing",
+        "added": "2026-04-26",
+        "decision": "decisions/jd-roledef-strategist.md",
+        "derived_from": "senior-open-standards-strategist"
       }
     ]
   },
@@ -88,8 +98,8 @@
   "metadata": {
     "created": "2026-04-25",
     "schema_version": "0.1.0",
-    "items_count": 7,
-    "last_updated": "2026-04-26 (catdef-strategist v1.0.0 -> v2.0.0 retrofit derivation)",
+    "items_count": 8,
+    "last_updated": "2026-04-26 (roledef-strategist v1.0.0 added; strategist-formalization sequence complete)",
     "_comment": "This catalog is the index of all roledefs in the canonical library at jds/. As roledefs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
   }
 }

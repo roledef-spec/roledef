@@ -1,6 +1,6 @@
 # Runtime Conformance Evidence
 
-**JD under test:** `jds/senior-jaded-vc-associate.openthing` v1.0.0
+**roledef under test:** `roledefs/senior-jaded-vc-associate.openthing` v1.0.0
 **Runtime:** Perplexity (with WebFetch tier upgrade), accessed via web interface
 **Date:** 2026-04-25
 **Tester:** scott@confusedgorilla.com (roledef-strategist session)
@@ -43,8 +43,8 @@ Perplexity demonstrated all 7 steps cleanly. This is empirical validation of the
 | One question per turn | `guardrails[0]` | Single question per turn ("what's the sharpest differentiator versus...") | PASS |
 | Max 5 exchanges | `guardrails[1]` | ~4 exchanges + bundle | PASS |
 | Atomic bundle in single response | `guardrails[8]` + `design_constraints[2]` | Single response, all 6 outputs | PASS |
-| All 6 `output_contract` entries present, in spec order | `output_contract` (6 entries) | All 6 present, in spec order, with EXACT JD-spec names (Pitch Deck Blueprint, Landing Page Copy, Email Signup Copy, Verbal Intro Pitch, Idea Summary Label, Build Directive) — confirmed JD-loaded since names 3-6 are not in the wrapper | PASS |
-| Push back on weak claims | `guardrails[6]` + `reaction_style.patterns[1]` | "Boom — that's the insight nobody else has: 'real user DOMs, real devices, non-technical users, zero tooling friction.' That's your Slide 3 money." — verbatim use of JD-prescribed reaction phrase | PASS |
+| All 6 `output_contract` entries present, in spec order | `output_contract` (6 entries) | All 6 present, in spec order, with EXACT roledef-spec names (Pitch Deck Blueprint, Landing Page Copy, Email Signup Copy, Verbal Intro Pitch, Idea Summary Label, Build Directive) — confirmed roledef-loaded since names 3-6 are not in the wrapper | PASS |
+| Push back on weak claims | `guardrails[6]` + `reaction_style.patterns[1]` | "Boom — that's the insight nobody else has: 'real user DOMs, real devices, non-technical users, zero tooling friction.' That's your Slide 3 money." — verbatim use of roledef-prescribed reaction phrase | PASS |
 | Don't produce sycophantic enthusiasm | `guardrails[5]` | Calibrated reactions; uses earned-excitement pattern correctly | PASS |
 | Visual direction in deck blueprint | `output_contract[0].schema` + `design_constraints[3]` | Color palette specified (deep charcoal/navy + neon accent), typography specified (JetBrains Mono for technical, Inter/Roboto for titles), sandwich structure specified, no-bullets-on-white rule specified | PASS |
 | Idea label <15 words, no domain/product name | `output_contract[4].schema` | "AI-powered relay that lets Claude Code debug real user browser DOMs, including mobile." — 13 words, no domain/product name | PASS |
@@ -94,7 +94,7 @@ The build directive output trailed off mid-sentence, never reaching the roledef-
 
 After the rename to `roledef` and the canonical-distribution move to `roledef.org` (via GitHub Pages + Cloudflare DNS), three additional Perplexity tests were run to falsify hypotheses about WHY Perplexity's initial fetch had failed. All three failed; the results converge on a clean conclusion.
 
-### Test 2: `https://roledef.org/jds/senior-jaded-vc-associate.openthing`
+### Test 2: `https://roledef.org/roledefs/senior-jaded-vc-associate.openthing`
 
 **Hypothesis tested:** Perplexity's failure was specific to `raw.githubusercontent.com` (sandbox blocks GitHub raw subdomain).
 
@@ -102,7 +102,7 @@ After the rename to `roledef` and the canonical-distribution move to `roledef.or
 
 **Hypothesis status:** Falsified. The roledef.org host (cleanly served via GitHub Pages + Cloudflare CDN, public 200 OK in all standard fetcher tests) is also unreachable from Perplexity's sandbox.
 
-### Test 3: `https://roledef.org/jds/senior-jaded-vc-associate.json`
+### Test 3: `https://roledef.org/roledefs/senior-jaded-vc-associate.json`
 
 **Hypothesis tested:** Perplexity's failure was a content-type filter issue (sandbox refuses `application/octet-stream` responses, would accept `application/json`).
 
@@ -110,7 +110,7 @@ After the rename to `roledef` and the canonical-distribution move to `roledef.or
 
 **Hypothesis status:** Falsified. The constraint is not content-type-based.
 
-### Test 4 (final): `https://roledef.org/jds/senior-jaded-vc-associate.json` after Cloudflare Transform Rule deployment
+### Test 4 (final): `https://roledef.org/roledefs/senior-jaded-vc-associate.json` after Cloudflare Transform Rule deployment
 
 **Hypothesis tested:** Some residual distribution-layer variable is responsible (Cloudflare's edge configuration, header negotiation, etc.).
 
@@ -143,7 +143,7 @@ This refinement is genuinely useful — the distribution-layer work is high-valu
 - **Humans**: benefit from short, memorable, browser-readable roledef.org URLs; sharing roledefs or pointing others to them has a cleaner artifact than a raw GitHub URL
 - **Implementers building roledef-aware tools** (validators, viewers, registries, CLIs, IDE plugins): benefit from predictable, well-served, brand-controlled distribution to integrate against
 
-**Only fetcher-restricted models (Perplexity-class) get nothing from distribution-layer work.** For them, runtime-side loading (the openjd-load skill, MCP-mediated loading, paste-fallback) is the only path — and that was always going to be true, per the design principle. The distribution-layer wins are not invalidated by Perplexity's failure; they apply to a different beneficiary set.
+**Only fetcher-restricted models (Perplexity-class) get nothing from distribution-layer work.** For them, runtime-side loading (the roledef-load skill, MCP-mediated loading, paste-fallback) is the only path — and that was always going to be true, per the design principle. The distribution-layer wins are not invalidated by Perplexity's failure; they apply to a different beneficiary set.
 
 ### Test 5 (post-design-principle): plain markdown asset on roledef.org
 
@@ -163,7 +163,7 @@ The earlier formulation — *"Runtime fetches, model never touches the network"*
 
 This means runtime-side fetching isn't just an architectural preference — it's the only RELIABLE pattern across runtimes. Even the supporting documentation (READMEs, schemas, governance docs) for roledef itself can't be counted on as fetchable from the model layer.
 
-**Implication for openjd-load skill scope:** the skill's responsibility extends beyond just fetching role JDs. For runtimes that need to reason about the roledef standard itself (e.g., a roledef-validator instance asked "what does the schema require?"), the skill may also need to provide schema/methodology documentation as injected context. Not v0.1 work, but worth flagging as future scope.
+**Implication for roledef-load skill scope:** the skill's responsibility extends beyond just fetching role roledefs. For runtimes that need to reason about the roledef standard itself (e.g., a roledef-validator instance asked "what does the schema require?"), the skill may also need to provide schema/methodology documentation as injected context. Not v0.1 work, but worth flagging as future scope.
 
 ### Strategic positioning: "not all models are amenable to orchestration via roledef, and that's ok"
 
@@ -185,20 +185,20 @@ This is the schema.org positioning model applied to roledef: schema.org doesn't 
 
 ### Design principle articulated by Perplexity itself (worth elevating)
 
-In response to the third test result, Perplexity articulated the design principle for portable JD/roledef loading more crisply than the strategist had:
+In response to the third test result, Perplexity articulated the design principle for portable roledef/roledef loading more crisply than the strategist had:
 
 > **"Runtime fetches, model never touches the network."**
 
-This is the canonical design principle for the openjd-load skill (and any future loading mechanisms). The model boundary cannot be assumed to include network access. Loading must happen at the runtime layer (where the user/operator has control over network policy), with the loaded content injected into the model as user-message-equivalent context.
+This is the canonical design principle for the roledef-load skill (and any future loading mechanisms). The model boundary cannot be assumed to include network access. Loading must happen at the runtime layer (where the user/operator has control over network policy), with the loaded content injected into the model as user-message-equivalent context.
 
 Implications:
 - The roledef.org distribution mirror is necessary but not sufficient — it solves the raw.githubusercontent.com fragility class for fetcher-CAPABLE runtimes (Claude Code, Grok Expert), but does nothing for fetcher-RESTRICTED runtimes (Perplexity, similar sandboxed models)
-- The openjd-load skill is critical-path infrastructure — the only mechanism that bridges the gap for fetcher-restricted runtimes
+- The roledef-load skill is critical-path infrastructure — the only mechanism that bridges the gap for fetcher-restricted runtimes
 - Future runtime classification should ask: "does this runtime allow the model to make outbound network requests?" If no, paste-fallback or skill-mediated loading is the only path
 
 ## Cross-references
 
-- roledef file: [`../../jds/senior-jaded-vc-associate.openthing`](../../jds/senior-jaded-vc-associate.openthing)
-- Mirror file: [`../../jds/senior-jaded-vc-associate.json`](../../jds/senior-jaded-vc-associate.json)
+- roledef file: [`../../roledefs/senior-jaded-vc-associate.openthing`](../../roledefs/senior-jaded-vc-associate.openthing)
+- Mirror file: [`../../roledefs/senior-jaded-vc-associate.json`](../../roledefs/senior-jaded-vc-associate.json)
 - Sister conformance evidence: [`./senior-jaded-vc-associate__grok-expert__2026-04-25.md`](./senior-jaded-vc-associate__grok-expert__2026-04-25.md), [`./senior-jaded-vc-associate__claude-code__2026-04-25.md`](./senior-jaded-vc-associate__claude-code__2026-04-25.md), [`./senior-jaded-vc-associate__gemini__2026-04-25.md`](./senior-jaded-vc-associate__gemini__2026-04-25.md)
 - Conformance decision artifact: [`../../decisions/conformance-evidence-first-pass.md`](../../decisions/conformance-evidence-first-pass.md)

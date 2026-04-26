@@ -2,7 +2,7 @@
 
 Spec-level proposals — changes to the roledef schema, the contribution workflow, or governance rules.
 
-This directory is **not** for new roledef submissions. Those go in [`../proposed-jds/`](../proposed-jds/) and follow a different workflow.
+This directory is **not** for new roledef submissions. Those go in [`../proposed-roledefs/`](../proposed-roledefs/) and follow a different workflow.
 
 ## What goes here
 
@@ -13,7 +13,7 @@ This directory is **not** for new roledef submissions. Those go in [`../proposed
 
 ## What does NOT go here
 
-- New roledefs for the library (use `../proposed-jds/`)
+- New roledefs for the library (use `../proposed-roledefs/`)
 - Editorial typos and patches (just open a small PR; no proposal artifact needed)
 - Implementation-specific feature requests for one runtime (file with that runtime's project)
 

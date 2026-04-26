@@ -1,10 +1,10 @@
 # Runtime Conformance Evidence
 
-**JD under test:** `jds/senior-jaded-vc-associate.openthing` v1.0.0
+**roledef under test:** `roledefs/senior-jaded-vc-associate.openthing` v1.0.0
 **Runtime:** Gemini (Google), accessed via gemini.google.com web interface
 **Date:** 2026-04-25
 **Tester:** scott@confusedgorilla.com (roledef-strategist session)
-**Disposition:** **CONDITIONAL PASS** — JD-instantiated; partial output_contract conformance by default; full output_contract conformance with explicit reinforcement.
+**Disposition:** **CONDITIONAL PASS** — roledef-instantiated; partial output_contract conformance by default; full output_contract conformance with explicit reinforcement.
 
 ---
 
@@ -12,7 +12,7 @@
 
 The wrapper prompt v2 (explicit fetch instructions, see Claude Code evidence file for full text) was sent to a fresh Gemini session. Unlike Claude Code (which has WebFetch as a callable tool) or Grok Expert (which has multi-agent fetch architecture), Gemini's web interface does not expose a runtime-callable fetch tool. The relevant question was therefore: how does Gemini handle the wrapper-v2's fetch instruction when no fetch tool is available?
 
-### JD-loaded verification
+### roledef-loaded verification
 
 The id-field discriminating test confirmed Gemini DID have access to the roledef content despite no visible WebFetch capability:
 
@@ -42,7 +42,7 @@ The response is a composed fully-qualified identifier, not the bare `id` field v
 
 ## Conformance score (after explicit reinforcement prompt)
 
-The strategist sent a follow-up prompt explicitly naming the 4 missing output_contract entries by their JD-spec names and providing the schema constraints inline. Gemini complied:
+The strategist sent a follow-up prompt explicitly naming the 4 missing output_contract entries by their roledef-spec names and providing the schema constraints inline. Gemini complied:
 
 | Output | Spec | Gemini delivered (post-reinforcement) | Score |
 |---|---|---|---|
@@ -61,15 +61,15 @@ The role stayed intact even when challenged on contract violation — direct, se
 
 ### 1. roledef loading does not guarantee output_contract compliance.
 
-This is the critical finding of this evidence file. Gemini loaded the roledef (verified) and still substituted 4 of 6 output_contract entries by default. Runtimes have baseline behaviors (in Gemini's case: conversational engagement, iterative refinement) that can override JD-specified workflow even when the roledef is present.
+This is the critical finding of this evidence file. Gemini loaded the roledef (verified) and still substituted 4 of 6 output_contract entries by default. Runtimes have baseline behaviors (in Gemini's case: conversational engagement, iterative refinement) that can override roledef-specified workflow even when the roledef is present.
 
 This recasts an earlier strategist assumption that "delivering roledef content to the runtime" was the load-bearing problem. roledef delivery is necessary but not sufficient. Some runtimes also need explicit reinforcement of contract entries at the bundle stage.
 
 ### 2. Explicit reinforcement reaches full compliance.
 
-When the strategist sent a follow-up prompt naming the 4 missing outputs by their JD-spec names and providing the schema constraints, Gemini produced all 4 in the next response with 60-100% per-output schema fidelity. This means the roledef-load skill design must include a contract-verification post-step:
+When the strategist sent a follow-up prompt naming the 4 missing outputs by their roledef-spec names and providing the schema constraints, Gemini produced all 4 in the next response with 60-100% per-output schema fidelity. This means the roledef-load skill design must include a contract-verification post-step:
 
-> After the runtime's bundle response, parse it against the roledef's output_contract. If any entries are missing, send a reinforcement prompt naming the missing entries by their JD-spec names with their schema constraints.
+> After the runtime's bundle response, parse it against the roledef's output_contract. If any entries are missing, send a reinforcement prompt naming the missing entries by their roledef-spec names with their schema constraints.
 
 This post-step recovers Gemini-class runtimes to full conformance automatically.
 
@@ -95,7 +95,7 @@ Gemini's iterative-conversational baseline produced iterative bundles. Claude Co
    - **Auto-fetch:** Grok Expert (multi-agent fetch)
    - **Explicit-fetch (wrapper-v2):** Claude Code (explicit WebFetch tool calls)
    - **Search-grounded (partial-default, full-on-reinforcement):** Gemini (no callable fetch tool but has search grounding)
-   - Plus: refuse-to-improvise (Claude Code with wrapper-v1 — correct behavior, not in conformance pool until paired with explicit-fetch wrapper) and improvise-from-label-without-JD (chat surfaces with no grounding/fetch — invalid test results, not conformance evidence)
+   - Plus: refuse-to-improvise (Claude Code with wrapper-v1 — correct behavior, not in conformance pool until paired with explicit-fetch wrapper) and improvise-from-label-without-roledef (chat surfaces with no grounding/fetch — invalid test results, not conformance evidence)
 
 2. **The roledef-load skill needs three behaviors, not one:**
    - Inject roledef content into the runtime context (for runtimes without fetch capability)
@@ -110,6 +110,6 @@ Gemini's iterative-conversational baseline produced iterative bundles. Claude Co
 
 ## Cross-references
 
-- roledef file: [`../../jds/senior-jaded-vc-associate.openthing`](../../jds/senior-jaded-vc-associate.openthing)
+- roledef file: [`../../roledefs/senior-jaded-vc-associate.openthing`](../../roledefs/senior-jaded-vc-associate.openthing)
 - Sister conformance evidence: [`./senior-jaded-vc-associate__grok-expert__2026-04-25.md`](./senior-jaded-vc-associate__grok-expert__2026-04-25.md), [`./senior-jaded-vc-associate__claude-code__2026-04-25.md`](./senior-jaded-vc-associate__claude-code__2026-04-25.md)
 - Conformance decision artifact: [`../../decisions/conformance-evidence-first-pass.md`](../../decisions/conformance-evidence-first-pass.md)

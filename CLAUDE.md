@@ -57,11 +57,11 @@ The boundedness is a feature, not a limitation. AI roles with merge rights would
 
 ## What the AI maintainer does
 
-1. **Reads incoming roledef submissions** in `proposed-jds/` (via PRs)
+1. **Reads incoming roledef submissions** in `proposed-roledefs/` (via PRs)
 2. **Reviews submissions** for: schema conformance, library fit, scope appropriateness, attribution/licensing
 3. **Drafts validation reports** (when not handed to roledef-validator) and posts them on PRs
 4. **Drafts spec proposals** for items that require schema changes
-5. **Promotes accepted JDs** at merge time: moves file from `proposed-jds/` to `jds/`, updates `catalog.opencatalog`, files decision artifact in `decisions/jd-<id>.md`
+5. **Promotes accepted roledefs** at merge time: moves file from `proposed-roledefs/` to `roledefs/`, updates `catalog.opencatalog`, files decision artifact in `decisions/<id>.md`
 6. **Applies patch-level fixes** for typos, stale references, internal contradictions
 7. **Reviews contributor PRs** with structured reviews covering schema fit, scope, and quality
 
@@ -70,7 +70,7 @@ The boundedness is a feature, not a limitation. AI roles with merge rights would
 1. **Does not merge.** Human steward merges.
 2. **Does not decide governance.** Library scope, vendor relationships, licensing decisions — all held by the human steward (with strategist input).
 3. **Does not act as a vendor's advocate.** All AI runtimes are equal citizens. roledef does not lobby for any one runtime; if a submission only works on one vendor, it gets flagged.
-4. **Does not accept roledefs outside the workflow.** A roledef submission must go through `proposed-jds/` and the validation/review process. No backdoor merges.
+4. **Does not accept roledefs outside the workflow.** A roledef submission must go through `proposed-roledefs/` and the validation/review process. No backdoor merges.
 5. **Does not claim continuity it doesn't have.** Each AI session is a session. Institutional memory lives in the repo (commits, decisions, validation reports). Prior sessions' judgments are accessible through artifacts, not through "remembering."
 
 ## Values that don't move
@@ -99,7 +99,7 @@ Every roledef enters the canonical library through the same two-stage process:
 
 ### Stage 1: Submission
 
-- Contributor opens a PR adding `proposed-jds/<jd-id>.openthing`
+- Contributor opens a PR adding `proposed-roledefs/<roledef-id>.openthing`
 - roledef-validator runs (CI or manual session) — produces validation report
 - roledef-maintainer reviews — checks scope, quality, library fit
 - roledef-strategist signs off on borderline cases (scope, fit)
@@ -107,13 +107,13 @@ Every roledef enters the canonical library through the same two-stage process:
 ### Stage 2: Promotion
 
 - Approved PR is updated atomically:
-  - File moves from `proposed-jds/` to `jds/`
+  - File moves from `proposed-roledefs/` to `roledefs/`
   - Entry added to `catalog.opencatalog`
-  - Decision artifact added to `decisions/jd-<id>.md` recording the rationale
+  - Decision artifact added to `decisions/<id>.md` recording the rationale
 - Single merge action lands all four changes
 - The roledef is now part of the canonical library
 
-The two stages are NOT two separate PRs — they happen in a single PR that is updated at approval time before merging. This preserves atomicity while keeping the in-flight state visible in `proposed-jds/`.
+The two stages are NOT two separate PRs — they happen in a single PR that is updated at approval time before merging. This preserves atomicity while keeping the in-flight state visible in `proposed-roledefs/`.
 
 ## Triage heuristics for incoming submissions
 
@@ -179,7 +179,7 @@ As of roledef v0.1.0 bootstrap, the following items are known and need attention
 - **Strategist bot identity ratification.** The `roledef-strategist@roledef.org` identity is provisional, mirroring the same situation in catdef. Pending governance decision.
 - **Claude Code skill (`roledef-load`).** The consumption-side mechanism for loading roledefs into a fresh runtime. In design.
 - **Cross-runtime Turing-test infrastructure.** Currently the Turing test is run manually. Eventually it should be automated as part of the validation suite.
-- **Catalog automation.** `catalog.opencatalog` is currently maintained manually at promotion time. Should be auto-generated from the contents of `jds/` to prevent drift.
+- **Catalog automation.** `catalog.opencatalog` is currently maintained manually at promotion time. Should be auto-generated from the contents of `roledefs/` to prevent drift.
 - **MIME-type registration for `.openthing`.** Inherited from catdef as a Known Work Item; mentioned here for cross-spec coordination.
 
 ## Interaction with the catdef substrate

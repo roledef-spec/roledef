@@ -6,7 +6,7 @@ roledef is an open standard plus a community-curated reference library of AI rol
 
 roledef is stewarded independently of any single AI vendor or implementation. The standard exists to enable interoperability between AI runtimes — Claude, Grok, GPT, Gemini, and any future runtime — not to codify any one vendor's prompt format.
 
-**Vendors do not own the spec.** Anthropic, xAI, OpenAI, Google, Meta, and any future AI provider are equal citizens from roledef's perspective. Each is a runtime that can host JD-instantiated roles. Each can propose changes. No one gets unilateral authorship.
+**Vendors do not own the spec.** Anthropic, xAI, OpenAI, Google, Meta, and any future AI provider are equal citizens from roledef's perspective. Each is a runtime that can host roledef-instantiated roles. Each can propose changes. No one gets unilateral authorship.
 
 **The library is curated; the spec is open.** The canonical library at `github.com/roledef-spec/roledef` (and its mirror at `roledef.org`) is curated for quality, fit, and breadth. The roledef schema itself is content-neutral and freely usable — anyone can publish their own roledef library at any URL using the same format. Forks are welcome.
 
@@ -18,34 +18,34 @@ roledef is maintained with AI-assisted review, following the pattern established
 
 Contributions to roledef fall into two categories with different processes:
 
-1. **JD submissions** — adding a new roledef to the library
+1. **roledef submissions** — adding a new roledef to the library
 2. **Spec proposals** — proposing changes to the roledef schema, the contribution process, or governance rules
 
 ## 1. roledef submissions
 
 ### The two-stage workflow
 
-JDs follow a two-stage process via the `proposed-jds/` and `jds/` directories:
+roledefs follow a two-stage process via the `proposed-roledefs/` and `roledefs/` directories:
 
-- `proposed-jds/` — submissions in flight; publicly visible but not yet promoted to canonical
-- `jds/` — the canonical library; all entries here have passed validation and review
+- `proposed-roledefs/` — submissions in flight; publicly visible but not yet promoted to canonical
+- `roledefs/` — the canonical library; all entries here have passed validation and review
 
 **Submission steps:**
 
 1. **Fork** the repo
-2. **Author your JD** following the procedure in [README.md](README.md#authoring-a-jd) and the schema in [SCHEMA.md](SCHEMA.md)
-3. **Add the file** to `proposed-jds/<your-jd-id>.openthing` in your fork
+2. **Author your roledef** following the procedure in [README.md](README.md#authoring-a-jd) and the schema in [SCHEMA.md](SCHEMA.md)
+3. **Add the file** to `proposed-roledefs/<your-roledef-id>.openthing` in your fork
 4. **Open a PR** against `main`
 5. **Validation runs** (CI or manual roledef-validator) — produces a validation report posted on the PR
 6. **Maintainer review** — checks scope, quality, library fit, attribution
 7. **Strategist sign-off** — required for borderline cases (scope-edge, library-fit calls); routine clean validations are approved on maintainer alone
 8. **Promotion at merge** — the maintainer updates the PR to atomically:
-   - Move the file from `proposed-jds/` to `jds/`
+   - Move the file from `proposed-roledefs/` to `roledefs/`
    - Add the entry to `catalog.opencatalog`
-   - Add a decision artifact to `decisions/jd-<id>.md` with the rationale
+   - Add a decision artifact to `decisions/<id>.md` with the rationale
 9. **Merge**
 
-Once merged, the roledef is part of the canonical library and is available via `github.com/roledef-spec/roledef/blob/main/jds/<id>.openthing` and (eventually) `roledef.org/jds/<id>`.
+Once merged, the roledef is part of the canonical library and is available via `github.com/roledef-spec/roledef/blob/main/roledefs/<id>.openthing` and (eventually) `roledef.org/roledefs/<id>`.
 
 ### Validation expectations
 
@@ -70,11 +70,11 @@ The library is curated. Even valid roledefs may be rejected for:
 
 If your roledef is rejected for the canonical library, you can still publish it at any URL using the same format. Your roledef is just as portable from your own URL as from roledef's. Curation is not censorship.
 
-### What goes in `proposed-jds/`
+### What goes in `proposed-roledefs/`
 
 - Files MUST be valid `.openthing` files conforming to [SCHEMA.md](SCHEMA.md)
 - Filenames MUST match the roledef's `id` field exactly: `<id>.openthing`
-- IDs MUST be unique across `proposed-jds/` AND `jds/` (no shadowing)
+- IDs MUST be unique across `proposed-roledefs/` AND `roledefs/` (no shadowing)
 - Each submission SHOULD include (in the PR description):
   - The role's source — extracted from a product? Self-authored from session experience? Designed from scratch? Derived from another roledef?
   - Reference behavior — link to transcripts, prompts, or examples that establish the original behavior the roledef is trying to capture
@@ -99,7 +99,7 @@ When you want a specialization of an existing roledef — for example, an `sncro
      "derived_from": {
        "id": "blackhat-tester",
        "version": "1.0.0",
-       "url": "https://roledef.org/jds/blackhat-tester.openthing"
+       "url": "https://roledef.org/roledefs/blackhat-tester.openthing"
      },
      ...
    }
@@ -124,7 +124,7 @@ These conventions make `derived_from` declarations meaningful — readers can tr
 - If your specialization is so different from the parent that it shares only the role-name, just author it as a standalone roledef. Forced inheritance hides more than it reveals.
 - If the specialization is for one specific user/project and won't be reused, it might fit better as runtime-context (loaded via the wrapper prompt's optional Section 6 scaffolding) rather than as a published roledef.
 
-**Example:** the `blackhat-tester` (abstract methodology) → `sncro-blackhat-tester` (sncro-specialized) pair is the canonical first example of this pattern. See those two files in `jds/` (when published) for a concrete reference.
+**Example:** the `blackhat-tester` (abstract methodology) → `sncro-blackhat-tester` (sncro-specialized) pair is the canonical first example of this pattern. See those two files in `roledefs/` (when published) for a concrete reference.
 
 ## 2. Spec proposals
 
@@ -162,8 +162,8 @@ The conformance suite in [`conformance/`](conformance/) is the practical express
 
 The conformance suite contains:
 
-- **`valid_jds/`** — roledefs that should pass validation; used as positive controls
-- **`invalid_jds/`** — roledefs with specific known violations; used to validate the validator
+- **`valid_roledefs/`** — roledefs that should pass validation; used as positive controls
+- **`invalid_roledefs/`** — roledefs with specific known violations; used to validate the validator
 - **`tests/`** — the validation test code
 
 A submitted roledef's PR MAY include additions to `conformance/` if the submission exercises new schema territory.

@@ -22,27 +22,27 @@
         "name": "roledef Contributor",
         "version": "1.0.0",
         "description": "An AI role that helps a contributor author a new roledef, extracting role behavior from source material and producing a schema-conformant .openthing file ready for submission.",
-        "file": "jds/roledef-contributor.openthing",
+        "file": "roledefs/roledef-contributor.openthing",
         "added": "2026-04-25",
-        "decision": "decisions/jd-roledef-contributor.md"
+        "decision": "decisions/roledef-contributor.md"
       },
       {
         "id": "roledef-validator",
         "name": "roledef Validator",
         "version": "1.0.0",
         "description": "An AI role that validates submitted roledefs against the roledef schema and produces structured Pass/Pass-with-notes/Fail validation reports for posting on PRs.",
-        "file": "jds/roledef-validator.openthing",
+        "file": "roledefs/roledef-validator.openthing",
         "added": "2026-04-25",
-        "decision": "decisions/jd-roledef-validator.md"
+        "decision": "decisions/roledef-validator.md"
       },
       {
         "id": "catdef-strategist",
         "name": "catdef Strategist",
         "version": "2.0.0",
         "description": "An AI role responsible for strategic direction, positioning, decision-making, library curation, and pattern-promotion stewardship for the catdef substrate specification and the catdef-family consumer-spec ecosystem. Derived from senior-open-standards-strategist v1.0.0; carries the parent strategist methodology verbatim and adds catdef-substrate-specific specializations (value-that-doesn't-move enforcement, CA-NNN proposal numbering, writer-strict version stamping, catdef-spec/CLAUDE.md triage heuristics, catdef-family ecosystem coordination). v2.0.0 is a retrofit derivation of the standalone v1.0.0; demonstrates the post-hoc abstraction pattern.",
-        "file": "jds/catdef-strategist.openthing",
+        "file": "roledefs/catdef-strategist.openthing",
         "added": "2026-04-26",
-        "decision": "decisions/jd-catdef-strategist-v2.md",
+        "decision": "decisions/catdef-strategist-v2.md",
         "derived_from": "senior-open-standards-strategist"
       },
       {
@@ -50,27 +50,27 @@
         "name": "Senior Slightly Jaded Silicon-Valley Associate VC",
         "version": "1.0.0",
         "description": "An AI role that interviews a founder briefly, evaluates their product idea with the instinct of a senior associate who has reviewed thousands of pitches, and produces an investor-ready pitch deck blueprint plus a complementary marketing-copy bundle. Behavioral extraction from the DangerStorm.net production system prompt.",
-        "file": "jds/senior-jaded-vc-associate.openthing",
+        "file": "roledefs/senior-jaded-vc-associate.openthing",
         "added": "2026-04-25",
-        "decision": "decisions/jd-senior-jaded-vc-associate.md"
+        "decision": "decisions/senior-jaded-vc-associate.md"
       },
       {
         "id": "blackhat-tester",
         "name": "Black-Hat Security Tester",
         "version": "1.0.0",
         "description": "An ethical, owner-authorized AI security tester who performs structured static review and fix-verification of arbitrary software targets. Produces severity-rated findings backed by file:line evidence and 30-second exploit sketches. Self-extracted from a documented playbook and multiple completed engagements; designed as the abstract parent of target-specialized derivations.",
-        "file": "jds/blackhat-tester.openthing",
+        "file": "roledefs/blackhat-tester.openthing",
         "added": "2026-04-26",
-        "decision": "decisions/jd-blackhat-tester.md"
+        "decision": "decisions/blackhat-tester.md"
       },
       {
         "id": "sncro-blackhat-tester",
         "name": "SNCRO Black-Hat Security Tester",
         "version": "1.0.0",
         "description": "An ethical security tester specialized for SNCRO (browser-debug MCP relay + dashboard/admin web app + drop-in customer middleware). Derived from blackhat-tester v1.0.0; carries the parent methodology verbatim and adds SNCRO-specific surface knowledge (three-credential model, six documented invariants, relay two-sided auth pattern). Canonical worked example of the abstract->derived derivation pattern.",
-        "file": "jds/sncro-blackhat-tester.openthing",
+        "file": "roledefs/sncro-blackhat-tester.openthing",
         "added": "2026-04-26",
-        "decision": "decisions/jd-sncro-blackhat-tester.md",
+        "decision": "decisions/sncro-blackhat-tester.md",
         "derived_from": "blackhat-tester"
       },
       {
@@ -78,18 +78,18 @@
         "name": "Senior Open Standards Strategist",
         "version": "1.0.0",
         "description": "An AI role responsible for the strategic direction, positioning, decision-making, library curation, and pattern-promotion stewardship of an open standard. Operates with bounded authority - drafts, validates, decides, signs off - but does not unilaterally merge, deploy, or change governance. Self-extracted from documented practice stewarding the catdef substrate spec and the roledef consumer spec across their bootstrap. Designed as the abstract parent of catdef-strategist v2.0.0 (forthcoming retrofit derivation) and roledef-strategist v1.0.0 (forthcoming).",
-        "file": "jds/senior-open-standards-strategist.openthing",
+        "file": "roledefs/senior-open-standards-strategist.openthing",
         "added": "2026-04-26",
-        "decision": "decisions/jd-senior-open-standards-strategist.md"
+        "decision": "decisions/senior-open-standards-strategist.md"
       },
       {
         "id": "roledef-strategist",
         "name": "roledef Strategist",
         "version": "1.0.0",
         "description": "An AI role responsible for strategic direction, positioning, decision-making, library curation, derivation-pattern stewardship, and runtime-conformance methodology for the roledef consumer specification (the open standard for portable AI Job Descriptions). Derived from senior-open-standards-strategist v1.0.0; carries the parent strategist methodology verbatim and adds roledef-consumer-specific specializations (library curation, derivation-pattern stewardship, 4-runtime conformance methodology, distribution-layer stewardship, wrapper-v3 + roledef-load skill ecosystem coordination, dual-review pattern enforcement, field-by-field provenance audit pattern enforcement). PR C in the strategist-formalization sequence; after this lands, roledef-strategist becomes portable across runtimes.",
-        "file": "jds/roledef-strategist.openthing",
+        "file": "roledefs/roledef-strategist.openthing",
         "added": "2026-04-26",
-        "decision": "decisions/jd-roledef-strategist.md",
+        "decision": "decisions/roledef-strategist.md",
         "derived_from": "senior-open-standards-strategist"
       }
     ]
@@ -100,6 +100,6 @@
     "schema_version": "0.1.0",
     "items_count": 8,
     "last_updated": "2026-04-26 (roledef-strategist v1.0.0 added; strategist-formalization sequence complete)",
-    "_comment": "This catalog is the index of all roledefs in the canonical library at jds/. As roledefs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
+    "_comment": "This catalog is the index of all roledefs in the canonical library at roledefs/. As roledefs are promoted from proposed-roledefs/ to roledefs/, entries are added here. Auto-generation of this index from roledefs/ contents is a Known Work Item per CLAUDE.md."
   }
 }

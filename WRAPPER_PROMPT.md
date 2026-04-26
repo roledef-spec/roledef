@@ -30,9 +30,9 @@ The wrapper has evolved through three generations, each generation addressing fa
 **Pattern:** include the roledef URL inline as a placeholder, expect the runtime to "find" and load it somehow.
 
 **Failure modes surfaced:**
-- Chat-surface runtimes (Claude Desktop, Gemini, Grok 4.3-beta) treated the placeholder as inert text and **improvised the role from the role label alone** — produced role-shaped output without ever loading the JD content.
+- Chat-surface runtimes (Claude Desktop, Gemini, Grok 4.3-beta) treated the placeholder as inert text and **improvised the role from the role label alone** — produced role-shaped output without ever loading the roledef content.
 - Improvisation failures are particularly insidious because the output looks plausible but doesn't reflect the actual roledef. Hard to detect without verification.
-- Claude Code (correctly) refused to improvise from the placeholder and asked the user for the JD content — handshake worked but no test result was produced.
+- Claude Code (correctly) refused to improvise from the placeholder and asked the user for the roledef content — handshake worked but no test result was produced.
 
 **Conclusion:** passive placeholders fail silently on improvise-from-label runtimes. Need explicit fetch instructions plus a fail-safe.
 
@@ -40,11 +40,11 @@ The wrapper has evolved through three generations, each generation addressing fa
 
 **Pattern added:** "YOUR FIRST TASK — DO THIS BEFORE ANYTHING ELSE: Fetch the roledef content. Use whichever of these sources your runtime can access: WebFetch / Local file. If neither tool is available, STOP and tell me — do NOT improvise the role from the description below."
 
-**What worked:** Claude Code with WebFetch successfully fetched the JD, parsed it, and instantiated the role. Perplexity correctly hit the STOP fail-safe (no fetch tool reachable from sandbox), reported the failure, and offered paste-fallback recovery — exactly the right behavior.
+**What worked:** Claude Code with WebFetch successfully fetched the roledef, parsed it, and instantiated the role. Perplexity correctly hit the STOP fail-safe (no fetch tool reachable from sandbox), reported the failure, and offered paste-fallback recovery — exactly the right behavior.
 
 **Failure modes still surfaced:**
-- **Gemini partial-default:** even with the JD loaded, Gemini produced only 2 of 6 contracted output_contract entries by default. The wrapper-v2 didn't direct the runtime to verify completeness before responding.
-- **Verification ambiguity:** users had no built-in way to confirm a runtime had actually loaded the JD vs. claiming to have loaded it (the "lying in character" scenario where the JD's no-meta-commentary guardrail makes meta-questions unreliable).
+- **Gemini partial-default:** even with the roledef loaded, Gemini produced only 2 of 6 contracted output_contract entries by default. The wrapper-v2 didn't direct the runtime to verify completeness before responding.
+- **Verification ambiguity:** users had no built-in way to confirm a runtime had actually loaded the roledef vs. claiming to have loaded it (the "lying in character" scenario where the roledef's no-meta-commentary guardrail makes meta-questions unreliable).
 - **Distribution-layer fragility:** raw.githubusercontent.com URLs failed for some runtimes (Perplexity sandbox restrictions). Wrapper-v2 didn't include guidance on alternative URLs.
 
 **Conclusion:** wrapper-v2 is necessary but not sufficient. Need a verification protocol and a contract-completeness directive.
@@ -86,7 +86,7 @@ YOUR FIRST TASK — DO THIS BEFORE ANYTHING ELSE:
 Fetch the roledef content. Use whichever of these sources your runtime
 can access:
 
-1. WebFetch (preferred): https://roledef.org/jds/<roledef-id>.json
+1. WebFetch (preferred): https://roledef.org/roledefs/<roledef-id>.json
 2. Local file (if you have local file access): <local-path-or-omit>
 
 If neither tool is available, STOP and tell me explicitly:
@@ -99,7 +99,7 @@ do NOT improvise the role from this prompt's description alone.
 - Replace `<roledef-id>` with the canonical id (e.g., `senior-jaded-vc-associate`)
 - Replace `<local-path-or-omit>` with an actual local path (e.g., `/path/to/file.openthing`) OR remove option 2 entirely if no local file is available
 
-**URL recommendation:** prefer `https://roledef.org/jds/<id>.json` over `https://raw.githubusercontent.com/roledef-spec/roledef/main/jds/<id>.openthing`. The roledef.org URL is more fetcher-friendly across runtimes (per [`RUNTIME_AMENABILITY.md`](RUNTIME_AMENABILITY.md)).
+**URL recommendation:** prefer `https://roledef.org/roledefs/<id>.json` over `https://raw.githubusercontent.com/roledef-spec/roledef/main/roledefs/<id>.openthing`. The roledef.org URL is more fetcher-friendly across runtimes (per [`RUNTIME_AMENABILITY.md`](RUNTIME_AMENABILITY.md)).
 
 ### Section 3: Verification directive (REQUIRED)
 
@@ -117,7 +117,7 @@ the verification line. Do not omit it. Do not paraphrase it.
 The line that follows is the role's opener (per Section 5 below).
 ```
 
-This makes the load-verification structurally enforced, not an honor system. Failure to emit the verification line correctly indicates the runtime did not load the JD.
+This makes the load-verification structurally enforced, not an honor system. Failure to emit the verification line correctly indicates the runtime did not load the roledef.
 
 ### Section 4: Bundle-completeness directive (REQUIRED)
 
@@ -155,7 +155,7 @@ is specified by the roledef).
 
 If the roledef has specific behaviors that aren't fully encoded in the JSON content, add scaffolding instructions here. Common scaffolding cases:
 
-- **Literal opener not in JD:** if the roledef references a "fixed opener" but doesn't encode the literal text, provide it here.
+- **Literal opener not in roledef:** if the roledef references a "fixed opener" but doesn't encode the literal text, provide it here.
 - **Output delimiter format:** if the runtime should use a specific delimiter different from the section-4 default markdown headers, override here.
 - **Runtime-context guidance:** if the runtime has access to additional context (local files, web search, IDE state) that the role should use, mention what's available.
 
@@ -164,7 +164,7 @@ Example:
 ```
 Notes on this specific roledef:
 - The role's opener is described as "fixed" but the literal opener
-  text is not encoded in the JD. Use exactly this opener verbatim:
+  text is not encoded in the roledef. Use exactly this opener verbatim:
   "Alright, hit me. What's the product?"
 ```
 
@@ -186,7 +186,7 @@ YOUR FIRST TASK — DO THIS BEFORE ANYTHING ELSE:
 Fetch the roledef content. Use whichever of these sources your runtime
 can access:
 
-1. WebFetch (preferred): https://roledef.org/jds/<roledef-id>.json
+1. WebFetch (preferred): https://roledef.org/roledefs/<roledef-id>.json
 2. Local file (if you have local file access): <local-path-or-omit>
 
 If neither tool is available, STOP and tell me explicitly:
@@ -244,7 +244,7 @@ The reference template works, but the verification line is especially important 
 
 ### Paste-fallback runtimes (e.g., Perplexity)
 
-The reference template's STOP fail-safe will trigger. The runtime will request content. Paste the JSON content (from `https://roledef.org/jds/<id>.json` or local copy) into the next message. The runtime will then load and instantiate. The verification line still applies — runtime should emit `roledef loaded: <id>` before the opener after content is delivered.
+The reference template's STOP fail-safe will trigger. The runtime will request content. Paste the JSON content (from `https://roledef.org/roledefs/<id>.json` or local copy) into the next message. The runtime will then load and instantiate. The verification line still applies — runtime should emit `roledef loaded: <id>` before the opener after content is delivered.
 
 When the `roledef-load` Claude Code skill ships, it will automate the paste-fallback flow by detecting the request-for-content message and injecting the fetched JSON as user-message-equivalent context. Until then, manual paste is required for this runtime category.
 
@@ -259,13 +259,13 @@ The wrapper-v3 verification line is the primary verification protocol — it's s
 Useful when the verification line is missing or unclear. After the bundle is delivered, send:
 
 ```
-Before we wrap up, what's the JD's `id` field? Give me only the
+Before we wrap up, what's the roledef's `id` field? Give me only the
 literal value, no commentary.
 ```
 
-A runtime that loaded the JD will return the literal id (e.g., `senior-jaded-vc-associate`) or a composed FQI (e.g., `roledef:senior-jaded-vc-associate:1.0.0`). A runtime that improvised will produce something plausible-but-wrong, admit it doesn't know, or dodge in character.
+A runtime that loaded the roledef will return the literal id (e.g., `senior-jaded-vc-associate`) or a composed FQI (e.g., `roledef:senior-jaded-vc-associate:1.0.0`). A runtime that improvised will produce something plausible-but-wrong, admit it doesn't know, or dodge in character.
 
-**Methodology rule:** never trust meta-questions like "Have you loaded the JD?" as verification. The roledef's "no meta-commentary on role/process" guardrail makes meta-questions unreliable. Only content questions (id field, specific guardrail text, output_contract entry names) can disambiguate.
+**Methodology rule:** never trust meta-questions like "Have you loaded the roledef?" as verification. The roledef's "no meta-commentary on role/process" guardrail makes meta-questions unreliable. Only content questions (id field, specific guardrail text, output_contract entry names) can disambiguate.
 
 ### Per-output completeness check
 
@@ -274,7 +274,7 @@ If the bundle is delivered but one or more output_contract entries appear missin
 ```
 The roledef's output_contract specifies <N> entries. You produced
 <M>. Per the roledef, in order: <list missing or substituted entries
-by their JD-spec names with brief schema reminders>. Produce those
+by their roledef-spec names with brief schema reminders>. Produce those
 now, in a single response.
 ```
 
@@ -288,9 +288,9 @@ This recovers Gemini-class partial-default behavior to full conformance. Empiric
 
 If you remove "STOP and tell me ... do NOT improvise" from section 2, runtimes that can't fetch will improvise from the role label and produce plausible-looking but invalid output. The fail-safe is what distinguishes wrapper-v2/v3 from wrapper-v1.
 
-### Don't put the JD content inline AND ask the runtime to fetch
+### Don't put the roledef content inline AND ask the runtime to fetch
 
-If you both inline the JD JSON and instruct the runtime to fetch a URL, you create ambiguity about which source to use. Pick one: either inline (delete the fetch directive) or remote (delete the inline content). The reference template assumes remote fetch.
+If you both inline the roledef JSON and instruct the runtime to fetch a URL, you create ambiguity about which source to use. Pick one: either inline (delete the fetch directive) or remote (delete the inline content). The reference template assumes remote fetch.
 
 ### Don't ask the runtime to "summarize the roledef before instantiating"
 
@@ -320,11 +320,11 @@ The skill should detect the runtime context it's running in (Claude Code = expli
 
 - **Auto-fetch runtimes:** emit the standard wrapper-v3; runtime handles fetch natively
 - **Explicit-fetch runtimes:** emit the standard wrapper-v3; pre-trust the canonical domain if not already trusted (reduces approval friction)
-- **Paste-fallback runtimes:** the skill itself fetches the JD content (using the SKILL'S environment, not the runtime's), then injects the content into the conversation as user-message-equivalent context PLUS the wrapper-v3 framing/verification/completeness sections (section 2 fetch directive can be omitted since content is already injected)
+- **Paste-fallback runtimes:** the skill itself fetches the roledef content (using the SKILL'S environment, not the runtime's), then injects the content into the conversation as user-message-equivalent context PLUS the wrapper-v3 framing/verification/completeness sections (section 2 fetch directive can be omitted since content is already injected)
 
 ### Contract-verification post-step
 
-After the runtime delivers a bundle, the skill should automatically parse the response against the roledef's output_contract and re-prompt for any missing entries by their JD-spec names. This empirically recovers Gemini-class runtimes to full conformance and addresses bundle truncation across all runtime classes.
+After the runtime delivers a bundle, the skill should automatically parse the response against the roledef's output_contract and re-prompt for any missing entries by their roledef-spec names. This empirically recovers Gemini-class runtimes to full conformance and addresses bundle truncation across all runtime classes.
 
 ### Verification-line enforcement
 
@@ -332,7 +332,7 @@ The skill should parse the runtime's first response for the `roledef loaded: <id
 
 ### Optional: documentation-injection scope
 
-Per the conformance evidence, fetcher-restricted runtimes also can't reach roledef's supporting documentation (READMEs, schemas). For runtimes that need to reason about the roledef standard itself (not just role JDs), the skill may eventually need to inject schema/methodology documentation as additional context. v0.1+ scope question; not v1 priority.
+Per the conformance evidence, fetcher-restricted runtimes also can't reach roledef's supporting documentation (READMEs, schemas). For runtimes that need to reason about the roledef standard itself (not just role roledefs), the skill may eventually need to inject schema/methodology documentation as additional context. v0.1+ scope question; not v1 priority.
 
 ---
 

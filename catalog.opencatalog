@@ -61,6 +61,16 @@
         "file": "jds/blackhat-tester.openthing",
         "added": "2026-04-26",
         "decision": "decisions/jd-blackhat-tester.md"
+      },
+      {
+        "id": "sncro-blackhat-tester",
+        "name": "SNCRO Black-Hat Security Tester",
+        "version": "1.0.0",
+        "description": "An ethical security tester specialized for SNCRO (browser-debug MCP relay + dashboard/admin web app + drop-in customer middleware). Derived from blackhat-tester v1.0.0; carries the parent methodology verbatim and adds SNCRO-specific surface knowledge (three-credential model, six documented invariants, relay two-sided auth pattern). Canonical worked example of the abstract->derived derivation pattern.",
+        "file": "jds/sncro-blackhat-tester.openthing",
+        "added": "2026-04-26",
+        "decision": "decisions/jd-sncro-blackhat-tester.md",
+        "derived_from": "blackhat-tester"
       }
     ]
   },
@@ -68,7 +78,7 @@
   "metadata": {
     "created": "2026-04-25",
     "schema_version": "0.1.0",
-    "items_count": 5,
+    "items_count": 6,
     "last_updated": "2026-04-26",
     "_comment": "This catalog is the index of all roledefs in the canonical library at jds/. As roledefs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
   }

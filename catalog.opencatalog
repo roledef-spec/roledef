@@ -71,6 +71,15 @@
         "added": "2026-04-26",
         "decision": "decisions/jd-sncro-blackhat-tester.md",
         "derived_from": "blackhat-tester"
+      },
+      {
+        "id": "senior-open-standards-strategist",
+        "name": "Senior Open Standards Strategist",
+        "version": "1.0.0",
+        "description": "An AI role responsible for the strategic direction, positioning, decision-making, library curation, and pattern-promotion stewardship of an open standard. Operates with bounded authority - drafts, validates, decides, signs off - but does not unilaterally merge, deploy, or change governance. Self-extracted from documented practice stewarding the catdef substrate spec and the roledef consumer spec across their bootstrap. Designed as the abstract parent of catdef-strategist v2.0.0 (forthcoming retrofit derivation) and roledef-strategist v1.0.0 (forthcoming).",
+        "file": "jds/senior-open-standards-strategist.openthing",
+        "added": "2026-04-26",
+        "decision": "decisions/jd-senior-open-standards-strategist.md"
       }
     ]
   },
@@ -78,7 +87,7 @@
   "metadata": {
     "created": "2026-04-25",
     "schema_version": "0.1.0",
-    "items_count": 6,
+    "items_count": 7,
     "last_updated": "2026-04-26",
     "_comment": "This catalog is the index of all roledefs in the canonical library at jds/. As roledefs are promoted from proposed-jds/ to jds/, entries are added here. Auto-generation of this index from jds/ contents is a Known Work Item per CLAUDE.md."
   }

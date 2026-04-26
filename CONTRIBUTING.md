@@ -76,9 +76,55 @@ If your roledef is rejected for the canonical library, you can still publish it 
 - Filenames MUST match the roledef's `id` field exactly: `<id>.openthing`
 - IDs MUST be unique across `proposed-jds/` AND `jds/` (no shadowing)
 - Each submission SHOULD include (in the PR description):
-  - The role's source — extracted from a product? Self-authored from session experience? Designed from scratch?
+  - The role's source — extracted from a product? Self-authored from session experience? Designed from scratch? Derived from another roledef?
   - Reference behavior — link to transcripts, prompts, or examples that establish the original behavior the roledef is trying to capture
   - Turing test plan — which runtime(s) to test on, what scenarios
+
+### Derived roledefs (specializations of existing roles)
+
+When you want a specialization of an existing roledef — for example, an `sncro-blackhat-tester` derived from a generic `blackhat-tester` — use **git forking**, not a runtime-merged inheritance mechanism. roledef intentionally has no runtime `extends` semantics for v0.1; the simpler git-fork pattern handles derivation cleanly.
+
+**Procedure for authoring a derived roledef:**
+
+1. **Copy the parent file.** Either via `git checkout`-then-copy or by clicking "Raw" on GitHub and saving locally. The derived file starts as a complete copy of the parent — same structure, same fields, same content.
+
+2. **Change the `id`** to the derived id (e.g., `sncro-blackhat-tester`). This must be unique across the library.
+
+3. **Modify what's specialized.** Add domain-specific surface knowledge to `identity` and `description`. Add domain-specific examples to `reaction_style.examples`. Tighten output_contract entries if the derived role has stricter formats. Add domain-specific guardrails (additive only — see "Conventions for safe derivation" below).
+
+4. **Declare the lineage** in `metadata.derived_from`:
+
+   ```json
+   "metadata": {
+     "derived_from": {
+       "id": "blackhat-tester",
+       "version": "1.0.0",
+       "url": "https://roledef.org/jds/blackhat-tester.openthing"
+     },
+     ...
+   }
+   ```
+
+   This is a SHOULD pattern. The runtime does NOT resolve `derived_from` as inheritance — it's purely declarative for lineage transparency, validation chain navigation, and library curation.
+
+5. **Submit as a normal roledef** via the standard two-stage workflow. The derived roledef is a first-class artifact in its own right.
+
+**Conventions for safe derivation** (per SCHEMA.md `metadata.derived_from` SHOULD-rules):
+
+- **Guardrails: additive only.** Don't remove or relax parent guardrails.
+- **Voice and identity: refinable, not contradictable.** A derivation can specialize the parent's register but shouldn't reverse it.
+- **Output contract: additive + tightenable.** Add new entries; tighten existing entry constraints; don't remove or loosen.
+- **Workflow: replaceable with notice.** May replace if the derived domain genuinely needs a different sequence; declare prominently when this happens.
+- **Reaction style examples: additive.** Preserve parent examples; add specialization examples.
+
+These conventions make `derived_from` declarations meaningful — readers can trust that derived roledefs honor the parent's safety/validation properties unless prominently noted otherwise.
+
+**When NOT to use the derived pattern:**
+
+- If your specialization is so different from the parent that it shares only the role-name, just author it as a standalone roledef. Forced inheritance hides more than it reveals.
+- If the specialization is for one specific user/project and won't be reused, it might fit better as runtime-context (loaded via the wrapper prompt's optional Section 6 scaffolding) rather than as a published roledef.
+
+**Example:** the `blackhat-tester` (abstract methodology) → `sncro-blackhat-tester` (sncro-specialized) pair is the canonical first example of this pattern. See those two files in `jds/` (when published) for a concrete reference.
 
 ## 2. Spec proposals
 

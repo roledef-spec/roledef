@@ -327,7 +327,7 @@ Sample interactions or sample outputs. Useful for Turing-test fixtures and for h
 
 ### `metadata` (object)
 
-Authorship, licensing, attribution, version history, related JDs.
+Authorship, licensing, attribution, version history, related JDs, and lineage.
 
 ```json
 "metadata": {
@@ -336,11 +336,48 @@ Authorship, licensing, attribution, version history, related JDs.
   "extracted_from": "DangerStorm v1.0 (theborrowedsoul.com)",
   "created": "2026-04-25",
   "extends": null,
+  "derived_from": {
+    "id": "blackhat-tester",
+    "version": "1.0.0",
+    "url": "https://roledef.org/jds/blackhat-tester.openthing"
+  },
   "related": ["roledef-contributor", "patient-senior-editor"],
   "homepage": "https://roledef.org/jds/senior-slightly-jaded-vc",
   "repository": "https://github.com/roledef-spec/roledef/blob/main/jds/senior-slightly-jaded-vc.openthing"
 }
 ```
+
+#### `derived_from` (SHOULD when applicable)
+
+When a roledef is a specialization of another roledef (the "abstract → derived" pattern), it SHOULD declare its lineage via the `derived_from` field. The field is **purely declarative** — runtimes do NOT resolve it as inheritance. It exists for:
+
+- **Lineage transparency**: readers of a derived roledef can navigate to the parent and assess what the specialization changed
+- **Validation chain**: validators can follow `derived_from` to verify the parent exists and check its conformance status
+- **Library curation**: maintainers can identify abstract roles that have many specializations vs. one-off custom roles
+
+The recommended form is an object with `id`, `version`, and `url`:
+
+```json
+"derived_from": {
+  "id": "blackhat-tester",
+  "version": "1.0.0",
+  "url": "https://roledef.org/jds/blackhat-tester.openthing"
+}
+```
+
+The `id` and `version` together pin the derivation to a specific snapshot of the parent. The `url` provides a fetchable reference. Multiple derived_from entries (an array of objects) are permitted for roles that compose from multiple parents, though composition semantics are not yet formalized — for v0.1, prefer single inheritance.
+
+**Inheritance is git-fork-based, not runtime-merged.** A derived roledef is a complete, self-contained roledef — not a delta against the parent. The author copies the parent file (typically by git fork, but any copy works) and modifies as needed. The runtime treats the derived roledef as a standalone artifact; no parent fetch happens at instantiation time. This keeps the runtime simple and avoids merge-semantics complexity.
+
+**Conventions for safe derivation** (additive-only principles, intended to make `derived_from` declarations meaningful for trust-chain navigation):
+
+- **Guardrails:** derived SHOULD be additive only. Do not remove or relax parent guardrails. Adding new guardrails is fine.
+- **Voice and identity:** derived MAY refine (more domain-specific, more specialized register) but SHOULD NOT contradict parent essence. A derived role of "slightly-jaded-VC" should not become "warmly-enthusiastic-VC."
+- **Output contract:** derived MAY add entries; MAY tighten schema constraints on existing entries; SHOULD NOT remove or loosen existing entries.
+- **Workflow:** derived MAY replace parent workflow entirely (different domain, different sequence); when this happens, the `derived_from` declaration is more about lineage of methodology than literal procedural inheritance.
+- **Reaction style examples:** derived SHOULD preserve parent examples and add specialization examples; do not remove parent examples (they remain valid behavioral anchors).
+
+These conventions are SHOULDs, not MUSTs — domain-specific specializations may have legitimate reasons to deviate. But authors who follow them produce derivations that downstream readers can trust to inherit the parent's validation properties.
 
 ---
 
@@ -481,7 +518,7 @@ See [`jds/roledef-contributor.openthing`](jds/roledef-contributor.openthing) onc
 
 The following are not part of v0.1 but are anticipated for future schema versions:
 
-- **JD inheritance** (`extends`): allow a roledef to inherit from a base roledef and override specific fields. Useful for variant roles (e.g., "Senior VC — Healthcare-Specialized" extending "Senior VC").
+- **Heavyweight JD inheritance** (`extends` with runtime-merged semantics): allow a roledef to declare a parent and have the runtime fetch + merge fields per defined override rules. The lightweight git-fork-plus-`derived_from` pattern (above, in `metadata`) covers v0.1 derivation needs without requiring runtime merge complexity. `extends` is reserved as a future-considerations field if real use cases emerge that the lightweight pattern can't handle (e.g., a need for thin specializations that update automatically when the parent evolves).
 - **Runtime hints** (`x.roledef.runtime_hints`): per-runtime advice for instantiation (e.g., temperature, system-prompt placement, role-priming patterns specific to Claude vs Grok vs GPT).
 - **Turing test fixtures** (`x.roledef.turing_test`): standardized test scenarios paired with each roledef, enabling automated cross-runtime validation.
 - **Composition** (`x.roledef.composes`): a roledef that combines multiple other roledefs (e.g., a "Full-Stack Engineer" roledef that composes "Frontend Developer" + "Backend Developer" + "DevOps").

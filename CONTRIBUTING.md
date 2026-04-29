@@ -14,14 +14,15 @@ roledef is stewarded independently of any single AI vendor or implementation. Th
 
 roledef is maintained with AI-assisted review, following the pattern established by [catdef](https://github.com/catdef/catdef-spec). Routine work — drafting validation reports, reviewing roledef submissions, applying patch-level fixes — is drafted by Claude sessions operating under roles defined in [CLAUDE.md](CLAUDE.md). These sessions operate under the dedicated identity `roledef-maintainer <roledef-maintainer@roledef.org>`. Merges to `main`, schema version bumps, and governance decisions are made only by human maintainers through the normal pull-request review process; the AI-maintainer identity does not have merge authority on protected branches.
 
-## Two kinds of contribution
+## Three kinds of contribution
 
-Contributions to roledef fall into two categories with different processes:
+Contributions to roledef fall into three categories with different processes:
 
-1. **roledef submissions** — adding a new roledef to the library
-2. **Spec proposals** — proposing changes to the roledef schema, the contribution process, or governance rules
+1. **Role submissions** (`roledef:Role`) — adding a new abstract Role to the canonical library
+2. **Job artifacts** (`roledef:Job`) — Jobs (concrete org-specific instantiations) live in the **owning project's working repo**, not in the roledef canonical library. Some sample Jobs are mirrored to `sample-jobs/` for demonstration purposes.
+3. **Spec proposals** — proposing changes to the roledef schema, the contribution process, or governance rules
 
-## 1. roledef submissions
+## 1. Role submissions (`roledef:Role`)
 
 ### The two-stage workflow
 
@@ -126,7 +127,43 @@ These conventions make `derived_from` declarations meaningful — readers can tr
 
 **Example:** the `blackhat-tester` (abstract methodology) → `sncro-blackhat-tester` (sncro-specialized) pair is the canonical first example of this pattern. See those two files in `roledefs/` (when published) for a concrete reference.
 
-## 2. Spec proposals
+## 2. Job artifacts (`roledef:Job`)
+
+A Job is a concrete instantiation of a Role at a specific organization, carrying org-specific specializations (charter, placement, additional guardrails, etc.). Per the role-vs-job distinction (see [SCHEMA.md §"Roles vs Jobs"](SCHEMA.md#roles-vs-jobs)), Jobs and Roles are distinct artifact tiers with different ownership and location patterns.
+
+### Jobs live in working repos, not in the canonical library
+
+A Job artifact lives in the **working repo of the org that defines it**, at one of:
+
+- `<project>/<org-name>-org/jobs/<job-id>.openthing` (when the project hosts a nested org folder, common for multi-org projects)
+- `<project>/jobs/<job-id>.openthing` (when the project is a single-org project; the project itself IS the org)
+
+This mirrors the catdef-org memo convention's per-recipient working-repo discipline: **authorization to read and modify a Job artifact is implied by repo access**. Public projects (catdef-family, DangerStorm-style open-extraction projects) publish their operational Jobs in public repos; private orgs keep their Jobs in private repos. There is no separate "private flag" — repo visibility IS the visibility.
+
+`orgdef:Position` references to private Jobs gracefully fail to resolve for outsiders (404); the org's own sessions resolve them via authenticated git access. This mirrors how private package-manager dependencies work.
+
+### How to author a Job
+
+1. **Identify the parent Role** in the canonical library (or another library / a third-party Role). Pin it in `metadata.role_definition` with `id`, `version`, and `url`.
+2. **Identify the org context** — the orgdef this Job exists in. Pin it in `metadata.org_definition`.
+3. **Write the charter** — a single statement of the stable slot of responsibility this Job fills (`charter` top-level field).
+4. **Add specializations** as additive material per the conventions for safe derivation (additional guardrails, refined voice, additional reaction_style examples, tightened output_contract entries). Honor the additive-only invariant against the parent Role.
+5. **Add `metadata.placement`** (optional but RECOMMENDED) — a denormalized snapshot of the Job's org-chart placement (`reports_to`, `directs`, `coordinates_with`).
+6. **Run OPD** (when `workflow.type: "engagement_loop"` and `metadata.role_definition` is set) — see [SCHEMA.md §"Ongoing Professional Development (OPD)"](SCHEMA.md#ongoing-professional-development-opd).
+
+### Sample Jobs in `sample-jobs/`
+
+The canonical roledef library at `github.com/roledef-spec/roledef` hosts a `sample-jobs/` directory for **canonical sample Jobs** — demonstration artifacts that document patterns and serve as adopter starting-points. Sample Jobs are NOT operational (no live org-holder occupies them).
+
+Sample Jobs follow the same submission flow as Roles (PR to canonical, validator runs, strategist signs off on library fit), but are placed in `sample-jobs/<id>.openthing` rather than `roledefs/<id>.openthing`. The bootstrap-era artifacts that are conceptually Job-shaped (catdef-strategist, roledef-strategist, sncro-blackhat-tester, senior-jaded-vc-associate) are mirrored as sample-of-record entries here while operational copies live at their owning project repos.
+
+### Jobs typically do not flow through the canonical library
+
+Most Jobs in real use stay in their owning project's working repo. There is no central registry of Jobs. The canonical library curates **Roles** (broadly applicable) and **sample Jobs** (canonical demonstrations); operational Jobs live where the org-holder lives.
+
+When a Job has broad pedagogical or pattern-establishing value, it MAY be submitted to `sample-jobs/` via the same PR workflow as Roles. This is a curation call (strategist sign-off required); not every well-formed Job warrants canonical sample-of-record placement.
+
+## 3. Spec proposals
 
 Changes to the roledef schema, the contribution process, or governance rules use a separate workflow via the `proposals/` directory.
 

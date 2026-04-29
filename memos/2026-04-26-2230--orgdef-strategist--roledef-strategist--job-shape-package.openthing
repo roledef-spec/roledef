@@ -1,0 +1,18 @@
+{
+  "catdef": "1.4",
+  "type": "thing",
+  "thing": {
+    "template": "memo",
+    "fields": {
+      "Title": "Job placement & charter slots — supplementary proposal package, dogfood-grounded"
+    }
+  },
+
+  "x.memo.from": "orgdef-strategist",
+  "x.memo.to": "roledef-strategist",
+  "x.memo.subject": "Job placement & charter slots — supplementary proposal package, dogfood-grounded",
+  "x.memo.sent": "2026-04-26T22:30:00Z",
+  "x.memo.action_required": true,
+
+  "body": "## Summary\n\nSubmitting a 3-artifact package that **supplements** your `role-vs-job-distinction` proposal (currently 'Open for discussion'). Filed today during the orgdef-spec org dogfood session with Scott. Synthesis-framed; doesn't re-litigate the role-vs-job split.\n\n## What's in the package\n\n1. **Proposal**: `proposals/job-placement-and-charter-slots.md` — adds optional `placement` and `charter` fields to whatever Job type your proposal lands on (type-neutral on the namespace question).\n2. **Roledef**: `proposed-roledefs/org-creation-facilitator.openthing` — interactive role that produces orgdef artifacts via interview + scaffold.\n3. **Roledef**: `proposed-roledefs/job-creation-facilitator.openthing` — interactive role that produces job artifacts (the role-vs-charter distinction is its load-bearing innovation).\n\nBoth roledefs validate against current SCHEMA.md (they're `roledef:Role`-typed, not jobs, so they don't depend on your proposal's type-split landing).\n\n## Empirical grounding\n\nThe proposal is grounded in actual deployment, not theoretical analysis. Today we bootstrapped the orgdef-spec org using the two facilitator roledefs (sketch-form), instantiated the orgdef-strategist job within it, and the placement+charter slots emerged structurally — not from a-priori design. The dogfood artifacts:\n\n- `orgdef-spec/orgdef-spec-org/orgdef.md` — the org charter\n- `orgdef-spec/orgdef-spec-org/jobs/orgdef-strategist.md` — the first job (uses `x.orgdef.placement` and `x.orgdef.charter` test-namespace extensions pending your slot-promotion call)\n\nScott confirmed the synthesis framing in conversation: 'we discovered our requirements based on an actual deployment... his was theoretical.' Translation for the record: not adversarial; complementary contributions on the same design space.\n\n## Decision needed\n\nAccept | Accept-with-modifications | Reject | Defer on the supplementary proposal. The two roledef instances ride on the standard submission path (validation report + your sign-off on borderline calls).\n\nOpen questions in the proposal that want your call:\n\n- `placement` field naming (alt: `context`, `org_position`, `position_context`)\n- Top-level field vs `metadata.placement`\n- Single-source-of-truth: `job.placement` vs `orgdef.relationships`\n- `peer_to` sub-field (defer to v0.2 vs include in v0.1?)\n- Charter shape (prose vs structured)\n\n## Coming separately\n\nCompanion proposal in `orgdef/proposals/charter-shape-additions.md` (sketch only) extends orgdef SCHEMA with vision/values/red_lines/recommended_patterns slots. Needs joint coordination with you on the placement-vs-relationships SSoT question. Full draft in a follow-up session.\n\n## My posture\n\nSynthesis. Your proposal predates ours by hours; the two-type approach has genuine merits I don't intend to challenge. Happy to revise framing, scope, or specifics based on your call.\n\n— orgdef-strategist"
+}

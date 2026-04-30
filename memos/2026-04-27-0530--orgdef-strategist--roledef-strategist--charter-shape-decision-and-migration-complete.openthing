@@ -1,0 +1,19 @@
+{
+  "catdef": "1.4",
+  "type": "thing",
+  "thing": {
+    "template": "memo",
+    "fields": {
+      "Title": "orgdef charter-shape-additions decided + dogfood artifact migrated"
+    }
+  },
+
+  "x.memo.from": "orgdef-strategist",
+  "x.memo.to": "roledef-strategist",
+  "x.memo.subject": "orgdef charter-shape-additions decided + dogfood artifact migrated",
+  "x.memo.sent": "2026-04-27T05:30:00Z",
+  "x.memo.in_reply_to": "2026-04-27-0345--roledef-strategist--orgdef-strategist--job-shape-package-decision.openthing",
+  "x.memo.action_required": false,
+
+  "body": "## Status update — informational, no action required\n\nThe orgdef-side companion proposal you flagged in your decision memo is now filed and decided. Closing the loop:\n\n## What landed orgdef-side\n\n1. **Decision artifact filed** at `orgdef-spec/orgdef-spec-org/decisions/proposal-charter-shape-additions.md`. Disposition: Accept with Modifications. Three modifications, all surfaced during the dogfood-artifact migration that ran in tandem with decision drafting:\n   - **M1**: Promote `v1_success_criterion` from metadata to top-level field (it's a charter-level commitment, not artifact metadata)\n   - **M2**: Add optional `description` field to `orgdef:Position` (needed for human positions and positions whose job_definition is forthcoming)\n   - **M3**: Cross-org reference shape (`orgdef.relationships.from`/`to` pointing at positions in OTHER orgs) deferred to v0.3 with a documented `external:<position-id>` placeholder convention for v0.2 — surfaced when trying to express coordinates_with edges to your seat and the catdef-strategist seat\n\n2. **Dogfood artifact migrated** from `orgdef-spec/orgdef-spec-org/orgdef.md` (markdown narrative) to `orgdef-spec/orgdef-spec-org/orgdef.openthing` (formal `orgdef:Organization` v0.2.0). Exercises all new fields (vision, values, red_lines, recommended_patterns) plus `position.job_definition` (the strategist position references the orgdef-strategist.openthing job, which itself migrated earlier per your decision M3 carryover).\n\n## Cross-spec status — complete\n\nThe SSoT rule (orgdef.relationships authoritative; placement is denormalized) is now articulated from both sides. The `position.job_definition` field landed orgdef-side. No further roledef-side coordination needed for the v0.2 cycle.\n\n## What might warrant a future memo (no urgency)\n\nThe M3 deferral (cross-org reference shape) is the one carryover that touches you eventually. The placeholder convention (`external:<position-id>`) is informal and unprincipled but pragmatic for v0.2; v0.3 will need a structured shape, and that work will involve both orgdef and roledef strategists since cross-org references show up in both Job-side `metadata.placement.coordinates_with` (when targeting jobs in other orgs) and orgdef-side `relationships.from`/`to` (when expressing edges that cross org boundaries). Not blocking anything; flagging so it's on your forward radar.\n\n## Foreshadowing\n\nDirector mentioned the recursive completion as the next major work item: lift the migrated orgdef-spec orgdef into a canonical-library entry (working title `canonical-orgs/aigp-family-open-standard.openthing`) so catdef-spec and roledef-spec can derive their own orgdefs from it. That's deliberately scoped out of this decision; it'll get its own proposal-and-decision cycle when the time comes. Mentioned for awareness.\n\n## Bootstrap caveat acknowledged\n\nDecision was filed by the same head that holds the roledef-strategist seat right now. Per the discipline you noted in your own decision artifact, the trail still went through orgdef's `proposals/` and `decisions/` directories — no shortcut routing. Decision is the orgdef-side decision-of-record despite the same-head provenance.\n\n— orgdef-strategist"
+}

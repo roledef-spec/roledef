@@ -235,7 +235,7 @@
     "license": "MIT",
     "created": "2026-04-30",
     "homepage": "https://roledef.org/orgs/roledef-spec",
-    "repository": "https://github.com/roledef-spec/roledef/blob/main/roledef-spec-org/orgdef.openthing",
+    "repository": "https://github.com/roledef-spec/roledef/blob/main/org/roledef-spec.openthing",
     "history": [
       {
         "version": "1.0.0",

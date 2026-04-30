@@ -1,0 +1,247 @@
+{
+  "catdef": "1.4",
+  "orgdef": "0.3.0",
+  "type": "orgdef:Organization",
+  "id": "roledef-spec",
+  "name": "roledef-spec",
+  "version": "1.0.0",
+
+  "mission": "Define AI roles in an open, machine-readable way that bootstraps any AI worker into a documented role with zero context backfill. The output is portable, runtime-agnostic roledef:Role and roledef:Job .openthing artifacts, conformance-validated across multiple AI runtimes, that any compliant runtime can load to instantiate the role.",
+
+  "vision": "Part of the AI Governance Pattern (AIGP) family — alongside catdef, orgdef, and memodef — defining the pattern of portable AI role specifications. The primary reader of a roledef is an AI runtime: when an organization hires an AI into a position, the roledef is the bootstrap artifact that instantiates the role. roledefs are portable across runtimes (Claude, Grok, Gemini, Perplexity, future) and across organizations (the same role specification can be hired by many orgs with org-specific specializations carried at the Job tier).",
+
+  "scope": "The roledef SCHEMA, conformance test suite, canonical roledef library (operational `roledefs/` plus canonical `sample-jobs/` directories), runtime amenability classification per RUNTIME_AMENABILITY.md, the wrapper-v3 loading specification per WRAPPER_PROMPT.md, the role-vs-job two-tier artifact distinction, the OPD pattern for derivation drift management, and the dual-review pattern for production-extracted submissions. Out of scope: enforcing what roles are defined (content-neutral), runtime infrastructure (specification only; runtime tooling is a separate concern per the design principle), substrate-level concerns belonging to catdef, org structure belonging to orgdef, and inter-position memo messaging belonging to memodef.",
+
+  "governance_model": "Bounded AI authority + human Director ratification. The roledef-strategist (AI role; bot identity roledef-strategist@roledef.org; currently at v1.1.0 with OPD per the just-landed coordinated rollout) holds delegated authority for library-curation, scope-narrowing, and pattern-promotion calls; the roledef-maintainer (AI role per CLAUDE.md, separate seat; bot identity roledef-maintainer@roledef.org; currently no fresh-session seat held during bootstrap, per memodef-spec's bootstrap-deviation precedent the strategist drafts maintainer-shaped artifacts in tandem with two-author commit splits as needed); the roledef-validator (AI role per CLAUDE.md; bot identity roledef-validator@roledef.org; produces structured validation reports on a per-PR basis, ideally CI-automated but currently manual session per CLAUDE.md Known Work Item) validates submissions; the human Director (Scott <scott@confusedgorilla.com>) holds final tiebreaker authority on every merge, version bump, and governance change. Mirrors the catdef-family pattern.",
+
+  "values": [
+    {
+      "name": "openness",
+      "description": "roledef is fundamentally open — a pattern, not a product. No vendor lock-in, no privileged implementer, no proprietary extensions in the core spec. All AI runtimes (Anthropic, OpenAI, xAI, Google, future) are equal citizens.",
+      "rationale": "Adoption depends on equal-citizen treatment of all implementers; vendor capture would defeat the standard's purpose. Forks are welcome — anyone can publish their own roledef library at any URL using the same format."
+    },
+    {
+      "name": "completeness",
+      "description": "The roledef bundle MUST be sufficient that a fresh AI runtime loaded with the bundle becomes the role, with zero context backfill.",
+      "rationale": "Hallucination-prevention rule, not aesthetic preference. The primary reader is a machine; null context invites confabulation. A roledef missing required structural content forces the AI to either guess or ask the user, which violates the zero-friction bar."
+    },
+    {
+      "name": "empirical grounding",
+      "description": "Every methodology rule, runtime classification, and quality bar in roledef derives from documented observed runtime behavior, not theoretical design. Every roledef in the canonical library has documented conformance evidence on at least one real runtime; the canonical methodology rules (id-field discriminating test, wrapper-v3 fetch-or-stop, contract-completeness reinforcement, source-project peer review for production extractions) were each surfaced from specific empirical engagements documented in `conformance/runtime_evidence/`.",
+      "rationale": "Anti-clickbait by construction. Most 'how to write a great prompt' advice is generic to the point of uselessness because it presumes the runtime is fungible — it isn't. roledef's authority comes from the empirical loop: rules are scrutable, falsifiable, and revisable when contradicted by evidence. Theoretical design without runtime testing is how prompt engineering acquired its bad reputation; roledef takes the opposite approach as a deliberate methodological commitment."
+    },
+    {
+      "name": "cross-runtime portability",
+      "description": "A roledef MUST work on multiple AI runtimes — empirically validated, not theoretical. The same roledef artifact, loaded into Claude, Grok, Gemini, Perplexity, or any future compliant runtime, produces functionally equivalent role-faithful behavior. Tactical variance between runtimes (question order, atomic-vs-iterative bundle delivery, per-runtime fetch mechanism) is acceptable when it falls within the roledef's constraint envelope; semantic divergence is not.",
+      "rationale": "Portability is the central value proposition. A roledef that only works on one vendor's runtime is just a vendor's prompt. The four-runtime conformance evidence at v0.1 (Grok Expert, Claude Code, Gemini, Perplexity) is the proof-of-portability the standard depends on; every new runtime adoption extends or refines the runtime amenability classification."
+    }
+  ],
+
+  "red_lines": [
+    {
+      "rule": "No NULL-context roledef:Role or roledef:Job accepted by the spec, the validator, or canonical authoring tools.",
+      "rationale": "Technical, not aesthetic — null context causes hallucination in the primary (machine) reader. The MUST-have-substantive-fields rule (identity, voice, output_contract, guardrails all non-empty per SCHEMA.md) is a hallucination-prevention rule, not a quality preference."
+    },
+    {
+      "rule": "No content policing of consumers.",
+      "rationale": "What organizations choose to define as roles using the roledef pattern is their business, not the spec's. roledef governs the schema's integrity, not the morality of role content. Curation happens at the LIBRARY level (canonical inclusion), not the SPEC level — anyone can publish their own roledef library at any URL."
+    },
+    {
+      "rule": "No vendor favoritism among AI runtimes. Anthropic, OpenAI, xAI, Google, Meta, and any future runtime are equal citizens from roledef's perspective; the spec MUST NOT lobby for any one runtime's needs at the expense of others.",
+      "rationale": "Adoption depends on equal-citizen treatment. A standard captured by one vendor's interests stops being a standard. When implementer feedback conflicts with cross-runtime portability, the standard's neutrality wins. The four-runtime conformance methodology institutionalizes the discipline: rules that work on one runtime but not others are runtime-amenability findings, not spec features."
+    },
+    {
+      "rule": "No promotion of any roledef to canonical without documented conformance evidence on at least one real runtime.",
+      "rationale": "The 'every roledef has empirical evidence' commitment is structural, not aspirational. A roledef without runtime evidence is a hypothesis; promoting it to canonical conflates hypothesis with validation. The conformance fixtures in `conformance/runtime_evidence/` are the proof-bearers — every canonical roledef has a corresponding evidence file (or a documented self-validation note when peer-runtime testing is genuinely deferred). Anti-clickbait by construction requires evidence; the canonical library reflects that."
+    }
+  ],
+
+  "recommended_patterns": {
+    "general": [
+      {
+        "pattern": "Senior strategist role separation",
+        "description": "Specs SHOULD have a senior strategist role distinct from execution roles (maintainer, implementor), so each position stays in its lane.",
+        "rationale": "Same reason developers shouldn't do their own security testing — bounded scope per role enables clean handoffs and prevents authority concentration."
+      },
+      {
+        "pattern": "Two-section charter discipline",
+        "description": "Organize orgdef content into two implicit sections: 'how this org operates' (mission, vision, values, governance, positions, relationships, red_lines) vs 'what we recommend for orgs using this pattern' (recommended_patterns). The two sections serve different audiences.",
+        "rationale": "First section orients a reader joining this spec org; second section guides anyone deriving a new org from this one as a template. Conflating them muddles both audiences."
+      },
+      {
+        "pattern": "Recursive self-describing v1 milestone",
+        "description": "Treat 'this very orgdef exists as a valid, self-describing artifact in the org folder' as the spec's v1 success criterion.",
+        "rationale": "If the pattern can't bootstrap its own author, it can't bootstrap anyone. Self-description is the most demanding test case for a standards project."
+      },
+      {
+        "pattern": "Empirical methodology with documented conformance evidence",
+        "description": "Specs serving an addressable runtime class SHOULD validate every quality bar, methodology rule, and runtime classification against real empirical observation — not theoretical design. Each rule cites the engagement that surfaced it; each canonical artifact carries documented conformance evidence; the methodology rules and the runtime classification revise as new evidence arrives.",
+        "rationale": "Most prompt-engineering advice is generic-and-wrong because it presumes runtime fungibility. The canonical-library + per-runtime-evidence + falsifiable-rule-set pattern produces authority that survives challenge — observed behavior is the rubric, not author preference. roledef's `conformance/runtime_evidence/` directory is the canonical example; the pattern generalizes to any spec where runtime behavior is the load-bearing dimension."
+      },
+      {
+        "pattern": "Self-extraction by the role's incumbent",
+        "description": "When a role is being formalized into a roledef, the strongest source-material is the role's actual incumbent — the AI session that has been playing the role across documented engagements. Self-extraction by the incumbent uses transcripts, decisions, and characteristic phrasing as primary sources.",
+        "rationale": "Roledefs derived from theoretical descriptions tend to drift from real behavior at instantiation; roledefs extracted from a role's actual practitioner reproduce what the role does, not what the author wishes it did. Self-extraction is the empirical-grounding principle applied at the artifact level: the role IS its own evidence."
+      },
+      {
+        "pattern": "Atomic promotion in one PR",
+        "description": "When promoting a roledef from `proposed-roledefs/` to canonical: file move + .json mirror addition + catalog update + decision artifact filing all happen in ONE commit / PR. No follow-on PRs for promotion bookkeeping.",
+        "rationale": "Atomicity preserves the audit trail's coherence. Splitting promotion across multiple PRs fragments the institutional memory and creates window-of-incoherence states where the canonical library has a file but no decision artifact, or a catalog entry but no file. The same discipline applies to v-bumps and coordinated rollouts."
+      },
+      {
+        "pattern": "OPD coordinated rollout for parent-update propagation",
+        "description": "When a parent role evolves (e.g., gains OPD, ships a new conformance scenario, refines a guardrail), all existing pre-evolution derivations get coordinated v-bumps in the same PR as the parent's bump. Self-bootstrap (derivation discovers parent change via OPD, recommends adoption to overseer) applies prospectively only — derivations forked from versions that don't have OPD code paths will never run OPD checks against the parent.",
+        "rationale": "Per the proposal-ongoing-professional-development decision M2: existing pre-OPD derivations require manual migration as part of the parent's evolution rollout. Self-bootstrap presupposes OPD plumbing in the derivation; absent that plumbing, manual coordinated bumping is the only viable migration. The pattern is: bump parent + bump all derivations + file decision artifact for each, all in one PR."
+      }
+    ],
+    "recommended_roles": [
+      {
+        "role": "human-director",
+        "priority": "MUST",
+        "why": "Bounded-authority discipline requires a human ratifier."
+      },
+      {
+        "role": {
+          "id": "senior-open-standards-strategist",
+          "version": "1.1.0",
+          "url": "https://roledef.org/roledefs/senior-open-standards-strategist.openthing"
+        },
+        "priority": "MUST",
+        "why": "Library-curation, scope-narrowing, pattern-promotion calls. v1.1.0 includes OPD against parent (no-op for the abstract; inherited prospectively by derivations)."
+      },
+      {
+        "role": "roledef-maintainer",
+        "priority": "MUST",
+        "why": "Drafts spec text, walks SCHEMA validations, files decision artifacts."
+      },
+      {
+        "role": "canonical-implementor",
+        "priority": "SHOULD",
+        "why": "Reference renderers, validators, and fetcher-portability tooling are how the spec gets dogfooded."
+      },
+      {
+        "role": "roledef-validator",
+        "priority": "MUST",
+        "why": "Schema validation + Turing test + additive-only invariant checks — the standard's runtime conformance methodology depends on per-PR validator output."
+      },
+      {
+        "role": {
+          "id": "roledef-contributor",
+          "version": "1.0.0",
+          "url": "https://roledef.org/roledefs/roledef-contributor.openthing"
+        },
+        "priority": "SHOULD",
+        "why": "Helper role for contributors authoring submissions; canonical first roledef in the library and the worked example for self-scaffolding submissions."
+      }
+    ]
+  },
+
+  "v1_success_criterion": "roledef has reached v1 maturity per Director's call 2026-04-30 — the Gordian-knot framing: v1 is recognized retrospectively, not declared by forward-looking ship-when-X criterion. Three reasons: (1) roledef artifacts have been successfully used against several organizations (DangerStorm, sncro, catdef-spec, orgdef-spec, memodef-spec — driving real role-instantiation work in production-extraction and self-extraction modes, with documented cross-runtime conformance on Grok Expert, Claude Code, Gemini, and Perplexity); (2) the schema is mature with the v0.2.0 evolution complete (role-vs-job two-tier artifact distinction, charter slot, metadata.placement, OPD pattern, sample-jobs/ directory, additive-only derivation conventions); (3) the change-management process is codified (proposed-roledefs/ → roledefs/ two-stage workflow, proposals/ + decisions/ artifact trail, AI-assisted maintenance per CLAUDE.md, future-user request-for-change pathway via the proposal artifact format). The work is done.",
+
+  "positions": [
+    {
+      "id": "director",
+      "name": "Director",
+      "description": "Human Director (Scott <scott@confusedgorilla.com>) with final tiebreaker authority. No role_definition (humans are not derived from roledefs)."
+    },
+    {
+      "id": "strategist",
+      "name": "Strategist",
+      "description": "Library-curation, scope-narrowing, pattern-promotion calls. Drafts decision artifacts in decisions/. Bot identity roledef-strategist@roledef.org. v1.1.0 of the role includes OPD against senior-open-standards-strategist v1.1.0 per the OPD coordinated-rollout decision (filed 2026-04-26). Per the role-vs-job-distinction migration build directive, this position's role artifact will eventually migrate to an operational job artifact at jobs/strategist.openthing; until then, role_definition references the canonical roledef-strategist artifact directly.",
+      "role_definition": {
+        "id": "roledef-strategist",
+        "version": "1.1.0",
+        "url": "https://roledef.org/roledefs/roledef-strategist.openthing"
+      }
+    },
+    {
+      "id": "maintainer",
+      "name": "Maintainer",
+      "description": "Drafts spec text (SCHEMA.md, CONTRIBUTING.md, CLAUDE.md, WRAPPER_PROMPT.md, RUNTIME_AMENABILITY.md), maintains conformance fixtures, applies patch-level fixes, files implementation PRs in support of strategist decisions. Bot identity roledef-maintainer@roledef.org. Provisional pending governance ratification per CLAUDE.md. During bootstrap the strategist drafts maintainer-shaped artifacts in tandem (per the bootstrap-deviation precedent established in memodef-spec PR #2; CLAUDE.md notes 'roledef does not currently have a separate maintainer'). Job artifact TBD; reference role is forthcoming roledef-maintainer roledef."
+    },
+    {
+      "id": "validator",
+      "name": "Validator",
+      "description": "Runs validation against roledef submissions: schema check (per SCHEMA.md MUST/SHOULD walk) + Turing test on at least one runtime + additive-only invariant for derivations + extension self-description check. Produces structured validation reports for posting on PRs. Bot identity roledef-validator@roledef.org. Currently operates as manual session per CLAUDE.md (validator-as-CI automation is a Known Work Item).",
+      "role_definition": {
+        "id": "roledef-validator",
+        "version": "1.0.0",
+        "url": "https://roledef.org/roledefs/roledef-validator.openthing"
+      }
+    },
+    {
+      "id": "canonical-implementor",
+      "name": "Canonical Implementor",
+      "description": "Maintains canonical implementations of roledef-specific tooling — roledef.org fetcher-portability mirrors (.openthing + .json sibling mirrors, Cloudflare Transform Rule for application/json content-type at the roledef.org distribution layer), the forthcoming roledef-load Claude Code skill (~3-4 hour implementation per the design doc), conformance test infrastructure (validator harness, runtime evidence collection), and any future roledef-specific reference tooling. Bot identity roledef-canonical-implementor@roledef.org; provisional pending governance ratification. Position is forward-looking and not yet held by a fresh-session seat. Substrate-level concerns (the render.catdef.org renderer, the catdef.org Worker, catdef-family namespaced-type handling) belong to catdef-canonical-implementor and are out of scope here; bootstrap-era canonical-implementor work that benefited roledef artifacts (the catdef.org PR sequence #1, #2, #5) was performed by the catdef-canonical-implementor seat as a transitional cross-spec scaffolding measure during the AIGP-family bootstrap, not the steady-state operating posture for this position. roledef-canonical-implementor's scope is roledef-specific tooling only."
+    }
+  ],
+
+  "relationships": [
+    {
+      "type": "reports_to",
+      "from": "strategist",
+      "to": "director",
+      "description": "Strategist holds delegated authority for design decisions; Director ratifies decisions, merges, version bumps, governance changes. Per bounded-authority discipline."
+    },
+    {
+      "type": "directs",
+      "from": "strategist",
+      "to": "maintainer",
+      "description": "Strategist makes calls; maintainer drafts spec text, conformance fixtures, and implementation PRs in support of those calls. During bootstrap the strategist drafts both."
+    },
+    {
+      "type": "directs",
+      "from": "strategist",
+      "to": "validator",
+      "description": "Strategist sets validation discipline; validator runs per-PR schema + Turing-test + additive-only-invariant checks and produces structured reports. Strategist may self-validate when validator-as-CI is not yet automated, with explicit role-overlap acknowledgment in the decision artifact."
+    },
+    {
+      "type": "directs",
+      "from": "strategist",
+      "to": "canonical-implementor",
+      "description": "Strategist sets direction for roledef-specific canonical tooling priorities (roledef.org fetcher portability, the roledef-load Claude Code skill, conformance test infrastructure); implementor produces and tests reference implementations specific to roledef. Substrate-level rendering and catdef-family Worker concerns belong to catdef-canonical-implementor and route through cross-spec coordination with catdef-strategist, not through this directs edge."
+    },
+    {
+      "type": "coordinates_with",
+      "from": "strategist",
+      "to": "external:catdef-strategist",
+      "description": "Cross-spec coordination on catdef substrate concerns — catdef envelope, type-tag namespace, x.* extension rules, writer-strict version stamping per CA-002. roledef rides on the catdef substrate; substrate-level decisions are catdef-strategist's authority. v0.1 leaves cross-org references informal; v0.3 will formalize structured cross-org reference shape per the orgdef M3 deferral."
+    },
+    {
+      "type": "coordinates_with",
+      "from": "strategist",
+      "to": "external:orgdef-strategist",
+      "description": "Cross-spec coordination on orgdef-convention concerns — position.job_definition follow-on (per role-vs-job-distinction M7), SSoT rule between orgdef.relationships and metadata.placement (per proposal-job-placement-and-charter-slots M3, M6), canonical-orgs library + this orgdef artifact's derivation from the canonical AIGP-family template."
+    },
+    {
+      "type": "coordinates_with",
+      "from": "strategist",
+      "to": "external:memodef-strategist",
+      "description": "Cross-spec coordination on memodef concerns — memodef:Memo carries inter-position handoffs; the OPD-review-memo output type per OPD decision is currently memodef:Memo (or legacy x.memo.* form on a catdef:Thing); future memodef:OPDReviewMemo subtype is queued per OPD decision references. Memo channel for cross-spec strategist communication has been the recent practice."
+    }
+  ],
+
+  "metadata": {
+    "kind": "operational",
+    "derived_from": {
+      "id": "aigp-family-open-standard",
+      "version": "1.0.0",
+      "url": "https://github.com/orgdef-spec/orgdef/blob/main/proposed-orgs/aigp-family-open-standard.openthing"
+    },
+    "authors": [
+      "Scott <scott@confusedgorilla.com> (Director)",
+      "roledef-strategist <roledef-strategist@roledef.org>"
+    ],
+    "license": "MIT",
+    "created": "2026-04-30",
+    "homepage": "https://roledef.org/orgs/roledef-spec",
+    "repository": "https://github.com/roledef-spec/roledef/blob/main/roledef-spec-org/orgdef.openthing",
+    "history": [
+      {
+        "version": "1.0.0",
+        "date": "2026-04-30",
+        "change": "Initial bootstrap, derived from aigp-family-open-standard canonical template v1.0.0 via org-creation-facilitator (high-context mode). Slot-fill content drawn from roledef-spec/roledef README.md, CLAUDE.md, CONTRIBUTING.md, SCHEMA.md, RUNTIME_AMENABILITY.md, WRAPPER_PROMPT.md, the existing roledef-strategist v1.1.0 canonical roledef, and the recent decision-artifact trail (proposal-role-vs-job-distinction, proposal-job-placement-and-charter-slots, proposal-ongoing-professional-development) plus the OPD coordinated rollout artifacts (senior-open-standards-strategist-v1-1, catdef-strategist-v2-1, roledef-strategist-v1-1). The 'v1 maturity recognized retrospectively' framing in v1_success_criterion reflects Director directive 2026-04-30 ('Gordian knot approach: We are *already* at v1 maturity'). Director clarified during read-back review that the canonical-implementor position is forward-looking roledef-specific (its own seat at roledef-canonical-implementor@roledef.org), not the catdef-shared scaffolding seat used during bootstrap; bootstrap-era catdef.org PR work was a transitional cross-spec measure, not the steady-state operating posture."
+      }
+    ]
+  }
+}

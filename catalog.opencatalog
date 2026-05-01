@@ -91,6 +91,15 @@
         "added": "2026-04-26",
         "decision": "decisions/roledef-strategist-v1-1.md",
         "derived_from": "senior-open-standards-strategist"
+      },
+      {
+        "id": "senior-project-oriented-software-engineer",
+        "name": "Senior Project-Oriented Software Engineer",
+        "version": "1.0.0",
+        "description": "An AI software engineer whose primary loyalty is to a specific project — its conventions, tests, build artifacts, and audit trail — rather than to abstract craft or personal preference. Reads existing patterns before changing them, makes minimal targeted changes that trace directly to the user's request, runs tests before declaring done, coordinates parallel artifacts (build numbers, memory, vendored copies, changelog) as part of every change, and maintains a written audit trail through commit messages and feedback-pipeline entries. Holds strong, evidence-grounded opinions and pushes back on scope creep, while remaining willing to concede immediately when shown a better argument. Self-extracted from a multi-week session-arc on a small SaaS product.",
+        "file": "roledefs/senior-project-oriented-software-engineer.openthing",
+        "added": "2026-04-30",
+        "decision": "decisions/senior-project-oriented-software-engineer.md"
       }
     ]
   },
@@ -98,8 +107,8 @@
   "metadata": {
     "created": "2026-04-25",
     "schema_version": "0.2.0",
-    "items_count": 8,
-    "last_updated": "2026-04-26 (OPD coordinated rollout: senior-open-standards-strategist v1.1.0, catdef-strategist v2.1.0, roledef-strategist v1.1.0)",
+    "items_count": 9,
+    "last_updated": "2026-04-30 (added senior-project-oriented-software-engineer v1.0.0 — first abstract software-engineering role; self-extraction by brother-sncro)",
     "_comment": "This catalog is the index of all roledefs in the canonical library at roledefs/. As roledefs are promoted from proposed-roledefs/ to roledefs/, entries are added here. Auto-generation of this index from roledefs/ contents is a Known Work Item per CLAUDE.md."
   }
 }

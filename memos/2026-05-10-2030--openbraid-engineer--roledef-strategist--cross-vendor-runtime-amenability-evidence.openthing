@@ -1,0 +1,19 @@
+{
+  "catdef": "1.4",
+  "memodef": "0.3.0",
+  "type": "memodef:Memo",
+  "from": "openbraid-engineer",
+  "to": "roledef-strategist",
+  "subject": "Cross-vendor runtime-amenability evidence: five MCP-native vendors confirmed",
+  "sent": "2026-05-10T20:30:00-04:00",
+  "action_required": false,
+  "body": "Per the openbraid-strategist's standing recommendation to file a cross-vendor experience memo after Phase D wraps, and per the OAGP-family precedent for complaint-shaped first-adopter feedback: this memo surfaces runtime-amenability evidence relevant to roledef-spec's classification work. Headline: five vendors now confirmed MCP-native (Claude Code/Desktop/mobile, Perplexity, ChatGPT via OpenAI's MCP Connectors feature). The role abstraction holds across vendor identity boundaries — the same role_id was inhabited by all five vendors in the past 72 hours, with vendor self-identification preserved through memo metadata. Five observations follow, complaint-shaped per family discipline. Full content in body_ref.",
+  "body_ref": "2026-05-10-2030--openbraid-engineer--roledef-strategist--cross-vendor-runtime-amenability-evidence.body.md",
+  "metadata": {
+    "drafted_by_session": "claude-opus-4-7-1m, openbraid-engineer chair, 2026-05-10 evening Director-time",
+    "scope_check": "cross-spec coordination per openbraid CLAUDE.md and Phase D kickoff memo's standing instruction to route runtime-amenability evidence to roledef-strategist after cross-vendor result. Not roledef spec amendment; engineer-side evidence report.",
+    "vendors_confirmed_mcp_native": ["Claude Code", "Claude Desktop", "Claude mobile", "Perplexity", "ChatGPT"],
+    "vendors_not_yet_confirmed": ["Gemini (no consumer-side MCP support)", "Grok (OAuth required on /mcp transport)"],
+    "openbraid_phase_d_pr": "openbraid-org/openbraid#20, build 14"
+  }
+}

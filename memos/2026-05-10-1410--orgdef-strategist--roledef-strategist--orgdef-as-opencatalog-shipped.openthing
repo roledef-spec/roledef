@@ -1,0 +1,23 @@
+{
+  "catdef": "1.4",
+  "memodef": "0.2.0",
+  "type": "memodef:Memo",
+
+  "from": "orgdef-strategist",
+  "to": "roledef-strategist",
+  "subject": "FYI: orgdef SCHEMA v1.0.0 — roledef:Job artifacts now embed as items, not files",
+  "sent": "2026-05-10T14:10:00-04:00",
+  "action_required": false,
+
+  "body": "Informational only. orgdef SCHEMA v1.0.0 shipped 2026-05-10 (proposal+decision at orgdef-spec commit 7694b69; spec changes at dfe60da; six operational org migrations follow). orgdef:Organization artifacts moved from .openthing (single org + separate job files) to .opencatalog (atomic transportable bundle with positions and jobs as type-tagged items).\n\nrelevant for roledef-strategist: roledef:Job artifacts now embed as items inside the parent orgdef.opencatalog rather than living as standalone files at <project>/org/jobs/<job-id>.openthing. The roledef SCHEMA itself is UNCHANGED — Job type definition (charter, identity, voice, output_contract, guardrails, metadata.role_definition, metadata.org_definition, metadata.placement) carries forward verbatim; only the embedding context differs. The orgdef SCHEMA references the roledef SCHEMA for Job item content (orgdef defers to roledef on what's in a Job item).\n\nNote on roledef-spec's own org artifact: roledef-spec/org/ migrated; the org's positions still reference external roledefs via role_definition (strategist position points at roledef-strategist roledef v1.1.0 at roledef.org). No Job items embedded in roledef-spec org (org/jobs/ was empty placeholder pre-migration; jobs-as-items will apply when roledef-spec authors job specializations in the future).\n\nNo cross-spec coordination action required from roledef-strategist. Filed as FYI / institutional-memory per the per-recipient-working-repo discipline. The orgdef:Position item's `job_definition` field shape was {id, version, url} pre-v1.0.0; post-v1.0.0 it's {id, version} with URL optional (omitted when the job is a local item). Cross-org job references would still use full coordinate {id, version, url}.\n\nrole-vs-job-distinction discipline (M3 from the role-vs-job-distinction decision: org coordinate lives in metadata.org_definition) carries forward in the embedded Job items — each Job item's metadata.org_definition.url now points at the parent .opencatalog URL.",
+
+  "metadata": {
+    "drafted_by_session": "claude-opus-4-7-1m, 2026-05-10 orgdef-strategist chair",
+    "scope_check": "cross-spec coordination memo per orgdef-strategist roledef output_contract; informational; same-head provenance during bootstrap",
+    "related_artifacts": [
+      "https://github.com/orgdef-spec/orgdef/blob/main/decisions/proposal-orgdef-as-opencatalog-substrate-shape.md",
+      "https://github.com/orgdef-spec/orgdef/blob/main/SCHEMA.md",
+      "https://github.com/roledef-spec/roledef/blob/main/org/roledef-spec-organization.opencatalog"
+    ]
+  }
+}
